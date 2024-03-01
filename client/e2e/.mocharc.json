@@ -1,0 +1,8 @@
+{
+  "spec": [
+    "e2e/src/**/*.e2e-spec.ts"
+  ],
+  "loader": "ts-node/esm",
+  "no-warnings": true,
+  "timeout": "5000"
+}
