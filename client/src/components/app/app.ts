@@ -19,7 +19,8 @@ export class AppComponent extends LitElement {
     this,
     [
       { path: '/', render: () => html`<fitness-home></fitness-home>` },
-      { path: '/trainings-einheiten', render: () => html`<trainings-einheiten></trainings-einheiten>` }
+      { path: '/trainings-sessions', render: () => html`<trainings-sessions></trainings-sessions>` },
+      { path: '/nutrition-tracker', render: () => html`<nutrition-tracker></nutrition-tracker>` },
     ],
     {
       fallback: { render: () => html`<fitness-home></fitness-home>` }
@@ -34,13 +35,12 @@ export class AppComponent extends LitElement {
   render() {
     return html`
       <header>
-        <a href="/trainings-einheiten">Trainingseinheiten</a>
-        
+        <a href="/trainings-sessions">Trainingseinheiten</a>
+        <a href="/nutrition-tracker">Ernährungstracker</a>
       </header>
       <main>${this.router.outlet()}</main>
     `;
   }
-  @state() title = APP_TITLE;
 }
 
 declare global {

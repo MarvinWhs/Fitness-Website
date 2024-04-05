@@ -5,3 +5,10 @@ body {
   font-size: 100%;
   margin: 0;
 }
+
+:root {
+  --primary-color: #034da1;
+  --error-color: #c5344e;
+  --btn-color: #c5344e;
+}
+
