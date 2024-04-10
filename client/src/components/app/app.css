@@ -39,3 +39,29 @@ p {
 .button:hover {
     background-color: #0056b3;
 }
+.main-nav {
+    background-color: #333; /* Hintergrundfarbe der Navigationsleiste */
+  }
+  
+  .main-nav ul {
+    list-style-type: none; /* Listenpunkte entfernen */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Flexbox verwenden */
+  }
+  
+  .main-nav li {
+    margin-right: 20px; /* Abstand zwischen den Nav-Elementen */
+  }
+  
+  .main-nav a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #fff; /* Textfarbe der Navigationslinks */
+  }
+  
+  .main-nav a:hover {
+    background-color: #555; /* Hintergrundfarbe bei Hover */
+  }
+  

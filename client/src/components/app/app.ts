@@ -17,10 +17,12 @@ export class AppComponent extends LitElement {
   httpClient = new HttpClient();
   router = new Router(
     this,
-    [
-      { path: '/', render: () => html`<fitness-home></fitness-home>` },
+    [ 
+      {path : '/', render: () =>  html`<fitness-home></fitness-home>`},
+      { path: '/fitness-home', render: () => html`<fitness-home></fitness-home>` },
       { path: '/trainings-sessions', render: () => html`<trainings-sessions></trainings-sessions>` },
       { path: '/nutrition-tracker', render: () => html`<nutrition-tracker></nutrition-tracker>` },
+      
     ],
     {
       fallback: { render: () => html`<fitness-home></fitness-home>` }
@@ -34,9 +36,22 @@ export class AppComponent extends LitElement {
 
   render() {
     return html`
+    <!DOCTYPE html>
+    <html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${APP_TITLE}</title>
+        <link rel="stylesheet" href="app.css">
       <header>
-        <a href="/trainings-sessions">Trainingseinheiten</a>
-        <a href="/nutrition-tracker">Ernährungstracker</a>
+      <div class= main-nav>
+              <ul>
+                <li><a href="/fitness-home">Home</a></li>
+                <li><a href="/trainings-sessions">Trainingseinheiten</a></li>
+                <li><a href="/nutrition-tracker">Ernährungstracker</a></li>
+                <li><a href="/login">Login</a></li>
+              </ul>
+            </div>
       </header>
       <main>${this.router.outlet()}</main>
     `;

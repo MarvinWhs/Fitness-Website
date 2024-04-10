@@ -109,6 +109,7 @@ export class TrainingsComponent extends LitElement {
         </div>
     </div>
 </body>
+</html>
 `
   }
 }

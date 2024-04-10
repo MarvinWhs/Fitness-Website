@@ -1,0 +1,38 @@
+/* CSS für die Home-Seite */
+
+/* Hintergrundbild */
+body {
+    background-image: url("hintergrundbild.jpg");
+    background-size: cover;
+}
+
+/* Überschrift */
+h1 {
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+}
+
+/* Hauptinhalt */
+.main-content {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Absätze */
+p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Links */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
