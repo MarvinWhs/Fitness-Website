@@ -14,9 +14,6 @@ export class HomeComponent extends LitElement {
     return html`
     
       <body>
-          <header>
-            
-          </header>
           <h1>Home</h1>
           <p>Willkommen auf der Startseite</p>
       </body>

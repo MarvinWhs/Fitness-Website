@@ -64,4 +64,98 @@ p {
   .main-nav a:hover {
     background-color: #555; /* Hintergrundfarbe bei Hover */
   }
-  
+
+  #myNavbar{
+    position:absolute;
+    width: 100%;
+  }
+  #myNavbar ul {
+    text-align: center;
+    float: none;
+    width: 100%;
+    transition: background-color 2s;
+    padding-right: 1em;
+    white-space: nowrap;
+}
+
+  .row{
+    overflow: hidden;
+    position: relative;
+  }
+  nav ul {
+    padding: 0px;
+    margin: 0px;
+    overflow: initial;
+}
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+    unicode-bidi: isolate;
+}
+.row>* {
+    min-height: 1px;
+    position: relative;
+     float: left; 
+}
+#myNavbar ul li {
+    display: inline-block;
+    vertical-align: top;
+}
+nav ul li {
+    list-style: outside none none;
+    float: none;
+}
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+    unicode-bidi: isolate;
+}
+.logo_container {
+    width: 800px;
+    width: 20rem;
+    top: 0px;
+    height: 480px;
+    height: 130px;
+    position: absolute;
+    left: 50%;
+    margin-left: -10rem;
+}
+#myNavbar ul li a {
+    display: block;
+    padding: 1em 1em;
+    padding-top: 3em;
+    text-decoration: none;
+    color: black;
+    text-transform: uppercase;
+    font-size: 90%;
+    letter-spacing: 0.08em;
+    opacity: 0.6;
+    transition: color 1s, font-size 2s, padding 2s, opacity 1s;
+    position: relative;
+}
+#myNavbar a {
+    text-decoration: none;
+    color: black;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 1em 1em;
+    padding-top: 3em;
+    font-size: 90%;
+    letter-spacing: 0.08em;
+    opacity: 0.6;
+    transition: color 1s, font-size 2s, padding 2s, opacity 1s;
+    position: relative;
+}
+
+#myNavbar ul li a:hover {
+    color: #007bff;
+    font-size: 100%;
+    padding: 1em 1em;
+    padding-top: 3em;
+    opacity: 1;
+}
