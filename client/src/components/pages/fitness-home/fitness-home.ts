@@ -12,14 +12,7 @@ export class HomeComponent extends LitElement {
   
   render(){
     return html`
-    <!DOCTYPE html>
-      <html lang="de">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Home</title>
-          <link rel="style" href="fitness-home.css">
-      </head>
+    
       <body>
           <header>
             
