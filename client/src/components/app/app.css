@@ -39,31 +39,7 @@ p {
 .button:hover {
     background-color: #0056b3;
 }
-.main-nav {
-    background-color: #333; /* Hintergrundfarbe der Navigationsleiste */
-  }
-  
-  .main-nav ul {
-    list-style-type: none; /* Listenpunkte entfernen */
-    margin: 0;
-    padding: 0;
-    display: flex; /* Flexbox verwenden */
-  }
-  
-  .main-nav li {
-    margin-right: 20px; /* Abstand zwischen den Nav-Elementen */
-  }
-  
-  .main-nav a {
-    display: block;
-    padding: 10px 20px;
-    text-decoration: none;
-    color: #fff; /* Textfarbe der Navigationslinks */
-  }
-  
-  .main-nav a:hover {
-    background-color: #555; /* Hintergrundfarbe bei Hover */
-  }
+
 
   #myNavbar{
     position:absolute;
@@ -82,11 +58,7 @@ p {
     overflow: hidden;
     position: relative;
   }
-  nav ul {
-    padding: 0px;
-    margin: 0px;
-    overflow: initial;
-}
+
 ul {
     display: block;
     list-style-type: disc;
@@ -117,14 +89,17 @@ li {
 }
 .logo {
     top: 0px;
-    left: 15%;
-    position: relative;
-    vertical-align: top;
+    left: 0px;
+    height:100px;
+    width: 100px;
+    position: absolute;
+    padding: 1em 1em;
 }
+
 #myNavbar ul li a {
     display: block;
     padding: 1em 1em;
-    padding-top: 3em;
+    padding-top: 1em;
     text-decoration: none;
     color: black;
     text-transform: uppercase;
@@ -134,19 +109,7 @@ li {
     transition: color 1s, font-size 0.5s, padding 0.5s, opacity 1s;
     position: relative;
 }
-#myNavbar a {
-    text-decoration: none;
-    color: black;
-    text-transform: uppercase;
-    display: inline-block;
-    padding: 1em 1em;
-    padding-top: 3em;
-    font-size: 90%;
-    letter-spacing: 0.08em;
-    opacity: 0.6;
-    transition: color 1s, font-size 2s, padding 2s, opacity 1s;
-    position: relative;
-}
+
 
 #myNavbar ul li a:hover {
     color: #007bff;
@@ -154,4 +117,10 @@ li {
     padding: 1em 1em;
     padding-top: 3em;
     opacity: 1;
+}
+header{
+  background-color:#666;
+  padding: 1em 0;
+  position: relative;
+
 }

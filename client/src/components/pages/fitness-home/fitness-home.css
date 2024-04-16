@@ -2,7 +2,6 @@
 
 /* Hintergrundbild */
 body {
-    background-image: url("hintergrundbild.jpg");
     background-size: cover;
 }
 
@@ -35,4 +34,55 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff; /* oder das gewünschte Hintergrundbild */
+}
+
+header {
+    /* Stil für die Kopfzeile */
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Zwei gleich breite Spalten */
+    align-items: center;
+    justify-content: center;
+    height: 80vh; /* oder eine andere passende Höhe */
+    padding: 20px;
+}
+
+.content-area {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.image-area img {
+    width: 100%; /* Bild nimmt die volle Breite des Elternelements ein */
+    height: auto; /* Höhe passt sich automatisch an das Seitenverhältnis an */
+    max-width: 600px; /* Maximale Breite des Bildes */
+    /* optional: Begrenze die Höhe, wenn nötig */
+    max-height: 400px;
+    /* Zentrierung des Bildes, wenn es kleiner als der Container ist */
+    display: block;
+    margin: 0 auto;
+}
+
+
+@media (max-width: 768px) {
+    /* Responsives Design für kleinere Bildschirme */
+    .main-content {
+        grid-template-columns: 1fr; /* Stapelt die Bereiche untereinander */
+        text-align: center;
+    }
+    
+    .image-area {
+        order: -1; /* Bild über dem Text anzeigen */
+    }
 }
