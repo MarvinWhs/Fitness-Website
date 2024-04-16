@@ -44,17 +44,19 @@ export class AppComponent extends LitElement {
         <title>${APP_TITLE}</title>
         <link rel="stylesheet" href="app.css">
       <header>
+      
       <div class= "collapse navbar-collapse  auto-responsive isScrollTop"  id="myNavbar">
+      
         <div class="row" style="overflow: visible">
+        <div class= "logo">
+                <img class=logo src="logo.png" width=100 height=100 href="./home">
+              </div>
               <ul class= "nav navbar-nav">
                 <li data-page><a href="/fitness-home">Home</a></li>
                 <li data-page><a href="/trainings-sessions">Trainingseinheiten</a></li>
                 <li data-page><a href="/nutrition-tracker">Ernährungstracker</a></li>
                 <li data-page><a href="/login">Login</a></li>
               </ul>
-              <div class= "logo_container">
-                <img class= logo_top src="Logo.png" width=150 height=150>
-              </div>
             </div>
           </div>
       </header>

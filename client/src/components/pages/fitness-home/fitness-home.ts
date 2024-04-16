@@ -12,10 +12,9 @@ export class HomeComponent extends LitElement {
   
   render(){
     return html`
-    
+      
       <body>
-          <h1>Home</h1>
-          <p>Willkommen auf der Startseite</p>
+      
       </body>
     `;
   }

@@ -115,15 +115,11 @@ li {
     text-align: -webkit-match-parent;
     unicode-bidi: isolate;
 }
-.logo_container {
-    width: 800px;
-    width: 20rem;
+.logo {
     top: 0px;
-    height: 480px;
-    height: 130px;
-    position: absolute;
-    left: 50%;
-    margin-left: -10rem;
+    left: 15%;
+    position: relative;
+    vertical-align: top;
 }
 #myNavbar ul li a {
     display: block;
