@@ -8,6 +8,7 @@ import componentStyle from './app.css?inline';
 import { HttpClient, httpClientContext } from '../../http-client.js';
 import { Router } from '../../router.js';
 import '../widgets/my-header/my-header.js';
+import '../widgets/my-footer/my-footer.js';
 const APP_TITLE = 'All in One Fitness';
 
 @customElement('app-root')
@@ -47,6 +48,7 @@ export class AppComponent extends LitElement {
     </head>
     <my-header></my-header>
       <main>${this.router.outlet()}</main>
+    <my-footer></my-footer>
     `;
   }
 }

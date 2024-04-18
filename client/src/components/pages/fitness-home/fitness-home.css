@@ -65,8 +65,11 @@ a:hover {
     text-decoration: none;
     border-radius: 4px;
     transition: background-color 0.3s ease;
-    transform: translate(200%, 0%);
     
+  }
+
+  #trainings{
+    transform: translate(200%, 0%);
   }
 
   .image-area {
@@ -96,6 +99,11 @@ a:hover {
     padding-left: 30px;
     padding-right: 25px;
     padding-top: 60px;
+  }
+  .mid-section{
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    max-width: 1000%;
   }
   
   @media (max-width: 768px) { /* Für kleinere Bildschirme */

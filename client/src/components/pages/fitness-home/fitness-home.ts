@@ -31,7 +31,7 @@ export class HomeComponent extends LitElement {
                  Mit unseren Trainingseinheiten kannst du deine Leistung steigern und dich rundum wohlfühlen. Dabei kannst du deinen Traumkörper erreichen
                  und wirst von unseren Trainern unterstützt.
                 </p>
-            <div class="link-button" >
+            <div class="link-button" id="trainings" >
                 <a href="/trainings-sessions">Jetzt starten</a>
             </div>
             </div>
@@ -39,7 +39,7 @@ export class HomeComponent extends LitElement {
             <img src="./liegestütze.png">
         </div>
   </div>
-   <div  style="background-color: rgba(0, 0, 0, 0.1)">
+   <div class="mid-section">
             <div class="mid-text">
                 <h2>Unser Angebot</h2>
                 <p>
@@ -50,25 +50,31 @@ export class HomeComponent extends LitElement {
         <div class="two-column-row">
 
             <div class="two-column-row-content">
-                <h1>Unsere Philosophie</h1>
+                <h1>Kalendar</h1>
                 <p>
-                    Bei All in One Fitness steht der Mensch im Mittelpunkt. 
-                    Wir möchten dir dabei helfen, ein gesundes und glückliches Leben zu führen. 
-                    Deshalb bieten wir dir nicht nur ein umfangreiches Trainingsprogramm, sondern auch wertvolle Tipps für eine gesunde Ernährung. 
-                    Wir möchten, dass du dich rundum wohlfühlst und deine Ziele erreichst. 
-                    Deshalb unterstützen wir dich auf dem Weg zu einem gesunden und fitten Leben.
+                    Jeder kennt das Problem, dass man einfach nicht welche Trainingseinheiten du in letzter Zeit gemacht hast. Mit dem Kalendar
+                    hast du immer den Überblick über deine Trainingserfolge und kannst dich so immer motivieren. Diese Visualisierung deiner Erfolge 
+                    hilft dir dabei, deine Ziele zu erreichen.
                 </p>
+                <p>Entdecke jetzt unseren Kalendar!</p>
+                <div class="link-button">
+                    <a href="/kalendar" id="calendar">Zum Kalendar</a>
+                </div>
             </div>
 
             <div class="two-column-row-content">
-                <h1>Unsere Angebote</h1>
+                <h1>Ernährungstracker</h1>
                 <p>
-                    Bei All in One Fitness findest du alles, was du für ein gesundes Leben brauchst. 
-                    Egal ob du Muskeln aufbauen, abnehmen oder einfach nur fit bleiben möchtest - wir haben das passende Angebot für dich. 
-                    Unsere Trainingspläne sind speziell auf deine Bedürfnisse zugeschnitten und helfen dir dabei, deine Ziele zu erreichen. 
-                    Mit unseren Ernährungstipps kannst du deine Leistung steigern und dich rundum wohlfühlen. 
-                    Wir zeigen dir, wie du dich gesund ernähren kannst und dabei trotzdem genießen darfst.
+                    Du weißt schon wieder nicht wieviel du noch essen darfst? Mit unserem Ernährungstracker hast du immer den Überblick über deine
+                    Mahlzeiten. Plane deine Mahlzeiten so, dass es für dich am besten passt und behalte so den Überblick über deine Kalorienzufuhr.
+                    Dabei ist es egal, ob du abnehmen oder Muskeln aufbauen möchtest.
                 </p>
+                <p>
+                    Hier geht es zu unserem Ernährungstracker!
+                </p>
+                <div class="link-button">
+                    <a href="/nutrition-tracker" id="nutrition">Zum Ernährungstracker</a>
+                </div>
             </div>
         </div>
     </div>
