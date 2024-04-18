@@ -1,4 +1,5 @@
-/* CSS für die Home-Seite */
+/* Autor: Marvin Wiechers
+CSS für die Home-Seite */
 
 /* Hintergrundbild */
 body {
@@ -8,16 +9,11 @@ body {
 /* Überschrift */
 h1 {
     color: #333;
-    font-size: 24px;
+    font-size: 30px; /* vorher 24 */
     text-align: center;
 }
 
-/* Hauptinhalt */
-.main-content {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-}
+
 
 /* Absätze */
 p {
@@ -28,61 +24,89 @@ p {
 
 /* Links */
 a {
-    color: #007bff;
+    color: #fff;
     text-decoration: none;
 }
 
 a:hover {
     text-decoration: underline;
 }
-body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background: #fff; /* oder das gewünschte Hintergrundbild */
-}
 
-header {
-    /* Stil für die Kopfzeile */
-}
 
 .main-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Zwei gleich breite Spalten */
-    align-items: center;
-    justify-content: center;
-    height: 80vh; /* oder eine andere passende Höhe */
-    padding: 20px;
-}
-
-.content-area {
-    padding: 20px;
+    max-width: 1400px; /* Begrenzt die Breite des Hauptinhalts */
+    margin: auto; /* Zentriert den Hauptinhalt */
+  }
+  
+  .two-column-row {
     display: flex;
-    flex-direction: column;
+    align-items: center; /* Vertikales Zentrieren der Elemente */
+    justify-content: center; /* Horizontales Zentrieren der Elemente */
+    margin-top: 0px;
+    padding: 15px; /* Etwas Abstand zum Rand */
+  }
+  #first-row{
+    margin-top: 50px;
+  }
+  
+  .two-column-row-content {
+    flex: 1;
+    padding: 15px; /* Etwas Abstand zum Rand */
+    text-align: justify;
+  }
+
+   .link-button {
+    display: inline-block;
     justify-content: center;
-}
-
-.image-area img {
-    width: 100%; /* Bild nimmt die volle Breite des Elternelements ein */
-    height: auto; /* Höhe passt sich automatisch an das Seitenverhältnis an */
-    max-width: 600px; /* Maximale Breite des Bildes */
-    /* optional: Begrenze die Höhe, wenn nötig */
-    max-height: 400px;
-    /* Zentrierung des Bildes, wenn es kleiner als der Container ist */
-    display: block;
-    margin: 0 auto;
-}
-
-
-@media (max-width: 768px) {
-    /* Responsives Design für kleinere Bildschirme */
-    .main-content {
-        grid-template-columns: 1fr; /* Stapelt die Bereiche untereinander */
-        text-align: center;
-    }
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #666;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    transform: translate(200%, 0%);
     
-    .image-area {
-        order: -1; /* Bild über dem Text anzeigen */
+  }
+
+  .image-area {
+    flex: 1;
+    display: flex;
+    justify-content: center; /* Bild am rechten Rand ausrichten */
+    position: relative; /* Für die Positionierung des Bildes */
+  }
+  
+  .image-area img {
+    max-width: 60%; /* Stellt sicher, dass das Bild nicht größer als seine Container ist */
+    height: auto;
+    border-radius: 50%; /* Kreisförmigen Rand erzeugen */
+    clip-path: circle(50% at 50% 50%); /* Kreisförmigen Ausschnitt erzeugen */
+    position: absolute; /* Ermöglicht die genaue Platzierung des Bildes */
+    transform: translate(0%, -50%);
+    display: block;
+
+  }
+
+  .link-button:hover {
+    background-color: #333;
+  }
+
+ 
+  .mid-text{
+    padding-left: 30px;
+    padding-right: 25px;
+    padding-top: 60px;
+  }
+  
+  @media (max-width: 768px) { /* Für kleinere Bildschirme */
+    .two-column-row {
+      flex-direction: column;
     }
-}
+    .image-area img {
+      right: 0;
+      top: 0;
+      transform: translate(0%, 0%);
+      width: 50%; /* Kleineres Bild auf kleinen Bildschirmen */
+      margin: 0 auto; /* Bild in der Mitte zentrieren */
+    }
+  }
