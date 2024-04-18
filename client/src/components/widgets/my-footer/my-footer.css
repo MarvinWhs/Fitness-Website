@@ -1,0 +1,47 @@
+/*Autor: Marvin Wiechers */
+
+footer{
+    background-color: rgba(0,0,0,0.8);
+    color: white;
+    text-align: center;
+}
+
+.footer-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 30px;
+    
+}
+
+.footer-column{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    padding: 0 20px;
+    text-align: center;
+}
+
+a{
+    color: white;
+    text-decoration: none;
+    padding: 2px;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+h3{
+    position: 0;
+    top: 0%;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+p{
+    font-size: 14px;
+    
+
+}

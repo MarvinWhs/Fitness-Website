@@ -7,6 +7,8 @@ import { provide } from '@lit/context';
 import componentStyle from './app.css?inline';
 import { HttpClient, httpClientContext } from '../../http-client.js';
 import { Router } from '../../router.js';
+import '../widgets/my-header/my-header.js';
+import '../widgets/my-footer/my-footer.js';
 const APP_TITLE = 'All in One Fitness';
 
 @customElement('app-root')
@@ -43,24 +45,10 @@ export class AppComponent extends LitElement {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>${APP_TITLE}</title>
         <link rel="stylesheet" href="app.css">
-      <header>
-      
-      <div class= "collapse navbar-collapse  auto-responsive isScrollTop"  id="myNavbar">
-      
-        <div class="row" style="overflow: visible">
-        <div class= "logo">
-                <img class=logo src="logo.png" width=100 height=100 href="./home">
-              </div>
-              <ul class= "nav navbar-nav">
-                <li data-page><a href="/fitness-home">Home</a></li>
-                <li data-page><a href="/trainings-sessions">Trainingseinheiten</a></li>
-                <li data-page><a href="/nutrition-tracker">Ernährungstracker</a></li>
-                <li data-page><a href="/login">Login</a></li>
-              </ul>
-            </div>
-          </div>
-      </header>
+    </head>
+    <my-header></my-header>
       <main>${this.router.outlet()}</main>
+    <my-footer></my-footer>
     `;
   }
 }
