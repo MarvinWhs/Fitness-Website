@@ -1,101 +1,120 @@
-/* Stile für den Header */
-.navbar {
-    background-color: #f8f9fa;
+/* Autor: Marvin Wiechers
+CSS für die Home-Seite */
+
+/* Hintergrundbild */
+body {
+    background-size: cover;
 }
 
-.navbar-brand {
-    font-weight: bold;
-}
-
-.navbar-nav .nav-link {
-    color: #343a40;
-    font-weight: bold;
-}
-
-/* Stile für den Hauptinhalt */
-.card {
-    border: none;
-}
-
-.card-img-top {
-    height: 200px;
-    object-fit: cover;
-}
-
-.card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-}
-
-.card-text {
-    color: #6c757d;
-}
-
-/* Stile für den Footer */
-.footer {
-    background-color: #f8f9fa;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-
-/* Optionale Stile für Hover-Effekte */
-.card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-}
-
-.btn-primary:hover {
-    background-color: #007bff;
-    border-color: #007bff;
-}
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-}
-
-li {
-    float: left;
-}
-
-li a {
-    display: block;
-    color: white;
+/* Überschrift */
+h1 {
+    color: #333;
+    font-size: 30px; /* vorher 24 */
     text-align: center;
-    padding: 14px 16px;
+}
+
+
+
+/* Absätze */
+p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Links */
+a {
+    color: #fff;
     text-decoration: none;
 }
 
-li a:hover {
-    background-color: #111;
+a:hover {
+    text-decoration: underline;
 }
 
-/* Dropdown-Menü */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
 
-.dropdown-content a {
-    float: none;
-    color: black;
-    padding: 12px 16px;
+.main-content {
+    max-width: 1400px; /* Begrenzt die Breite des Hauptinhalts */
+    margin: auto; /* Zentriert den Hauptinhalt */
+  }
+  
+  .two-column-row {
+    display: flex;
+    align-items: center; /* Vertikales Zentrieren der Elemente */
+    justify-content: center; /* Horizontales Zentrieren der Elemente */
+    margin-top: 0px;
+    padding: 15px; /* Etwas Abstand zum Rand */
+  }
+  #first-row{
+    margin-top: 50px;
+  }
+  
+  .two-column-row-content {
+    flex: 1;
+    padding: 15px; /* Etwas Abstand zum Rand */
+    text-align: justify;
+  }
+
+   .link-button {
+    display: inline-block;
+    justify-content: center;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #666;
+    color: #fff;
     text-decoration: none;
-    display: block;
-    text-align: left;
-}
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    
+  }
 
-.dropdown-content a:hover {
-    background-color: #ddd;
-}
+  #adding{
+    transform: translate(95%, 0%);
+  }
 
-.dropdown:hover .dropdown-content {
+  .image-area {
+    flex: 1;
+    display: flex;
+    justify-content: center; /* Bild am rechten Rand ausrichten */
+    position: relative; /* Für die Positionierung des Bildes */
+  }
+  
+  .image-area img {
+    max-width: 60%; /* Stellt sicher, dass das Bild nicht größer als seine Container ist */
+    height: auto;
+    border-radius: 50%; /* Kreisförmigen Rand erzeugen */
+    clip-path: circle(50% at 50% 50%); /* Kreisförmigen Ausschnitt erzeugen */
+    position: absolute; /* Ermöglicht die genaue Platzierung des Bildes */
+    transform: translate(0%, -50%);
     display: block;
-}
+
+  }
+
+  .link-button:hover {
+    background-color: #333;
+  }
+
+ 
+  .mid-text{
+    padding-left: 30px;
+    padding-right: 25px;
+    padding-top: 60px;
+  }
+  .mid-section{
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    max-width: 1000%;
+  }
+  
+  @media (max-width: 768px) { /* Für kleinere Bildschirme */
+    .two-column-row {
+      flex-direction: column;
+    }
+    .image-area img {
+      right: 0;
+      top: 0;
+      transform: translate(0%, 0%);
+      width: 50%; /* Kleineres Bild auf kleinen Bildschirmen */
+      margin: 0 auto; /* Bild in der Mitte zentrieren */
+    }
+  }

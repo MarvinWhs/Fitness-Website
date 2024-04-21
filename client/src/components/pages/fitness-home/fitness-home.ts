@@ -78,6 +78,9 @@ export class HomeComponent extends LitElement {
             </div>
         </div>
     </div>
+    <div>
+        <p></p>
+    </div>
     </main>
 </body>
 
