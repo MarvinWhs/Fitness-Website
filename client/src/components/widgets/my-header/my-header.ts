@@ -11,7 +11,7 @@ class MyHeader extends LitElement {
       <header>
       <div class= "collapse navbar-collapse  auto-responsive isScrollTop"  id="myNavbar">
       
-        <div class="row" style="overflow: visible">
+        <div class="row" >
         
               <ul class= "nav navbar-nav">
                 <li data-page><a href="/fitness-home">Home</a></li>

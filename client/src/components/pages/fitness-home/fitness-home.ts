@@ -15,7 +15,7 @@ export class HomeComponent extends LitElement {
   render(){
     return html`
       
-<body>
+
     <main class="main-content">
         <div class="two-column-row" id="first-row">
             <div class="two-column-row-content">
@@ -82,7 +82,7 @@ export class HomeComponent extends LitElement {
         <p></p>
     </div>
     </main>
-</body>
+
 
     `;
   }
