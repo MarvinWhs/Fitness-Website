@@ -5,6 +5,7 @@ import { customElement, query, state } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import { HttpClient, httpClientContext } from '../../../http-client.js';
 import componentStyle from './trainings-sessions.css?inline';
+import '../../widgets/trainings-list/trainings-list.js';
 
 @customElement('trainings-sessions')
 export class TrainingsComponent extends LitElement {
@@ -39,15 +40,16 @@ export class TrainingsComponent extends LitElement {
         </div>
         </div>
         <div>
-        <div class="mid-text">
+            <div class="mid-text">
                 <h2>Alle Einheiten</h2>
                 <p> Hier sind alle Übungen aufgelistest. Suchen Sie sich die für sich am ansprechendsten aus oder filtern sie ganz einfach nach den 
                     gewünschten Kriterien. 
                 </p>
             </div>
         </div>
-
+        <training-list></training-list>
   </div>
+ 
   </main>
 `
   }
