@@ -7,7 +7,7 @@
     "use": "in-memory-db",
     "connect": {
       "user": "myapp",
-      "host": "localhost",
+      "host": "stud-vm-1876",
       "database": "myapp",
       "password": "wifhm",
       "port": {
