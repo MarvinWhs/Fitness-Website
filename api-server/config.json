@@ -6,9 +6,9 @@
   "db": {
     "use": "in-memory-db",
     "connect": {
-      "user": "myapp",
+      "user": "taskman",
       "host": "stud-vm-1876",
-      "database": "myapp",
+      "database": "taskman",
       "password": "wifhm",
       "port": {
         "mongodb": 27017,
