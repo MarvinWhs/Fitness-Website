@@ -36,7 +36,7 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "uuid": "^9.0.1",
-    "vite": "^5.1.4"
+    "vite": "^5.2.11"
   },
   "dependencies": {
     "@lit-labs/router": "^0.1.3",

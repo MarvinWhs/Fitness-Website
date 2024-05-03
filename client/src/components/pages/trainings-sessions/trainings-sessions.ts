@@ -9,8 +9,7 @@ import '../../widgets/trainings-list/trainings-list.js';
 
 @customElement('trainings-sessions')
 export class TrainingsComponent extends LitElement {
-
-    static styles = [componentStyle];
+  static styles = [componentStyle];
 
   @consume({ context: httpClientContext })
   httpClient!: HttpClient;

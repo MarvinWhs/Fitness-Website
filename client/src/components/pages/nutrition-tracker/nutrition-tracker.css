@@ -1,0 +1,73 @@
+body {
+    background-size: cover;
+    background-color:darkgray;
+}
+
+h1 {
+    color: #333;
+    font-size: 30px;
+    text-align: center;
+    margin-top: 80px; /* Mehr Platz nach oben für die Überschrift */
+}
+
+/* Absätze */
+p {
+    color: #666;
+    max-width: 1400px;
+    margin: auto;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: center; /* Zentriert den Text */
+}
+
+.main-content {
+    max-width: 1400px; /* Begrenzt die Breite des Hauptinhalts */
+    margin: auto;/* Zentriert den Hauptinhalt */
+    
+  }
+.container {
+    font-family: Arial, sans-serif;
+    max-width: 400px;
+    margin: 100px auto;
+    border: 2px solid black;
+    padding: 30px;
+  }
+  input {
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: auto;
+    margin: 10px;
+    border: 1px black solid;
+    padding: 5px;
+  }
+  .container {
+    --total-calories-color: green;
+  }
+  
+  .container[calories-negative] {
+    --total-calories-color: red;
+  }
+  
+  .total-calories {
+    color: var(--total-calories-color);
+    width: 80px;
+    margin: auto;
+    font-size:  30px;
+  }
