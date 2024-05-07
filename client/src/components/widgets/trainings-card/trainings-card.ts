@@ -1,31 +1,63 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators';
-import { repeat } from 'lit/directives/repeat.js';
-import {Exercise} from '../../../../../api-server/src/models/exercise.js';
+import { customElement, state } from 'lit/decorators.js';
 
 @customElement('trainings-card')
-class Trainingscard extends LitElement {
+class TrainingsCard extends LitElement {
+  @state()
+  exercises = [];
 
-@property()
-list = []; // hier muss die Liste der Übungen rein bzw aus der Datenbank geladen werden
+  constructor() {
+    super();
+    this.exercises = [];
+  }
 
+  static styles = css`
+    .exercise {
+      border: 1px solid #ddd;
+      padding: 16px;
+      margin: 8px 0;
+      border-radius: 8px;
+    }
+
+    .exercise h3 {
+      margin: 0 0 8px 0;
+    }
+
+    .exercise p {
+      margin: 4px 0;
+    }
+  `;
+
+  async connectedCallback() {
+    super.connectedCallback();
+    try {
+      const response = await fetch('http://localhost:3000/exercises', {
+        method: 'GET',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch exercises');
+      }
+      const responseData = await response.json();
+      this.exercises = responseData;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   render() {
     return html`
-
-        <div>
-            <h1>Übungen</h1>
-            ${repeat(this.list, (exercise: Exercise) => html`
-            <div>
-                <h3>${exercise.name}</h3>
-                <p>${exercise.description}</p>
-                
+       <div>
+        ${this.exercises.map(
+          (exercise) => html`
+            <div class="exercise">
+              <h3>${/* eslint-disable-next-line */ exercise["name"]}</h3>
+              <p>${/* eslint-disable-next-line */ exercise["description"]}</p>
+              <p>Dauer: ${/* eslint-disable-next-line */ exercise["duration"]} Minuten</p>
+              <p>Schwierigkeitsgrad: ${/* eslint-disable-next-line */ exercise["difficulty"]}</p>
             </div>
-            `)}
-        
-        </div>
-      <
+          `
+        )}
+      </div>
     `;
   }
 }
-customElements.define('trainings-card', Trainingscard);

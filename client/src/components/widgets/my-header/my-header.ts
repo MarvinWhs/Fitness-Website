@@ -8,7 +8,7 @@ class MyHeader extends LitElement {
   static styles = [componentStyle] ;
 
   @property()
-  condition= false; //Ist dieser Person eingeloggt oder nicht
+  condition= true; //Ist dieser Person eingeloggt oder nicht
 
   render() {
     return html`
@@ -19,7 +19,7 @@ class MyHeader extends LitElement {
         
               <ul class= "nav navbar-nav">
                 <li data-page><a href="/fitness-home">Home</a></li>
-                <li data-page><a href="/trainings-sessions">Trainingseinheiten</a></li>
+                <li data-page><a href="/exercises">Trainingseinheiten</a></li>
                 <li data-page><a href="/nutrition-tracker">Ernährungstracker</a></li>
                 <li data-page><a href="/kalendar">Kalendar</a></li>
                 ${this.condition

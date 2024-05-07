@@ -7,19 +7,23 @@ import http from 'node:http';
 import startDB from './db.js';
 
 import config from '../config.json' assert { type: 'json' };
+import exerciseRoute from './Routes/exercise.route.js';
 
 function configureApp(app: Express) {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(cookieParser());
   app.use(cors());
+  app.use(exerciseRoute);
+  
 }
 
 export async function start() {
-  const app = express();
+  const app= express();
 
   configureApp(app);
   await startDB(app);
+
   startHttpServer(app, config.server.port);
 }
 
@@ -31,4 +35,4 @@ async function startHttpServer(app: Express, port: number) {
   });
 }
 
-start();
+    start();

@@ -5,8 +5,8 @@ import { customElement, query, state } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import { HttpClient, httpClientContext } from '../../../http-client.js';
 import componentStyle from './trainings-sessions.css?inline';
-import '../../widgets/trainings-list/trainings-list.js';
-
+//import '../../widgets/trainings-card/trainings-card.js';
+// Wieso muss diese Zeile ausgeblendet sein?
 @customElement('trainings-sessions')
 export class TrainingsComponent extends LitElement {
 
@@ -47,7 +47,7 @@ export class TrainingsComponent extends LitElement {
                 </p>
             </div>
         </div>
-        <training-list></training-list>
+        <trainings-card></trainings-card>
   </div>
  
   </main>
