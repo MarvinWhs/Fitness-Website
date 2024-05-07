@@ -7,6 +7,9 @@ import { Express } from 'express';
 import config from '../config.json' assert { type: 'json' };
 import { PsqlGenericDAO } from './models/psql-generic.dao.js';
 import { Exercise } from './models/exercise';
+import { InMemoryGenericDAO } from './models/in-memory-generic.dao.js';
+import { MongoGenericDAO } from './models/mongo-generic.dao.js';
+
 const { MongoClient } = mongodb;
 const { Client } = pg;
 
@@ -27,13 +30,13 @@ export default async function startDB(app: Express) {
 async function startInMemoryDB(app: Express) {
   const client = await connectToPsql();
   // TODO: DAOs erstellen und in app.locals ablegen
-  app.locals.exerciseDAO = new PsqlGenericDAO<Exercise>(client!, 'exercises')
+  app.locals.exerciseDAO = new InMemoryGenericDAO<Exercise>();
 }
 
 async function startMongoDB(app: Express) {
   const db = (await connectToMongoDB()).db(config.db.connect.database);
   // TODO: DAOs erstellen und in app.locals ablegen
-  app.locals.exerciseDAO = db.collection<Exercise>('exercises');
+  app.locals.exerciseDAO = new MongoGenericDAO<Exercise>(db, 'exercises');
 }
 
 async function connectToMongoDB() {
