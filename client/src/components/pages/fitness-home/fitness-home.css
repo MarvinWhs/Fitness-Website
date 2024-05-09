@@ -34,7 +34,7 @@ a:hover {
 
 
 .main-content {
-    max-width: 1400px; /* Begrenzt die Breite des Hauptinhalts */
+    max-width: 70%; /* Begrenzt die Breite des Hauptinhalts */
     margin: auto; /* Zentriert den Hauptinhalt */
   }
   
