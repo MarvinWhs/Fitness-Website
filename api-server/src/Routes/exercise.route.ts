@@ -17,7 +17,9 @@ router.get('/exercises', async (req, res) => {
           description: exercise.description,
           duration: exercise.duration,
           difficulty: exercise.difficulty,
+            image: exercise.image,
         };
+        
       })
     );
   } catch (err) {
