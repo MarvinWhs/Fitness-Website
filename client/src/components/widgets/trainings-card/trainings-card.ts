@@ -1,32 +1,33 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
+import componentStyle from './trainings-card.css?inline';
+
+interface Exercise {
+  id: number;
+  createdAt: number;
+  name: string;
+  description: string;
+  duration: number;
+  difficulty: string;
+  image: string;  // Base64-kodierte Bildinformation
+}
 
 @customElement('trainings-card')
 class TrainingsCard extends LitElement {
   @state()
-  exercises = [];
+  exercises: Exercise[] = [];  // Array von Übungen
+
+  @state()
+  searchTerm: string = '';
+
+  @state()
+  difficultyFilter: string = '';
 
   constructor() {
     super();
-    this.exercises = [];
   }
 
-  static styles = css`
-    .exercise {
-      border: 1px solid #ddd;
-      padding: 16px;
-      margin: 8px 0;
-      border-radius: 8px;
-    }
-
-    .exercise h3 {
-      margin: 0 0 8px 0;
-    }
-
-    .exercise p {
-      margin: 4px 0;
-    }
-  `;
+  static styles = [componentStyle];
 
   async connectedCallback() {
     super.connectedCallback();
@@ -38,26 +39,54 @@ class TrainingsCard extends LitElement {
         throw new Error('Failed to fetch exercises');
       }
       const responseData = await response.json();
-      this.exercises = responseData;
+      this.exercises = responseData;  // Annahme, dass die Daten direkt verwendbar sind
     } catch (error) {
       console.error(error);
     }
   }
 
+  handleSearchInput(e: InputEvent) {
+    const input = e.target as HTMLInputElement;
+    this.searchTerm = input.value.toLowerCase();
+  }
+
+  handleDifficultyChange(e: Event) {
+    const select = e.target as HTMLSelectElement;
+    this.difficultyFilter = select.value;
+  }
+
   render() {
+    const filteredExercises = this.exercises.filter((exercise) =>
+      exercise.name.toLowerCase().includes(this.searchTerm) &&
+      (!this.difficultyFilter || exercise.difficulty === this.difficultyFilter)
+    );
+
     return html`
-       <div>
-        ${this.exercises.map(
-          (exercise) => html`
-            <div class="exercise">
-              <h3>${/* eslint-disable-next-line */ exercise["name"]}</h3>
-              <p>${/* eslint-disable-next-line */ exercise["description"]}</p>
-              <p>Dauer: ${/* eslint-disable-next-line */ exercise["duration"]} Minuten</p>
-              <p>Schwierigkeitsgrad: ${/* eslint-disable-next-line */ exercise["difficulty"]}</p>
-            </div>
-          `
-        )}
-      </div>
-    `;
+  <div class="search-box-container">
+    <input class="search-box" type="text" placeholder="Suche Übungen..." @input=${this.handleSearchInput} />
+    <select class="difficulty-filter" @change=${this.handleDifficultyChange}>
+      <option value="">Alle Schwierigkeitsgrade</option>
+      <option value="Easy">Easy</option>
+      <option value="Medium">Medium</option>
+      <option value="Hard">Hard</option>
+    </select>
+  </div>
+  <div class="exercises-container">
+    ${filteredExercises.map(
+      exercise => html`
+        <div class="exercise">
+          ${exercise.image ? html`<img src="${exercise.image}" alt="Bild von ${exercise.name}" />` : null}
+          <div class="exercise-content">
+            <h3>${exercise.name}</h3>
+            <p>${exercise.description}</p>
+            <p>Dauer: ${exercise.duration} Minuten</p>
+            <p>Schwierigkeitsgrad: ${exercise.difficulty}</p>
+          </div>
+        </div>
+      `
+    )}
+  </div>
+`;
+
   }
 }

@@ -1,0 +1,73 @@
+.search-box-container {
+    display: flex;
+    justify-content: center;  
+    align-items: center;  
+    gap: 20px;  
+    margin: 20px 0;  
+  }
+  
+  .search-box, .difficulty-filter {
+    padding: 12px 20px;  
+    font-size: 1.1rem;  
+    border-radius: 25px; 
+    border: 1px solid #ccc;  
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    outline: none;  
+    width: 40%; 
+    transition: border-color 0.3s ease; 
+  }
+  
+  .search-box:focus, .difficulty-filter:focus {
+    border-color: #0056b3; 
+  }
+  
+  .difficulty-filter {
+    cursor: pointer;
+  }
+  
+  
+  .exercises-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin: 20px;
+  }
+  
+  .exercise {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  }
+  
+  .exercise:hover {
+    transform: scale(1.05);
+  }
+  
+  .exercise img {
+    max-width: 200px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .exercise-content {
+    flex-grow: 1;
+  }
+  
+  .exercise-content h3 {
+    margin-top: 0;
+    color: #333;
+  }
+  
+  .exercise-content p {
+    margin: 4px 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
