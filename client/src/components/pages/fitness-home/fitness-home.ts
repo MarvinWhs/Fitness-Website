@@ -32,7 +32,7 @@ export class HomeComponent extends LitElement {
                  und wirst von unseren Trainern unterstützt.
                 </p>
             <div class="link-button" id="trainings" >
-                <a href="/trainings-sessions">Jetzt starten</a>
+                <a href="/exercises">Jetzt starten</a>
             </div>
             </div>
         <div class="image-area">

@@ -4,11 +4,11 @@
     "port": 3000
   },
   "db": {
-    "use": "in-memory-db",
+    "use": "mongodb",
     "connect": {
-      "user": "myapp",
+      "user": "trainer",
       "host": "stud-vm-1876",
-      "database": "myapp",
+      "database": "myDB",
       "password": "wifhm",
       "port": {
         "mongodb": 27017,

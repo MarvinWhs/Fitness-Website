@@ -1,31 +1,92 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators';
-import { repeat } from 'lit/directives/repeat.js';
-import {Exercise} from '../../../../../api-server/src/models/exercise.js';
+import { customElement, state } from 'lit/decorators.js';
+import componentStyle from './trainings-card.css?inline';
+
+interface Exercise {
+  id: number;
+  createdAt: number;
+  name: string;
+  description: string;
+  duration: number;
+  difficulty: string;
+  image: string;  // Base64-kodierte Bildinformation
+}
 
 @customElement('trainings-card')
-class Trainingscard extends LitElement {
+class TrainingsCard extends LitElement {
+  @state()
+  exercises: Exercise[] = [];  // Array von Übungen
 
-@property()
-list = []; // hier muss die Liste der Übungen rein bzw aus der Datenbank geladen werden
+  @state()
+  searchTerm: string = '';
 
+  @state()
+  difficultyFilter: string = '';
+
+  constructor() {
+    super();
+  }
+
+  static styles = [componentStyle];
+
+  async connectedCallback() {
+    super.connectedCallback();
+    try {
+      const response = await fetch('http://localhost:3000/exercises', {
+        method: 'GET',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch exercises');
+      }
+      const responseData = await response.json();
+      this.exercises = responseData;  // Annahme, dass die Daten direkt verwendbar sind
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  handleSearchInput(e: InputEvent) {
+    const input = e.target as HTMLInputElement;
+    this.searchTerm = input.value.toLowerCase();
+  }
+
+  handleDifficultyChange(e: Event) {
+    const select = e.target as HTMLSelectElement;
+    this.difficultyFilter = select.value;
+  }
 
   render() {
-    return html`
+    const filteredExercises = this.exercises.filter((exercise) =>
+      exercise.name.toLowerCase().includes(this.searchTerm) &&
+      (!this.difficultyFilter || exercise.difficulty === this.difficultyFilter)
+    );
 
-        <div>
-            <h1>Übungen</h1>
-            ${repeat(this.list, (exercise: Exercise) => html`
-            <div>
-                <h3>${exercise.name}</h3>
-                <p>${exercise.description}</p>
-                
-            </div>
-            `)}
-        
+    return html`
+  <div class="search-box-container">
+    <input class="search-box" type="text" placeholder="Suche Übungen..." @input=${this.handleSearchInput} />
+    <select class="difficulty-filter" @change=${this.handleDifficultyChange}>
+      <option value="">Alle Schwierigkeitsgrade</option>
+      <option value="Easy">Easy</option>
+      <option value="Medium">Medium</option>
+      <option value="Hard">Hard</option>
+    </select>
+  </div>
+  <div class="exercises-container">
+    ${filteredExercises.map(
+      exercise => html`
+        <div class="exercise">
+          ${exercise.image ? html`<img src="${exercise.image}" alt="Bild von ${exercise.name}" />` : null}
+          <div class="exercise-content">
+            <h3>${exercise.name}</h3>
+            <p>${exercise.description}</p>
+            <p>Dauer: ${exercise.duration} Minuten</p>
+            <p>Schwierigkeitsgrad: ${exercise.difficulty}</p>
+          </div>
         </div>
-      <
-    `;
+      `
+    )}
+  </div>
+`;
+
   }
 }
-customElements.define('trainings-card', Trainingscard);

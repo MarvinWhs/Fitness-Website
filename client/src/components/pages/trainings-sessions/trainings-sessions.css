@@ -1,7 +1,4 @@
 /* Autor: Marvin Wiechers
-CSS für die Home-Seite */
-
-/* Hintergrundbild */
 body {
     background-size: cover;
 }
@@ -34,7 +31,7 @@ a:hover {
 
 
 .main-content {
-    max-width: 1400px; /* Begrenzt die Breite des Hauptinhalts */
+    max-width: 70%; /* Begrenzt die Breite des Hauptinhalts */
     margin: auto; /* Zentriert den Hauptinhalt */
   }
   
@@ -55,17 +52,16 @@ a:hover {
     text-align: justify;
   }
 
-   .link-button {
+  .link-button{
     display: inline-block;
-    justify-content: center;
-    margin-top: 10px;
+    align-self: center;
     padding: 10px 20px;
-    background-color: #666;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-    
+    font-size: 1rem;
+    color: white;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
   }
 
   #adding{
@@ -89,11 +85,6 @@ a:hover {
     display: block;
 
   }
-
-  .link-button:hover {
-    background-color: #333;
-  }
-
  
   .mid-text{
     padding-left: 30px;
@@ -117,4 +108,91 @@ a:hover {
       width: 50%; /* Kleineres Bild auf kleinen Bildschirmen */
       margin: 0 auto; /* Bild in der Mitte zentrieren */
     }
+  }
+
+  .modal {
+    display: none;  /* initial hidden */
+    position: fixed;
+    left:0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 50%; /* oder eine andere Breite, abhängig vom Design */
+    max-width: 500px; /* begrenzt die maximale Breite */
+    position: relative;
+  }
+  
+  .modal-content form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .modal-content form input[type="text"],
+  .modal-content form input[type="number"],
+  .modal-content form select,
+  .modal-content form textarea {
+    margin-bottom: 10px;
+    height: 40px;
+    padding: 0 10px;
+  }
+
+  .modal-content form textarea {
+    height: 80px; /* Spezielle Höhe für die Textarea, um mehr Text sichtbar zu machen */
+    padding: 10px; /* Mehr Polsterung für bessere Textdarstellung */
+  }
+  
+  .modal-content form button {
+    align-self: center;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: white;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 1.5rem;
+  }
+  .drop-area {
+    border: 2px dashed #ccc; /* Gestrichelte Linie für den Umriss */
+    padding: 20px; /* Innenabstand */
+    text-align: center; /* Zentrierter Text */
+    margin-bottom: 10px; /* Abstand nach unten */
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  img.preview {
+    max-width: 100%;
+    max-height: 200px;
+    margin-top: 10px;
+  }
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: none;
+    color: #aaa;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .close-button:hover {
+    color: #f00;
   }

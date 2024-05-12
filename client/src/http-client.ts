@@ -13,7 +13,16 @@ export class HttpClient {
   async get(url: string) {
     return this.result(await fetch(this.resolve(url)));
   }
-
+  async post(url: string, data: any) {
+    const response = await fetch(this.resolve(url), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    return this.result(response);
+  }
   addQueryString(url: string, params: { [key: string]: string }) {
     const queryString = Object.entries(params)
       .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
