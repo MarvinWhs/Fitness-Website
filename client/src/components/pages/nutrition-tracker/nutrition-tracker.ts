@@ -59,7 +59,9 @@ export class Tracker extends LitElement {
   }
 
   updateCalories(event: Event) {
-    this.calories = parseInt((event.target as HTMLInputElement).value);
+    if (this.calories >= 0) {
+      this.calories = parseInt((event.target as HTMLInputElement).value);
+    }
   }
 
   setTotalCalories() {
