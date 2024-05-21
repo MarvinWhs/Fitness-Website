@@ -32,25 +32,32 @@
     gap: 40px;
     margin: 20px;
   }
-  
-  .exercise {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
+  .exercise-container-container{
+    display:flex;
+    flex-direction: column;
+    gap: 5px;
     transition: transform 0.3s ease-in-out;
-    cursor: pointer;
     background-color: #f9f9f9;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.15);
   }
   
-  .exercise:hover {
+  .exercise {
+    display: flex;
+  }
+  
+  .exercise-info{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .exercise-container-container:hover {
     transform: scale(1.05);
   }
   
   .exercise img {
-    max-width: 200px;
+    max-width: 250px;
     height: auto;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -59,11 +66,17 @@
   .exercise-content {
     flex-grow: 1;
   }
+
   
   .exercise-content h3 {
     margin-top: 0;
     color: #333;
   }
+
+    .exercise-content h4 {
+        color: #333;
+        
+    }
   
   .exercise-content p {
     margin: 4px 0;
@@ -71,3 +84,18 @@
     font-size: 0.9rem;
   }
   
+  .exercise-details{
+    flex-grow: 1;
+    padding-left: 20px;
+    
+  }
+  .exercise-description {
+    margin-top: 10px; /* Abstand zwischen Details und Beschreibung */
+  }
+  
+  .exercise-description p {
+    margin: 4px 0;
+    color: #666;
+    font-size: 0.9rem;
+    flex-grow: 1;
+  }

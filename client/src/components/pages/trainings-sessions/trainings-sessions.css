@@ -1,8 +1,4 @@
 /* Autor: Marvin Wiechers
-body {
-    background-size: cover;
-}
-
 /* Überschrift */
 h1 {
     color: #333;
@@ -31,8 +27,9 @@ a:hover {
 
 
 .main-content {
-    max-width: 70%; /* Begrenzt die Breite des Hauptinhalts */
+    max-width: 80%; /* Begrenzt die Breite des Hauptinhalts */
     margin: auto; /* Zentriert den Hauptinhalt */
+    padding: 30px;
   }
   
   .two-column-row {
@@ -195,4 +192,37 @@ a:hover {
   }
   .close-button:hover {
     color: #f00;
+  }
+
+  .delete-image:focus {
+    outline: none; /* Spezifischer für den Fokus-Zustand */
+    box-shadow: none; /* Entfernt Schatten, falls vorhanden */
+  }
+  
+  .delete-image svg {
+    fill: red; /* Farbe des Icons */
+  }
+
+  .delete-image:focus {
+    outline: none;
+  }
+
+  .drop-area{
+    position: relative;
+  }
+
+  #remImg{
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    outline: none; /* Entfernt den Fokus-Umriss */
+    background-color: transparent;
+    position: absolute;
+    top: 100%; /* Zentriert den Button vertikal */
+    right: 50%; /* Platziert den Button am rechten Rand */
+    transform: translate(0, -50%); /* Zentriert den Button vertikal */
   }
