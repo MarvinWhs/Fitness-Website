@@ -1,3 +1,4 @@
+/*Autor: Marvin Wiechers*/
 import express from 'express';
 import { Exercise } from '../models/exercise';
 import { GenericDAO } from '../models/generic.dao';

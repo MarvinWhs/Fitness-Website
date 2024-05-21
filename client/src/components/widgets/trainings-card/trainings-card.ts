@@ -56,11 +56,10 @@ class TrainingsCard extends LitElement {
   }
 
   render() {
-    const filteredExercises = this.exercises.filter((exercise) =>
-      exercise.name.toLowerCase().includes(this.searchTerm) &&
-      (!this.difficultyFilter || exercise.difficulty === this.difficultyFilter)
-    );
-
+  const filteredExercises = this.exercises.filter((exercise) =>
+    exercise.name.toLowerCase().includes(this.searchTerm) &&
+    (!this.difficultyFilter || exercise.difficulty === this.difficultyFilter)
+  );
     return html`
   <div class="search-box-container">
     <input class="search-box" type="text" placeholder="Suche Übungen..." @input=${this.handleSearchInput} />
@@ -72,20 +71,26 @@ class TrainingsCard extends LitElement {
     </select>
   </div>
   <div class="exercises-container">
-    ${filteredExercises.map(
-      exercise => html`
+  ${filteredExercises.map(
+    exercise => html`
+      <div class="exercise-container-container">
         <div class="exercise">
+        <div class="exercise-info">
           ${exercise.image ? html`<img src="${exercise.image}" alt="Bild von ${exercise.name}" />` : null}
-          <div class="exercise-content">
-            <h3>${exercise.name}</h3>
-            <p>${exercise.description}</p>
-            <p>Dauer: ${exercise.duration} Minuten</p>
-            <p>Schwierigkeitsgrad: ${exercise.difficulty}</p>
-          </div>
         </div>
-      `
-    )}
-  </div>
+        <div class="exercise-details">
+          <h3>${exercise.name}</h3>
+          <p>Dauer: ${exercise.duration} Minuten</p>
+          <p>Schwierigkeitsgrad: ${exercise.difficulty}</p>
+        </div>
+      </div>
+      <div class="exercise-description">
+            <p>${exercise.description}</p>
+      </div>
+      <div>
+    `
+  )}
+</div>
 `;
 
   }

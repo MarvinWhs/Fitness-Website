@@ -41,13 +41,6 @@ export class TrainingsComponent extends LitElement {
     }
   }
 
-  private handleFileUpload(event: Event): void {
-    const fileInput = event.target as HTMLInputElement;
-    if (fileInput.files && fileInput.files[0]) {
-      this.processFile(fileInput.files[0]);
-    }
-  }
-
   private handleDragOver(event: DragEvent): void {
     event.preventDefault(); // Dies ist entscheidend, um zu ermöglichen, dass das Drop-Event gefeuert wird.
     event.dataTransfer!.dropEffect = 'copy'; // Visuelles Feedback, dass die Datei kopiert wird.
@@ -60,13 +53,9 @@ export class TrainingsComponent extends LitElement {
     }
   }
 
-  private processFile(file: File): void {
-    const fileReader = new FileReader();
-    fileReader.onload = e => {
-      this.imageData = e.target!.result; // Speichere das Base64-kodierte Bild
-      this.requestUpdate(); // Aktualisiere die LitElement-Komponente, um das neue Bild anzuzeigen
-    };
-    fileReader.readAsDataURL(file);
+  private removeImage(): void {
+    this.imageData = null;
+    this.requestUpdate();
   }
 
   private async addExercise(event: Event): Promise<void> {
@@ -90,6 +79,76 @@ export class TrainingsComponent extends LitElement {
       console.error('Fehler beim Senden der Daten:', error);
     }
   }
+  private async scaleImageIfNeeded(file: File): Promise<File> {
+    if (file.size < 1024 * 1024) {
+      return file;
+    }
+  
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event: ProgressEvent<FileReader>) => {
+        const img = new Image();
+        img.onload = () => {
+          let canvas = document.createElement('canvas');
+          let ctx = canvas.getContext('2d');
+          if (!ctx) {
+            reject(new Error('Failed to get canvas context'));
+            return;
+          }
+  
+          // Berechnen des Skalierungsfaktors
+          const scaleFactor = Math.sqrt((1024 * 1024) / file.size);
+          canvas.width = img.width * scaleFactor;
+          canvas.height = img.height * scaleFactor;
+  
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  
+          ctx.canvas.toBlob((blob) => {
+            if (!blob) {
+              reject(new Error('Canvas to Blob conversion failed'));
+              return;
+            }
+            const resizedFile = new File([blob], file.name, {
+              type: 'image/jpeg',
+              lastModified: Date.now()
+            });
+            resolve(resizedFile);
+          }, 'image/jpeg', 0.7);
+        };
+        img.src = event.target?.result as string;
+      };
+      reader.onerror = () => reject(new Error('FileReader error'));
+      reader.readAsDataURL(file);
+    });
+  }
+  
+  private handleFileUpload(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) {
+      console.error("No file selected");
+      return;
+    }
+    const file = input.files[0];
+  
+    this.scaleImageIfNeeded(file).then(scaledFile => {
+      this.processFile(scaledFile);
+    }).catch(error => {
+      console.error("Error scaling image:", error);
+    });
+  }
+  private processFile(file: File): void {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imageData = reader.result as string;
+      this.requestUpdate();
+    };
+    reader.onerror = () => {
+      console.error('Error reading file');
+    };
+    reader.readAsDataURL(file);
+  }
+  
+  
   render() {
     return html`
     <main class="main-content">
@@ -108,32 +167,36 @@ export class TrainingsComponent extends LitElement {
                 </div>
                 <!-- Modal für das Hinzufügen einer Übung -->
                 <div id="addExerciseModal" class="modal">
-          <div class="modal-content">
-            <button @click="${this.closeModal}" class="close-button" aria-label="Close modal">&times;</button>
-            <h3>Neue Übung hinzufügen</h3>
-            <form @submit="${this.addExercise}">
-              <!-- Formularinhalte -->
-              <input type="text" placeholder="Name der Übung" name="name" required>
-              <textarea placeholder="Beschreibung der Übung" name="description" required></textarea>
-              <input type="number" placeholder="Dauer in Minuten" name="duration" min="1" required>
-              <select name="difficulty" required>
-                <option value="">Schwierigkeitsgrad wählen</option>
-                <option value="Easy">Easy</option>
-                <option value="Medium">Medium</option>
-                <option value="Hard">Hard</option>
-              </select>
-              <div class="drop-area" @click="${() => this.fileInput.click()}"
-                   @dragover="${this.handleDragOver}" @drop="${this.handleDrop}">
-                <p>Ziehe ein Bild hierher oder <strong>klicke, um ein Bild auszuwählen</strong>.</p>
-                <input type="file" name="image" accept="image/*" @change="${this.handleFileUpload}" hidden>
-                ${this.imageData ? html`<img src="${this.imageData}" alt="Vorschau" class="preview" />` : nothing}
-              </div>
-              <button type="submit">Hinzufügen</button>
-            </form>
-          </div>
+        <div class="modal-content">
+          <button @click="${this.closeModal}" class="close-button" aria-label="Close modal">&times;</button>
+          <h3>Neue Übung hinzufügen</h3>
+          <form @submit="${this.addExercise}">
+            <input type="text" placeholder="Name der Übung" name="name" required>
+            <textarea placeholder="Beschreibung der Übung" name="description" required></textarea>
+            <input type="number" placeholder="Dauer in Minuten" name="duration" min="1" required>
+            <select name="difficulty" required>
+              <option value="">Schwierigkeitsgrad wählen</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+            <div class="drop-area" @click="${() => this.fileInput.click()}" @dragover="${this.handleDragOver}" @drop="${this.handleDrop}">
+      <p>Ziehe ein Bild hierher oder <strong>klicke, um ein Bild auszuwählen</strong>.</p>
+      <input type="file" name="image" accept="image/*" @change="${this.handleFileUpload}" hidden>
+      ${this.imageData ? html`
+        <div class="image-preview">
+          <img src="${this.imageData}" alt="Vorschau" class="preview">
+          <button @click="${this.removeImage}" class="delete-image" id="remImg" title="Bild löschen">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="red" viewBox="0 0 24 24">
+              <path d="M3 6v18h18V6H3zm16 2v14H5V8h14zM1 4h22v2H1V4zm5 0h2v2H6V4zm4 0h2v2h-2V4zm4 0h2v2h-2V4z"/>
+            </svg>
+          </button>
+        </div>` : nothing}
+    </div>
+            <button type="submit">Hinzufügen</button>
+          </form>
         </div>
-        </div>
-  </div>
+      </div>
             </div>
         </div>
         <div>
