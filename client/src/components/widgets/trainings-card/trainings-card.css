@@ -99,3 +99,26 @@
     font-size: 0.9rem;
     flex-grow: 1;
   }
+  .delete-exercise {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: none; /* Standardmäßig versteckt */
+    align-items: center;
+    justify-content: center;
+    outline: none; /* Entfernt den Fokus-Umriss */
+    background-color: transparent;
+  }
+  
+  .delete-exercise svg {
+    fill: red; /* Farbe des Icons */
+  }
+  
+  .exercise-container-container:hover .delete-exercise {
+    display: inline-flex; /* Nur beim Hover anzeigen */
+  }
+  

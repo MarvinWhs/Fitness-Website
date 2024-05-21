@@ -222,7 +222,12 @@ a:hover {
     outline: none; /* Entfernt den Fokus-Umriss */
     background-color: transparent;
     position: absolute;
-    top: 100%; /* Zentriert den Button vertikal */
-    right: 50%; /* Platziert den Button am rechten Rand */
-    transform: translate(0, -50%); /* Zentriert den Button vertikal */
-  }
+    top: 50%; /* Zentriert den Button vertikal */
+    right: 10px; /* Platzierung am rechten Rand */
+    transform: translateY(-50%); /* Zentriert den Button vertikal */
+}
+
+#remImg :hover {
+    color: red;
+    background-color: rgba(0, 0, 0, 0.1);
+}
