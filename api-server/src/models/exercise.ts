@@ -7,5 +7,6 @@ export interface Exercise extends Entity{
             duration: number; 
             difficulty: string;
             image?: string;
+            userId: string;
         }
         

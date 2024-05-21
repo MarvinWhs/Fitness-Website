@@ -53,10 +53,6 @@ export class TrainingsComponent extends LitElement {
     }
   }
 
-  private removeImage(): void {
-    this.imageData = null;
-    this.requestUpdate();
-  }
 
   private async addExercise(event: Event): Promise<void> {
     event.preventDefault();
@@ -147,7 +143,13 @@ export class TrainingsComponent extends LitElement {
     };
     reader.readAsDataURL(file);
   }
-  
+
+  private removeImage(event : Event) {
+  event.stopPropagation();
+  this.imageData = null;
+  this.fileInput.value = ''; // Optional: Setzen Sie das Datei-Input-Feld zurück
+}
+
   
   render() {
     return html`
@@ -181,18 +183,18 @@ export class TrainingsComponent extends LitElement {
               <option value="Hard">Hard</option>
             </select>
             <div class="drop-area" @click="${() => this.fileInput.click()}" @dragover="${this.handleDragOver}" @drop="${this.handleDrop}">
-      <p>Ziehe ein Bild hierher oder <strong>klicke, um ein Bild auszuwählen</strong>.</p>
-      <input type="file" name="image" accept="image/*" @change="${this.handleFileUpload}" hidden>
-      ${this.imageData ? html`
-        <div class="image-preview">
-          <img src="${this.imageData}" alt="Vorschau" class="preview">
-          <button @click="${this.removeImage}" class="delete-image" id="remImg" title="Bild löschen">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="red" viewBox="0 0 24 24">
-              <path d="M3 6v18h18V6H3zm16 2v14H5V8h14zM1 4h22v2H1V4zm5 0h2v2H6V4zm4 0h2v2h-2V4zm4 0h2v2h-2V4z"/>
-            </svg>
-          </button>
-        </div>` : nothing}
-    </div>
+  ${!this.imageData ? html`<p>Ziehe ein Bild hierher oder <strong>klicke, um ein Bild auszuwählen</strong>.</p>` : nothing}
+  <input type="file" name="image" accept="image/*" @change="${this.handleFileUpload}" hidden>
+  ${this.imageData ? html`
+    <div class="image-preview">
+      <img src="${this.imageData}" alt="Vorschau" class="preview">
+      <button @click="${(event : Event) => this.removeImage(event)}" class="delete-image" id="remImg" title="Bild löschen">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="red" viewBox="0 0 24 24">
+          <path d="M3 6v18h18V6H3zm16 2v14H5V8h14zM1 4h22v2H1V4zm5 0h2v2H6V4zm4 0h2v2h-2V4zm4 0h2v2h-2V4z"/>
+        </svg>
+      </button>
+    </div>` : nothing}
+</div>
             <button type="submit">Hinzufügen</button>
           </form>
         </div>
