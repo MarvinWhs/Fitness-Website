@@ -37,6 +37,7 @@ async function startMongoDB(app: Express) {
   const db = (await connectToMongoDB()).db(config.db.connect.database);
   // TODO: DAOs erstellen und in app.locals ablegen
   app.locals.exerciseDAO = new MongoGenericDAO<Exercise>(db, 'exercises');
+  app.locals.userDAO = new MongoGenericDAO(db, 'users');
 }
 
 async function connectToMongoDB() {
