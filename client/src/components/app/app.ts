@@ -1,7 +1,7 @@
 /* Autor: Marvin Wiechers */
 
 import { LitElement, html } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 
 import { provide } from '@lit/context';
 import componentStyle from './app.css?inline';
@@ -19,12 +19,11 @@ export class AppComponent extends LitElement {
   httpClient = new HttpClient();
   router = new Router(
     this,
-    [ 
-      {path : '/', render: () =>  html`<fitness-home></fitness-home>`},
+    [
+      { path: '/', render: () => html`<fitness-home></fitness-home>` },
       { path: '/fitness-home', render: () => html`<fitness-home></fitness-home>` },
       { path: '/exercises', render: () => html`<trainings-sessions></trainings-sessions>` },
-      { path: '/nutrition-tracker', render: () => html`<nutrition-tracker></nutrition-tracker>` },
-      
+      { path: '/tracker-home4', render: () => html`<tracker-home></tracker-home>` }
     ],
     {
       fallback: { render: () => html`<fitness-home></fitness-home>` }
@@ -38,17 +37,18 @@ export class AppComponent extends LitElement {
 
   render() {
     return html`
-    <!DOCTYPE html>
-    <html lang="de">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>${APP_TITLE}</title>
-        <link rel="stylesheet" href="app.css">
-    </head>
-    <my-header></my-header>
-      <main>${this.router.outlet()}</main>
-    <my-footer></my-footer>
+      <!doctype html>
+      <html lang="de">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>${APP_TITLE}</title>
+          <link rel="stylesheet" href="app.css" />
+        </head>
+        <my-header></my-header>
+        <main>${this.router.outlet()}</main>
+        <my-footer></my-footer>
+      </html>
     `;
   }
 }
