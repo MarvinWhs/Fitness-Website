@@ -7,8 +7,28 @@ import componentStyle from './my-header.css?inline';
 class MyHeader extends LitElement {
   static styles = [componentStyle];
 
-  @property()
-  condition = true; //Ist dieser Person eingeloggt oder nicht
+  /* Autor Niklas Lobo */
+  @property({ type: Boolean })
+  condition = false; // Ist dieser Person eingeloggt oder nicht
+
+  /* Autor Niklas Lobo */
+  checkAuthStatus() {
+    const token = document.cookie.split('; ').find(row => row.startsWith('jwt-token='));
+    if (token) {
+      this.condition = true;
+    } else {
+      this.condition = false;
+    }
+  }
+
+  /* Autor Niklas Lobo */
+  handleLogout() {
+    // Token löschen
+    document.cookie = 'jwt-token=; Max-Age=0; path=/';
+    this.condition = false;
+    // Optionale: Weiterleitung zur Startseite oder Login-Seite
+    window.location.href = '/login-page';
+  }
 
   render() {
     return html`
@@ -21,9 +41,14 @@ class MyHeader extends LitElement {
               <li data-page><a href="/nutrition-tracker">Ernährungstracker</a></li>
               <li data-page><a href="/kalendar">Kalendar</a></li>
               ${this.condition
-                ? html`<li data-page><a href="/profile">Profil</a></li>`
-                : html`<li data-page><a href="/login-page">Anmelden</a></li>
-                    <li data-page><a href="/register-page">Registrieren</a></li>`}
+                ? html`
+                    <li data-page><a href="/profile">Profil</a></li>
+                    <li data-page><button @click="${this.handleLogout}">Logout</button></li>
+                  `
+                : html`
+                    <li data-page><a href="/login-page">Anmelden</a></li>
+                    <li data-page><a href="/register-page">Registrieren</a></li>
+                  `}
             </ul>
           </div>
         </div>

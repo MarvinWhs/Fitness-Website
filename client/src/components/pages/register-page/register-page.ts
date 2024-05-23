@@ -69,17 +69,24 @@ export class RegisterPage extends LitElement {
     await this.requestUpdate();
   }
 
-  handleSubmit(e: Event) {
+  async handleSubmit(e: Event) {
     e.preventDefault();
     if (!this.usernameErrorMessage && !this.passwordErrorMessage && !this.emailErrorMessage) {
-      // Vorerst nur Simulation
-      console.log('Registration successful with the following data:');
-      console.log('Username:', this.username);
-      console.log('Password:', this.password);
-      console.log('Email:', this.email);
-      // Weiterleitung zur Startseite
-      const router = new Router(this, [{ path: '/', render: () => html`<fitness-home></fitness-home>` }]);
-      router.push('/');
+      const response = await fetch('/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: this.username, password: this.password, email: this.email })
+      });
+      if (response.ok) {
+        console.log('Registration successful');
+        // Weiterleitung zur Anmeldeseite oder Startseite
+        const router = new Router(this, [{ path: '/', render: () => html`<fitness-home></fitness-home>` }]);
+        router.push('/');
+      } else {
+        console.error('Registration failed');
+      }
     }
   }
 

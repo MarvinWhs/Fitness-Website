@@ -4,7 +4,6 @@ import { html, LitElement } from 'lit';
 import { Router } from '../../../router';
 import componentStyle from './login-page.css?inline';
 import { customElement } from 'lit/decorators.js';
-import { userToken } from '../../widgets/login-page/user-token';
 
 @customElement('login-page')
 export class LoginPage extends LitElement {
@@ -12,11 +11,13 @@ export class LoginPage extends LitElement {
 
   username: string;
   password: string;
+  errorMessage: string;
 
   constructor() {
     super();
     this.username = '';
     this.password = '';
+    this.errorMessage = '';
   }
 
   handleInput(e: InputEvent) {
@@ -28,36 +29,36 @@ export class LoginPage extends LitElement {
     }
   }
 
-  handleSubmit(e: Event) {
+  async handleSubmit(e: Event) {
     e.preventDefault();
-    fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: this.username,
-        password: this.password
-      })
-    })
-      .then(response => {
-        if (response.ok) {
-          // Erfolgreicher Login
-          return response.json().then(data => {
-            userToken.createAndSetToken({ id: data.userId });
-            const router = new Router(this, [{ path: '/', render: () => html`<fitness-home></fitness-home>` }]);
-            router.push('/');
-          });
-        } else {
-          // Error handling, wie falscher Username, Passwort, E-Mail
-          return response.json().then(data => {
-            console.error(data.message);
-          });
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
+    try {
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: this.username,
+          password: this.password
+        })
       });
+
+      if (response.ok) {
+        // Erfolgreicher Login
+        const router = new Router(this, [{ path: '/', render: () => html`<fitness-home></fitness-home>` }]);
+        router.push('/');
+      } else {
+        // Error handling
+        const data = await response.json();
+        this.errorMessage = data.message || 'Fehler bei der Anmeldung';
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        this.errorMessage = 'Fehler: ' + error.message;
+      } else {
+        this.errorMessage = 'Unbekannter Fehler';
+      }
+    }
   }
 
   render() {
@@ -73,6 +74,7 @@ export class LoginPage extends LitElement {
             <input type="password" name="password" @input="${this.handleInput}" />
           </label>
           <button type="submit">Anmelden</button>
+          ${this.errorMessage ? html`<div class="error-message">${this.errorMessage}</div>` : ''}
         </form>
       </div>
     `;
