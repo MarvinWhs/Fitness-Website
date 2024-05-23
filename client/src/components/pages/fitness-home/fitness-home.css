@@ -120,4 +120,14 @@ a:hover {
       width: 50%; /* Kleineres Bild auf kleinen Bildschirmen */
       margin: 0 auto; /* Bild in der Mitte zentrieren */
     }
+
+  }
+  @media(max-width: 1060px){
+    .main-content{
+      padding: 0px;
+    }
+    
+    #first-row{
+      margin-top: 0px;
+    }
   }
