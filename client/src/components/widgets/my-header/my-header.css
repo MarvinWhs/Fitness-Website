@@ -88,20 +88,23 @@ p {
     font-size: 100%;
     letter-spacing: 0.08em;
     opacity: 0.6;
-    transition: color 1s, font-size 0.5s, padding 0.5s, opacity 1s;
+    transition: transform 0.3s ease, margin 0.3s ease, opacity 1s;
     position: relative;
+    height: 1.5em; /* Festgelegte Höhe */
+    margin-left: 0.5em; /* Abstand für Animation */
+    margin-right: 0.5em; /* Abstand für Animation */
   }
+  
   
   #myNavbar ul li a:hover {
     color: black;
-    font-size: 100%;
-    padding: 1em 1em;
-    padding-top: 3em;
+    transform: scale(1.2);
     opacity: 1;
+    margin-left: -0.1em; /* Anpassung für Animation */
+    margin-right: -0.1em; /* Anpassung für Animation */
   }
   
   header {
-    position: fixed; /* Fixiert den Header */
     width: 100%;
     top: 0;
     left: 0;
@@ -190,6 +193,9 @@ p {
   @media (max-width: 1060px) {
     #myNavbar {
       display: none;
+    }
+    header{
+        position: fixed;
     }
   
     .menu-icon {
