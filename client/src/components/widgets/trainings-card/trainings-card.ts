@@ -13,7 +13,7 @@ interface Exercise {
 }
 
 @customElement('trainings-card')
-class TrainingsCard extends LitElement {
+export class TrainingsCard extends LitElement {
   @state()
   exercises: Exercise[] = [];  // Array von Übungen
 
