@@ -3,21 +3,22 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { authService } from './services/auth.service'; // Die Authentifizierungsservice-Datei
+import { GenericDAO } from '../models/generic.dao.js';
+import { User } from '../models/user.js';
+import { authService } from './services/auth.service';
 
 const router = express.Router();
-const SECRET = 'your_secret_key';
+const SECRET = 'yoursecret';
 
 router.post('/register', async (req, res) => {
   const { username, password, email } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = { username, password: hashedPassword, email };
+  const user = { username, password: hashedPassword, email } as User;
 
-  // Speichern des Benutzers in der Datenbank
-  const userDAO = req.app.locals.userDAO;
+  const userDAO: GenericDAO<User> = req.app.locals.userDAO;
   try {
-    await userDAO.insertOne(user);
+    await userDAO.create(user);
     res.status(201).send({ message: 'Benutzer wurde erfolgreich registriert' });
   } catch (error) {
     res.status(500).send({ message: 'Fehler beim Registrieren' });
@@ -27,7 +28,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
-  const userDAO = req.app.locals.userDAO;
+  const userDAO: GenericDAO<User> = req.app.locals.userDAO;
   try {
     const user = await userDAO.findOne({ username });
 
@@ -39,7 +40,7 @@ router.post('/login', async (req, res) => {
       res.status(401).send({ message: 'Falsche Eingabe' });
     }
   } catch (error) {
-    res.status(500).send({ message: 'Fehler beim anmelden' });
+    res.status(500).send({ message: 'Fehler beim Anmelden' });
   }
 });
 
