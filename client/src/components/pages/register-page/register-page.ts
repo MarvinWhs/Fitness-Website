@@ -12,20 +12,24 @@ export class RegisterPage extends LitElement {
   username: string;
   password: string;
   email: string;
+  confirmPassword: string;
 
   // Validierungsnachrichten
   usernameErrorMessage: string;
   emailErrorMessage: string;
   passwordErrorMessage: string;
+  confirmPasswordErrorMessage: string;
 
   constructor() {
     super();
     this.username = '';
     this.password = '';
     this.email = '';
+    this.confirmPassword = '';
     this.usernameErrorMessage = '';
     this.emailErrorMessage = '';
     this.passwordErrorMessage = '';
+    this.confirmPasswordErrorMessage = '';
   }
 
   async handleInput(e: InputEvent) {
@@ -46,6 +50,13 @@ export class RegisterPage extends LitElement {
       } else {
         this.passwordErrorMessage = 'Ungültiges Passwort';
       }
+    } else if (target.name === 'confirmPassword') {
+      this.confirmPassword = target.value;
+      if (this.confirmPassword === this.password) {
+        this.confirmPasswordErrorMessage = '';
+      } else {
+        this.confirmPasswordErrorMessage = 'Passwörter stimmen nicht überein';
+      }
     } else if (target.name === 'email') {
       this.email = target.value;
       const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -56,7 +67,12 @@ export class RegisterPage extends LitElement {
       }
     }
 
-    if (this.usernameErrorMessage || this.passwordErrorMessage || this.emailErrorMessage) {
+    if (
+      this.usernameErrorMessage ||
+      this.passwordErrorMessage ||
+      this.emailErrorMessage ||
+      this.confirmPasswordErrorMessage
+    ) {
       this.shadowRoot?.querySelectorAll('.error-message').forEach(element => {
         element.classList.add('active');
       });
@@ -71,7 +87,12 @@ export class RegisterPage extends LitElement {
 
   async handleSubmit(e: Event) {
     e.preventDefault();
-    if (!this.usernameErrorMessage && !this.passwordErrorMessage && !this.emailErrorMessage) {
+    if (
+      !this.usernameErrorMessage &&
+      !this.passwordErrorMessage &&
+      !this.emailErrorMessage &&
+      !this.confirmPasswordErrorMessage
+    ) {
       const response = await fetch('/register', {
         method: 'POST',
         headers: {
@@ -80,12 +101,12 @@ export class RegisterPage extends LitElement {
         body: JSON.stringify({ username: this.username, password: this.password, email: this.email })
       });
       if (response.ok) {
-        console.log('Registration successful');
+        console.log('Registrierung erfolgreich');
         // Weiterleitung zur Anmeldeseite oder Startseite
         const router = new Router(this, [{ path: '/', render: () => html`<fitness-home></fitness-home>` }]);
         router.push('/');
       } else {
-        console.error('Registration failed');
+        console.error('Registrierung fehlgeschlagen');
       }
     }
   }
@@ -105,7 +126,14 @@ export class RegisterPage extends LitElement {
             ${this.passwordErrorMessage ? html`<div class="error-message">${this.passwordErrorMessage}</div>` : ''}
           </label>
           <label>
-            Email:
+            Passwort bestätigen:
+            <input type="password" name="confirmPassword" @input="${this.handleInput}" />
+            ${this.confirmPasswordErrorMessage
+              ? html`<div class="error-message">${this.confirmPasswordErrorMessage}</div>`
+              : ''}
+          </label>
+          <label>
+            E-Mail:
             <input type="email" name="email" @input="${this.handleInput}" />
             ${this.emailErrorMessage ? html`<div class="error-message">${this.emailErrorMessage}</div>` : ''}
           </label>
