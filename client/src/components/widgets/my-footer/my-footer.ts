@@ -17,8 +17,9 @@ class MyFooter extends LitElement {
             <a href="/fitness-home">Home</a>
             <a href="/calendar">Kalendar</a>
             <a href="/trainings-sessions">Trainingseinheiten</a>
-            <a href="/tracker-home">Ernährungstracker</a>
-            <a href="/login">Login</a>
+            <a href="/nutrition-tracker">Ernährungstracker</a>
+            <a href="/register-page">Registrieren</a>
+            <a href="/login-page">Anmelden</a>
           </div>
           <div class="footer-column">
             <h3>Über uns</h3>

@@ -1,21 +1,21 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import componentStyle from './trainings-card.css?inline';
 
 interface Exercise {
-  id: string;  // Normale ID als string
+  id: string; // Normale ID als string
   createdAt: number;
   name: string;
   description: string;
   duration: number;
   difficulty: string;
-  image: string;  // Base64-kodierte Bildinformation
+  image: string; // Base64-kodierte Bildinformation
 }
 
 @customElement('trainings-card')
-class TrainingsCard extends LitElement {
+export class TrainingsCard extends LitElement {
   @state()
-  exercises: Exercise[] = [];  // Array von Übungen
+  exercises: Exercise[] = []; // Array von Übungen
 
   @state()
   searchTerm: string = '';
@@ -27,6 +27,7 @@ class TrainingsCard extends LitElement {
     super();
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   static styles = [componentStyle];
 
   async connectedCallback() {
@@ -37,15 +38,16 @@ class TrainingsCard extends LitElement {
   async fetchExercises() {
     try {
       const response = await fetch('http://localhost:3000/exercises', {
-        method: 'GET',
+        method: 'GET'
       });
       if (!response.ok) {
         throw new Error('Failed to fetch exercises');
       }
       const responseData = await response.json();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.exercises = responseData.map((exercise: any) => ({
         ...exercise,
-        id: exercise.id.toString(), // Konvertiere die ID zu einem String
+        id: exercise.id.toString() // Konvertiere die ID zu einem String
       }));
     } catch (error) {
       console.error(error);
@@ -65,7 +67,7 @@ class TrainingsCard extends LitElement {
   async deleteExercise(exerciseId: string) {
     try {
       const response = await fetch(`http://localhost:3000/exercises/${exerciseId}`, {
-        method: 'DELETE',
+        method: 'DELETE'
       });
       if (!response.ok) {
         throw new Error('Failed to delete exercise');
@@ -78,9 +80,10 @@ class TrainingsCard extends LitElement {
   }
 
   render() {
-    const filteredExercises = this.exercises.filter((exercise) =>
-      exercise.name.toLowerCase().includes(this.searchTerm) &&
-      (!this.difficultyFilter || exercise.difficulty === this.difficultyFilter)
+    const filteredExercises = this.exercises.filter(
+      exercise =>
+        exercise.name.toLowerCase().includes(this.searchTerm) &&
+        (!this.difficultyFilter || exercise.difficulty === this.difficultyFilter)
     );
     return html`
       <div class="search-box-container">
@@ -97,9 +100,13 @@ class TrainingsCard extends LitElement {
           exercise => html`
             <div class="exercise-container-container">
               <div class="exercise">
-                <button @click="${() => this.deleteExercise(exercise.id)}" class="delete-exercise" title="Übung löschen">
+                <button
+                  @click="${() => this.deleteExercise(exercise.id)}"
+                  class="delete-exercise"
+                  title="Übung löschen"
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="red" viewBox="0 0 24 24">
-                    <path d="M3 6v18h18V6H3zm16 2v14H5V8h14zM1 4h22v2H1V4zm5 0h2v2H6V4zm4 0h2v2h-2V4zm4 0h2v2h-2V4z"/>
+                    <path d="M3 6v18h18V6H3zm16 2v14H5V8h14zM1 4h22v2H1V4zm5 0h2v2H6V4zm4 0h2v2h-2V4zm4 0h2v2h-2V4z" />
                   </svg>
                 </button>
                 <div class="exercise-info">

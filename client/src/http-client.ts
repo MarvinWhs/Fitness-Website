@@ -13,7 +13,7 @@ export class HttpClient {
   async get(url: string) {
     return this.result(await fetch(this.resolve(url)));
   }
-  async post(url: string, data: any) {
+  async post(url: string, data: unknown) {
     const response = await fetch(this.resolve(url), {
       method: 'POST',
       headers: {
