@@ -11,8 +11,8 @@ export class RegisterPage extends LitElement {
 
   username: string;
   password: string;
-  email: string;
   confirmPassword: string;
+  email: string;
 
   // Validierungsnachrichten
   usernameErrorMessage: string;
@@ -24,8 +24,8 @@ export class RegisterPage extends LitElement {
     super();
     this.username = '';
     this.password = '';
-    this.email = '';
     this.confirmPassword = '';
+    this.email = '';
     this.usernameErrorMessage = '';
     this.emailErrorMessage = '';
     this.passwordErrorMessage = '';
@@ -67,44 +67,51 @@ export class RegisterPage extends LitElement {
       }
     }
 
-    if (
-      this.usernameErrorMessage ||
-      this.passwordErrorMessage ||
-      this.emailErrorMessage ||
-      this.confirmPasswordErrorMessage
-    ) {
-      this.shadowRoot?.querySelectorAll('.error-message').forEach(element => {
-        element.classList.add('active');
-      });
-    } else {
-      this.shadowRoot?.querySelectorAll('.error-message').forEach(element => {
-        element.classList.remove('active');
-      });
-    }
-
+    this.updateErrorMessages();
     await this.requestUpdate();
+  }
+
+  updateErrorMessages() {
+    this.shadowRoot?.querySelectorAll('.error-message').forEach(element => {
+      element.classList.toggle('active', !!element.textContent);
+    });
   }
 
   async handleSubmit(e: Event) {
     e.preventDefault();
-    if (
-      !this.usernameErrorMessage &&
-      !this.passwordErrorMessage &&
-      !this.emailErrorMessage &&
-      !this.confirmPasswordErrorMessage
-    ) {
-      const response = await fetch('/register', {
+    // Check if there are any error messages
+    const hasErrors =
+      this.usernameErrorMessage ||
+      this.passwordErrorMessage ||
+      this.emailErrorMessage ||
+      this.confirmPasswordErrorMessage;
+
+    if (!hasErrors) {
+      const response = await fetch('http://localhost:3000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username: this.username, password: this.password, email: this.email })
+        body: JSON.stringify({
+          username: this.username,
+          password: this.password,
+          passwordCheck: this.confirmPassword,
+          email: this.email
+        })
       });
       if (response.ok) {
         console.log('Registrierung erfolgreich');
-        // Weiterleitung zur Anmeldeseite oder Startseite
-        const router = new Router(this, [{ path: '/', render: () => html`<fitness-home></fitness-home>` }]);
-        router.push('/');
+        // Clear the input fields after successful registration
+        this.username = '';
+        this.password = '';
+        this.confirmPassword = '';
+        this.email = '';
+        // Update the component to reflect cleared input fields
+        await this.requestUpdate();
+
+        // Forward to the main page
+        const router = new Router(this, [{ path: '/fitness-home', render: () => html`<fitness-home></fitness-home>` }]);
+        router.push('/fitness-home');
       } else {
         console.error('Registrierung fehlgeschlagen');
       }
@@ -117,24 +124,29 @@ export class RegisterPage extends LitElement {
         <form @submit="${this.handleSubmit}">
           <label>
             Benutzer:
-            <input type="text" name="username" @input="${this.handleInput}" />
+            <input type="text" name="username" .value="${this.username}" @input="${this.handleInput}" />
             ${this.usernameErrorMessage ? html`<div class="error-message">${this.usernameErrorMessage}</div>` : ''}
           </label>
           <label>
             Passwort:
-            <input type="password" name="password" @input="${this.handleInput}" />
+            <input type="password" name="password" .value="${this.password}" @input="${this.handleInput}" />
             ${this.passwordErrorMessage ? html`<div class="error-message">${this.passwordErrorMessage}</div>` : ''}
           </label>
           <label>
             Passwort bestätigen:
-            <input type="password" name="confirmPassword" @input="${this.handleInput}" />
+            <input
+              type="password"
+              name="confirmPassword"
+              .value="${this.confirmPassword}"
+              @input="${this.handleInput}"
+            />
             ${this.confirmPasswordErrorMessage
               ? html`<div class="error-message">${this.confirmPasswordErrorMessage}</div>`
               : ''}
           </label>
           <label>
             E-Mail:
-            <input type="email" name="email" @input="${this.handleInput}" />
+            <input type="email" name="email" .value="${this.email}" @input="${this.handleInput}" />
             ${this.emailErrorMessage ? html`<div class="error-message">${this.emailErrorMessage}</div>` : ''}
           </label>
           <button type="submit">Registrieren</button>

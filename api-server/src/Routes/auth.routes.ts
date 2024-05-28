@@ -4,7 +4,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import { GenericDAO } from '../models/generic.dao.js';
 import { User } from '../models/user.js';
-import { authService } from './services/auth.service';
+import { authService } from './services/auth.service.js';
 
 const router = express.Router();
 
@@ -18,9 +18,14 @@ router.post('/register', async (req, res) => {
 
   const userDAO: GenericDAO<User> = req.app.locals.userDAO;
   const existingUser = await userDAO.findOne({ username });
+  const existingEmail = await userDAO.findOne({ email });
 
   if (existingUser) {
     return res.status(400).send({ message: 'Benutzer existiert bereits' });
+  }
+
+  if (existingEmail) {
+    return res.status(400).send({ message: 'Email existiert bereits' });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
