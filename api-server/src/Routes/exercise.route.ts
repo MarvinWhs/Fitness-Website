@@ -11,16 +11,15 @@ router.get('/exercises', async (req, res) => {
     const exerciseDAO: MongoGenericDAO<Exercise> = req.app.locals.exerciseDAO;
     const exercises = await exerciseDAO.findAll();
     res.status(200).send(
-      exercises.map((exercise) => {
+      exercises.map(exercise => {
         return {
           id: exercise.id,
           name: exercise.name,
           description: exercise.description,
           duration: exercise.duration,
           difficulty: exercise.difficulty,
-            image: exercise.image,
+          image: exercise.image
         };
-        
       })
     );
   } catch (err) {

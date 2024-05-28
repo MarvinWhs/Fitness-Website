@@ -10,8 +10,8 @@ export class HomeComponent extends LitElement {
 
   @consume({ context: httpClientContext })
   httpClient!: HttpClient;
-  
-  render(){
+
+  render() {
     return html`
     <main class="main-content">
         <div class="two-column-row" id="first-row">
@@ -75,6 +75,7 @@ export class HomeComponent extends LitElement {
                     </button>
                 </div>
             </div>
+          </div>
         </div>
         <div>
             <p></p>
