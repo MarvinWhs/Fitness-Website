@@ -1,8 +1,9 @@
-import { expect, assert } from 'chai';
+import { expect } from 'chai';
 import { html, fixture, fixtureCleanup } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
 import './trainings-sessions';
 import { TrainingsComponent } from './trainings-sessions';
+import { describe, beforeEach, afterEach, it, before, after } from 'node:test';
 
 describe('TrainingsComponent', () => {
   let element: TrainingsComponent;
