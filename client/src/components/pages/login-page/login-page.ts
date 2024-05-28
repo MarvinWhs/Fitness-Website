@@ -1,7 +1,6 @@
 /* Autor Niklas Lobo */
 
 import { html, LitElement } from 'lit';
-import { Router } from '../../../router';
 import componentStyle from './login-page.css?inline';
 import { customElement } from 'lit/decorators.js';
 
@@ -11,52 +10,78 @@ export class LoginPage extends LitElement {
 
   username: string;
   password: string;
-  errorMessage: string;
+
+  usernameErrorMessage: string;
+  passwordErrorMessage: string;
+  generalErrorMessage: string;
 
   constructor() {
     super();
     this.username = '';
     this.password = '';
-    this.errorMessage = '';
+    this.usernameErrorMessage = '';
+    this.passwordErrorMessage = '';
+    this.generalErrorMessage = '';
   }
 
   handleInput(e: InputEvent) {
     const target = e.target as HTMLInputElement;
     if (target.name === 'username') {
       this.username = target.value;
+      this.usernameErrorMessage = this.username ? '' : 'Benutzername darf nicht leer sein';
     } else if (target.name === 'password') {
       this.password = target.value;
+      this.passwordErrorMessage = this.password ? '' : 'Passwort darf nicht leer sein';
     }
+
+    this.updateErrorMessages();
+  }
+
+  updateErrorMessages() {
+    this.shadowRoot?.querySelectorAll('.error-message').forEach(element => {
+      element.classList.toggle('active', !!element.textContent);
+    });
   }
 
   async handleSubmit(e: Event) {
     e.preventDefault();
-    try {
-      const response = await fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: this.username,
-          password: this.password
-        })
-      });
+    // Check if there are any error messages
+    const hasErrors = this.usernameErrorMessage || this.passwordErrorMessage;
 
-      if (response.ok) {
-        // Erfolgreicher Login
-        const router = new Router(this, [{ path: '/', render: () => html`<fitness-home></fitness-home>` }]);
-        router.push('/');
-      } else {
-        // Error handling
-        const data = await response.json();
-        this.errorMessage = data.message || 'Fehler bei der Anmeldung';
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        this.errorMessage = 'Fehler: ' + error.message;
-      } else {
-        this.errorMessage = 'Unbekannter Fehler';
+    if (!hasErrors) {
+      try {
+        const response = await fetch('http://localhost:3000/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username: this.username,
+            password: this.password
+          })
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          localStorage.setItem('authToken', result.token); // Speichern des Tokens
+          console.log('Login erfolgreich');
+          // Clear the input fields after successful login
+          this.username = '';
+          this.password = '';
+          this.generalErrorMessage = '';
+          // Update the component to reflect cleared input fields
+          await this.requestUpdate();
+          window.location.href = '/fitness-home';
+        } else {
+          const result = await response.json();
+          this.generalErrorMessage = result.message || 'Login fehlgeschlagen';
+          console.error('Login fehlgeschlagen');
+          await this.requestUpdate();
+        }
+      } catch (error) {
+        this.generalErrorMessage = 'Fehler beim Anmelden';
+        console.error('Fehler beim Anmelden', error);
+        await this.requestUpdate();
       }
     }
   }
@@ -67,14 +92,16 @@ export class LoginPage extends LitElement {
         <form @submit="${this.handleSubmit}">
           <label>
             Benutzer:
-            <input type="text" name="username" @input="${this.handleInput}" />
+            <input type="text" name="username" .value="${this.username}" @input="${this.handleInput}" />
+            ${this.usernameErrorMessage ? html`<div class="error-message">${this.usernameErrorMessage}</div>` : ''}
           </label>
           <label>
             Passwort:
-            <input type="password" name="password" @input="${this.handleInput}" />
+            <input type="password" name="password" .value="${this.password}" @input="${this.handleInput}" />
+            ${this.passwordErrorMessage ? html`<div class="error-message">${this.passwordErrorMessage}</div>` : ''}
           </label>
-          <button type="submit">Anmelden</button>
-          ${this.errorMessage ? html`<div class="error-message">${this.errorMessage}</div>` : ''}
+          ${this.generalErrorMessage ? html`<div class="error-message">${this.generalErrorMessage}</div>` : ''}
+          <button type="submit">Einloggen</button>
         </form>
       </div>
     `;

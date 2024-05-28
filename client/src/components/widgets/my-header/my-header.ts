@@ -13,12 +13,32 @@ class MyHeader extends LitElement {
   @property({ type: Boolean })
   sidebarOpen = false;
 
+  /* Autor Niklas Lobo */
+  constructor() {
+    super();
+    this.condition = this.isLoggedIn();
+  }
+  /* Autor Niklas Lobo */
+  isLoggedIn(): boolean {
+    const token = localStorage.getItem('authToken');
+    return !!token; // Wenn ein Token vorhanden ist, ist der Benutzer eingeloggt
+  }
+
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
   }
 
   closeSidebar() {
     this.sidebarOpen = false;
+  }
+
+  /* Autor Niklas Lobo */
+  handleLogout() {
+    // Entferne das Token aus dem localStorage
+    localStorage.removeItem('authToken');
+
+    // Weiterleitung zur Login-Seite
+    window.location.href = '/fitness-home';
   }
 
   firstUpdated() {
@@ -52,9 +72,10 @@ class MyHeader extends LitElement {
               <li data-page><a href="/nutrition-tracker">Ernährungstracker</a></li>
               <li data-page><a href="/kalendar">Kalendar</a></li>
               ${this.condition
-                ? html`<li data-page><a href="/profile">Profil</a></li>`
-                : html`<li data-page><a href="/login">Anmelden</a></li>
-                    <li data-page><a href="/register">Registrieren</a></li>`}
+                ? html`<li data-page><a href="/profile">Profil</a></li>
+                    <li><button @click="${this.handleLogout}">Logout</button></li>`
+                : html`<li data-page><a href="/login-page">Anmelden</a></li>
+                    <li data-page><a href="/register-page">Registrieren</a></li>`}
             </ul>
           </div>
         </div>
@@ -66,9 +87,10 @@ class MyHeader extends LitElement {
             <li data-page><a href="/nutrition-tracker">Ernährungstracker</a></li>
             <li data-page><a href="/kalendar">Kalendar</a></li>
             ${this.condition
-              ? html`<li data-page><a href="/profile">Profil</a></li>`
-              : html`<li data-page><a href="/login">Anmelden</a></li>
-                  <li data-page><a href="/register">Registrieren</a></li>`}
+              ? html`<li data-page><a href="/profile">Profil</a></li>
+                  <li><button @click="${this.handleLogout}">Logout</button></li>`
+              : html`<li data-page><a href="/login-page">Anmelden</a></li>
+                  <li data-page><a href="/register-page">Registrieren</a></li>`}
           </ul>
         </div>
         <div class="overlay ${this.sidebarOpen ? 'active' : ''}" @click="${this.closeSidebar}"></div>
