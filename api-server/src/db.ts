@@ -29,6 +29,7 @@ export default async function startDB(app: Express) {
 }
 
 async function startInMemoryDB(app: Express) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const client = await connectToPsql();
   // TODO: DAOs erstellen und in app.locals ablegen
   app.locals.exerciseDAO = new InMemoryGenericDAO<Exercise>();
