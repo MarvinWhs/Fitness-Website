@@ -1,7 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import componentStyle from './my-header.css?inline';
-import { Router } from '../../../router';
 
 @customElement('my-header')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -14,15 +13,13 @@ class MyHeader extends LitElement {
   @property({ type: Boolean })
   sidebarOpen = false;
 
+  /* Autor Niklas Lobo */
   constructor() {
     super();
-    // Überprüfe beim Erstellen der Komponente, ob der Benutzer eingeloggt ist
     this.condition = this.isLoggedIn();
   }
-
-  // Methode zur Überprüfung, ob der Benutzer eingeloggt ist
+  /* Autor Niklas Lobo */
   isLoggedIn(): boolean {
-    // Überprüfe, ob ein Token im localStorage vorhanden ist
     const token = localStorage.getItem('authToken');
     return !!token; // Wenn ein Token vorhanden ist, ist der Benutzer eingeloggt
   }
@@ -35,6 +32,7 @@ class MyHeader extends LitElement {
     this.sidebarOpen = false;
   }
 
+  /* Autor Niklas Lobo */
   handleLogout() {
     // Entferne das Token aus dem localStorage
     localStorage.removeItem('authToken');
