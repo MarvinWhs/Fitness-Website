@@ -37,4 +37,19 @@ router.post('/exercises', (req, res) => {
   }
 });
 
+router.delete('/exercises/:id', async (req, res) => {
+  try {
+    const exerciseDAO: MongoGenericDAO<Exercise> = req.app.locals.exerciseDAO;
+    const id = req.params.id;
+    const success = await exerciseDAO.delete(id);
+    if (success) {
+      res.status(204).send();
+    } else {
+      res.status(404).send();
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 export default router;

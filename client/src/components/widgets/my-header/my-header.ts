@@ -1,4 +1,3 @@
-//Autor: Marvin Wiechers
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import componentStyle from './my-header.css?inline';
@@ -7,51 +6,71 @@ import componentStyle from './my-header.css?inline';
 class MyHeader extends LitElement {
   static styles = [componentStyle];
 
-  /* Autor Niklas Lobo */
-  @property({ type: Boolean })
+  @property()
   condition = false; // Ist dieser Person eingeloggt oder nicht
 
-  /* Autor Niklas Lobo */
-  checkAuthStatus() {
-    const token = document.cookie.split('; ').find(row => row.startsWith('jwt-token='));
-    if (token) {
-      this.condition = true;
-    } else {
-      this.condition = false;
-    }
+  @property({ type: Boolean })
+  sidebarOpen = false;
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
   }
 
-  /* Autor Niklas Lobo */
-  handleLogout() {
-    // Token löschen
-    document.cookie = 'jwt-token=; Max-Age=0; path=/';
-    this.condition = false;
-    // Optionale: Weiterleitung zur Startseite oder Login-Seite
-    window.location.href = '/login-page';
+  closeSidebar() {
+    this.sidebarOpen = false;
+  }
+
+  firstUpdated() {
+    document.addEventListener('click', this.handleOutsideClick.bind(this));
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener('click', this.handleOutsideClick.bind(this));
+    super.disconnectedCallback();
+  }
+
+  handleOutsideClick(event: MouseEvent) {
+    const sidebar = this.shadowRoot?.querySelector('.sidebar') as HTMLElement;
+    const menuIcon = this.shadowRoot?.querySelector('.menu-icon') as HTMLElement;
+    const target = event.composedPath()[0] as HTMLElement;
+
+    if (this.sidebarOpen && sidebar && menuIcon && !sidebar.contains(target) && !menuIcon.contains(target)) {
+      this.closeSidebar();
+    }
   }
 
   render() {
     return html`
       <header>
-        <div class="collapse navbar-collapse  auto-responsive isScrollTop" id="myNavbar">
+        <div class="menu-icon" @click="${this.toggleSidebar}">&#9776;</div>
+        <div class="collapse navbar-collapse auto-responsive isScrollTop" id="myNavbar">
           <div class="row">
             <ul class="nav navbar-nav">
               <li data-page><a href="/fitness-home">Home</a></li>
-              <li data-page><a href="/trainings-sessions">Trainingseinheiten</a></li>
+              <li data-page><a href="/exercises">Trainingseinheiten</a></li>
               <li data-page><a href="/nutrition-tracker">Ernährungstracker</a></li>
               <li data-page><a href="/kalendar">Kalendar</a></li>
               ${this.condition
-                ? html`
-                    <li data-page><a href="/profile">Profil</a></li>
-                    <li data-page><button @click="${this.handleLogout}">Logout</button></li>
-                  `
-                : html`
-                    <li data-page><a href="/login-page">Anmelden</a></li>
-                    <li data-page><a href="/register-page">Registrieren</a></li>
-                  `}
+                ? html`<li data-page><a href="/profile">Profil</a></li>`
+                : html`<li data-page><a href="/login">Anmelden</a></li>
+                    <li data-page><a href="/register">Registrieren</a></li>`}
             </ul>
           </div>
         </div>
+        <div class="sidebar ${this.sidebarOpen ? 'open' : ''}">
+          <a href="javascript:void(0)" class="closebtn" @click="${this.toggleSidebar}">&times;</a>
+          <ul class="sidebar-nav" @click="${this.closeSidebar}">
+            <li data-page><a href="/fitness-home">Home</a></li>
+            <li data-page><a href="/exercises">Trainingseinheiten</a></li>
+            <li data-page><a href="/nutrition-tracker">Ernährungstracker</a></li>
+            <li data-page><a href="/kalendar">Kalendar</a></li>
+            ${this.condition
+              ? html`<li data-page><a href="/profile">Profil</a></li>`
+              : html`<li data-page><a href="/login">Anmelden</a></li>
+                  <li data-page><a href="/register">Registrieren</a></li>`}
+          </ul>
+        </div>
+        <div class="overlay ${this.sidebarOpen ? 'active' : ''}" @click="${this.closeSidebar}"></div>
       </header>
     `;
   }

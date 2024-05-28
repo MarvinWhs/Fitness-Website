@@ -1,228 +1,266 @@
-/* Autor: Marvin Wiechers
+/* Autor: Marvin Wiechers */
 /* Überschrift */
 h1 {
-    color: #333;
-    font-size: 30px; /* vorher 24 */
-    text-align: center;
+  color: #333;
+  font-size: 30px; /* vorher 24 */
+  text-align: center;
 }
-
-
 
 /* Absätze */
 p {
-    color: #666;
-    font-size: 16px;
-    line-height: 1.5;
+  color: #666;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 /* Links */
 a {
-    color: #fff;
-    text-decoration: none;
+  color: #fff;
+  text-decoration: none;
 }
 
 a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
-
 .main-content {
-    max-width: 80%; /* Begrenzt die Breite des Hauptinhalts */
-    margin: auto; /* Zentriert den Hauptinhalt */
-    padding: 30px;
-  }
-  
-  .two-column-row {
-    display: flex;
-    align-items: center; /* Vertikales Zentrieren der Elemente */
-    justify-content: center; /* Horizontales Zentrieren der Elemente */
-    margin-top: 0px;
-    padding: 15px; /* Etwas Abstand zum Rand */
-  }
-  #first-row{
-    margin-top: 50px;
-  }
-  
-  .two-column-row-content {
-    flex: 1;
-    padding: 15px; /* Etwas Abstand zum Rand */
-    text-align: justify;
+  max-width: 80%; /* Begrenzt die Breite des Hauptinhalts */
+  margin: auto; /* Zentriert den Hauptinhalt */
+  padding: 30px;
+}
+
+.two-column-row {
+  display: flex;
+  align-items: center; /* Vertikales Zentrieren der Elemente */
+  justify-content: center; /* Horizontales Zentrieren der Elemente */
+  margin-top: 0px;
+  padding: 15px; /* Etwas Abstand zum Rand */
+}
+
+#first-row {
+  margin-top: 50px;
+}
+
+.two-column-row-content {
+  flex: 1;
+  padding: 15px; /* Etwas Abstand zum Rand */
+  text-align: justify;
+}
+
+.link-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px; /* Abstand nach oben */
+  text-align: center; /* Zentrierter Text */
+}
+
+.image-area {
+  flex: 1;
+  display: flex;
+  justify-content: center; /* Bild am rechten Rand ausrichten */
+  position: relative; /* Für die Positionierung des Bildes */
+}
+
+.image-area img {
+  max-width: 60%; /* Stellt sicher, dass das Bild nicht größer als sein Container ist */
+  height: auto;
+  border-radius: 50%; /* Kreisförmigen Rand erzeugen */
+  clip-path: circle(50% at 50% 50%); /* Kreisförmigen Ausschnitt erzeugen */
+  position: absolute; /* Ermöglicht die genaue Platzierung des Bildes */
+  transform: translate(0%, -50%);
+  display: block;
+}
+
+.image-area-mobile {
+  display: none;
+}
+
+.mid-text {
+  padding-left: 30px;
+  padding-right: 25px;
+  padding-top: 60px;
+}
+
+.mid-section {
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 10px;
+  max-width: 1000%;
+}
+
+.modal {
+  display: none;  /* initial hidden */
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 50%; /* oder eine andere Breite, abhängig vom Design */
+  max-width: 500px; /* begrenzt die maximale Breite */
+  position: relative;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content form input[type="text"],
+.modal-content form input[type="number"],
+.modal-content form select,
+.modal-content form textarea {
+  margin-bottom: 10px;
+  height: 40px;
+  padding: 0 10px;
+}
+
+.modal-content form textarea {
+  height: 80px; /* Spezielle Höhe für die Textarea, um mehr Text sichtbar zu machen */
+  padding: 10px; /* Mehr Polsterung für bessere Textdarstellung */
+}
+
+.modal-content form button {
+  align-self: center;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.drop-area {
+  border: 2px dashed #ccc; /* Gestrichelte Linie für den Umriss */
+  padding: 20px; /* Innenabstand */
+  text-align: center; /* Zentrierter Text */
+  margin-bottom: 10px; /* Abstand nach unten */
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+img.preview {
+  max-width: 100%;
+  max-height: 200px;
+  margin-top: 10px;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  color: #aaa;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #f00;
+}
+
+.delete-image:focus {
+  outline: none; /* Spezifischer für den Fokus-Zustand */
+  box-shadow: none; /* Entfernt Schatten, falls vorhanden */
+}
+
+.delete-image svg {
+  fill: red; /* Farbe des Icons */
+}
+
+.delete-image:focus {
+  outline: none;
+}
+
+.drop-area {
+  position: relative;
+}
+
+#remImg {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  outline: none; /* Entfernt den Fokus-Umriss */
+  background-color: transparent;
+  position: absolute;
+  top: 50%; /* Zentriert den Button vertikal */
+  right: 10px; /* Platzierung am rechten Rand */
+  transform: translateY(-50%); /* Zentriert den Button vertikal */
+}
+
+#remImg:hover {
+  color: red;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1060px) {
+  .main-content {
+      padding: 0px;
   }
 
-  .link-button{
-    display: inline-block;
-    align-self: center;
-    padding: 10px 20px;
-    font-size: 1rem;
-    color: white;
-    background-color: #007BFF;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  #adding{
-    transform: translate(95%, 0%);
+  #first-row {
+      margin-top: 0px;
   }
 
   .image-area {
-    flex: 1;
-    display: flex;
-    justify-content: center; /* Bild am rechten Rand ausrichten */
-    position: relative; /* Für die Positionierung des Bildes */
-  }
-  
-  .image-area img {
-    max-width: 60%; /* Stellt sicher, dass das Bild nicht größer als seine Container ist */
-    height: auto;
-    border-radius: 50%; /* Kreisförmigen Rand erzeugen */
-    clip-path: circle(50% at 50% 50%); /* Kreisförmigen Ausschnitt erzeugen */
-    position: absolute; /* Ermöglicht die genaue Platzierung des Bildes */
-    transform: translate(0%, -50%);
-    display: block;
-
-  }
- 
-  .mid-text{
-    padding-left: 30px;
-    padding-right: 25px;
-    padding-top: 60px;
-  }
-  .mid-section{
-    background-color: rgba(0,0,0,0.1);
-    border-radius: 10px;
-    max-width: 1000%;
-  }
-  
-  @media (max-width: 768px) { /* Für kleinere Bildschirme */
-    .two-column-row {
-      flex-direction: column;
-    }
-    .image-area img {
-      right: 0;
-      top: 0;
-      transform: translate(0%, 0%);
-      width: 50%; /* Kleineres Bild auf kleinen Bildschirmen */
-      margin: 0 auto; /* Bild in der Mitte zentrieren */
-    }
+      display: none;
   }
 
-  .modal {
-    display: none;  /* initial hidden */
-    position: fixed;
-    left:0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
+  .image-area-mobile {
+      display: block;
+      text-align: center; /* Zentriert das Bild in der mobilen Ansicht */
   }
-  
+
+  .image-area-mobile img {
+      max-width: 50%;
+      height: auto;
+      border-radius: 50%; /* Kreisförmigen Rand erzeugen */
+      clip-path: circle(50% at 50% 50%); /* Kreisförmigen Ausschnitt erzeugen */
+      margin: 20px 0; /* Abstand oben und unten */
+  }
+
+  .link-button {
+      display: block;
+      margin: 20px auto; /* Zentriert den Button horizontal */
+  }
+}
+@media(max-width:500px){
+  .main-content {
+      max-width: 95%;
+      font-size: 20px;
+  }
+}
+@media(max-width:650px){
   .modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 50%; /* oder eine andere Breite, abhängig vom Design */
-    max-width: 500px; /* begrenzt die maximale Breite */
-    position: relative;
+      width: 75%;
   }
-  
-  .modal-content form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .modal-content form input[type="text"],
-  .modal-content form input[type="number"],
-  .modal-content form select,
-  .modal-content form textarea {
-    margin-bottom: 10px;
-    height: 40px;
-    padding: 0 10px;
-  }
-
-  .modal-content form textarea {
-    height: 80px; /* Spezielle Höhe für die Textarea, um mehr Text sichtbar zu machen */
-    padding: 10px; /* Mehr Polsterung für bessere Textdarstellung */
-  }
-  
-  .modal-content form button {
-    align-self: center;
-    padding: 10px 20px;
-    font-size: 1rem;
-    color: white;
-    background-color: #007BFF;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .modal-content .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 1.5rem;
-  }
-  .drop-area {
-    border: 2px dashed #ccc; /* Gestrichelte Linie für den Umriss */
-    padding: 20px; /* Innenabstand */
-    text-align: center; /* Zentrierter Text */
-    margin-bottom: 10px; /* Abstand nach unten */
-    margin-top: 10px;
-    cursor: pointer;
-  }
-  img.preview {
-    max-width: 100%;
-    max-height: 200px;
-    margin-top: 10px;
-  }
-  .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    border: none;
-    background: none;
-    color: #aaa;
-    font-size: 24px;
-    cursor: pointer;
-  }
-  .close-button:hover {
-    color: #f00;
-  }
-
-  .delete-image:focus {
-    outline: none; /* Spezifischer für den Fokus-Zustand */
-    box-shadow: none; /* Entfernt Schatten, falls vorhanden */
-  }
-  
-  .delete-image svg {
-    fill: red; /* Farbe des Icons */
-  }
-
-  .delete-image:focus {
-    outline: none;
-  }
-
-  .drop-area{
-    position: relative;
-  }
-
-  #remImg{
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    outline: none; /* Entfernt den Fokus-Umriss */
-    background-color: transparent;
-    position: absolute;
-    top: 100%; /* Zentriert den Button vertikal */
-    right: 50%; /* Platziert den Button am rechten Rand */
-    transform: translate(0, -50%); /* Zentriert den Button vertikal */
-  }
+}
