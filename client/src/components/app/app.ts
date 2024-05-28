@@ -1,7 +1,7 @@
 /* Autor: Marvin Wiechers */
 
 import { LitElement, html } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 
 import { provide } from '@lit/context';
 import componentStyle from './app.css?inline';
@@ -23,9 +23,7 @@ export class AppComponent extends LitElement {
       { path: '/', render: () => html`<fitness-home></fitness-home>` },
       { path: '/fitness-home', render: () => html`<fitness-home></fitness-home>` },
       { path: '/exercises', render: () => html`<trainings-sessions></trainings-sessions>` },
-      { path: '/nutrition-tracker', render: () => html`<nutrition-tracker></nutrition-tracker>` },
-      { path: '/register-page', render: () => html`<register-page></register-page>` },
-      { path: '/login-page', render: () => html`<login-page></login-page>` }
+      { path: '/tracker-home4', render: () => html`<tracker-home></tracker-home>` }
     ],
     {
       fallback: { render: () => html`<fitness-home></fitness-home>` }
