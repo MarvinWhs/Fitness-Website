@@ -1,7 +1,6 @@
 /* Autor Niklas Lobo */
 
 import { html, LitElement } from 'lit';
-import { Router } from '../../../router';
 import componentStyle from './register-page.css?inline';
 import { customElement } from 'lit/decorators.js';
 
@@ -109,9 +108,7 @@ export class RegisterPage extends LitElement {
         // Update the component to reflect cleared input fields
         await this.requestUpdate();
 
-        // Forward to the main page
-        const router = new Router(this, [{ path: '/fitness-home', render: () => html`<fitness-home></fitness-home>` }]);
-        router.push('/fitness-home');
+        window.location.href = '/fitness-home';
       } else {
         console.error('Registrierung fehlgeschlagen');
       }
