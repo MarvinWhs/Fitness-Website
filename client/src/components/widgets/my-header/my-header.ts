@@ -1,8 +1,9 @@
-import { LitElement, css, html } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import componentStyle from './my-header.css?inline';
 
 @customElement('my-header')
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MyHeader extends LitElement {
   static styles = [componentStyle];
 

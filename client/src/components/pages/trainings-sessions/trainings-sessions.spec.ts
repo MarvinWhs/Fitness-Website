@@ -6,7 +6,7 @@ import { TrainingsComponent } from './trainings-sessions';
 
 describe('TrainingsComponent', () => {
   let element: TrainingsComponent;
-  let httpClient: any;
+  let httpClient: unknown;
 
   beforeEach(async () => {
     element = await fixture<TrainingsComponent>(html`<trainings-sessions></trainings-sessions>`);
@@ -170,7 +170,7 @@ describe('TrainingsComponent', () => {
 
   it('should scale image if needed', async () => {
     const largeFile = new File([new ArrayBuffer(2 * 1024 * 1024)], 'large.png', { type: 'image/png' });
-  
+
     const mockFileReader = sinon.stub(window, 'FileReader').callsFake(function (this: FileReader) {
       this.readAsDataURL = function () {
         const event = { target: this } as ProgressEvent<FileReader>;
@@ -179,7 +179,7 @@ describe('TrainingsComponent', () => {
       };
       return this;
     });
-  
+
     const imgStub = sinon.stub(window, 'Image').callsFake(() => {
       const img = new Image();
       img.onload = function () {
@@ -190,21 +190,20 @@ describe('TrainingsComponent', () => {
       };
       return img;
     });
-  
+
     const input = element.shadowRoot!.querySelector('input[type="file"]') as HTMLInputElement;
     Object.defineProperty(input, 'files', { value: [largeFile] });
-  
+
     const event = new Event('change');
     input.dispatchEvent(event);
-  
+
     await element.updateComplete;
-  
+
     expect(element.imageData).to.not.be.null;
-  
+
     mockFileReader.restore();
     imgStub.restore();
   });
-  
 
   it('should handle error during image scaling', async () => {
     const largeFile = new File([new ArrayBuffer(2 * 1024 * 1024)], 'large.png', { type: 'image/png' });
@@ -230,5 +229,4 @@ describe('TrainingsComponent', () => {
       expect((error as Error).message).to.equal('FileReader error');
     }
   });
-
 });

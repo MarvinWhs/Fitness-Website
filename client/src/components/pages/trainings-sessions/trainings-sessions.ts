@@ -53,7 +53,6 @@ export class TrainingsComponent extends LitElement {
     }
   }
 
-
   private async addExercise(event: Event): Promise<void> {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
@@ -79,37 +78,41 @@ export class TrainingsComponent extends LitElement {
     if (file.size < 1024 * 1024) {
       return file;
     }
-  
+
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (event: ProgressEvent<FileReader>) => {
         const img = new Image();
         img.onload = () => {
-          let canvas = document.createElement('canvas');
-          let ctx = canvas.getContext('2d');
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
           if (!ctx) {
             reject(new Error('Failed to get canvas context'));
             return;
           }
-  
+
           // Berechnen des Skalierungsfaktors
           const scaleFactor = Math.sqrt((1024 * 1024) / file.size);
           canvas.width = img.width * scaleFactor;
           canvas.height = img.height * scaleFactor;
-  
+
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-  
-          ctx.canvas.toBlob((blob) => {
-            if (!blob) {
-              reject(new Error('Canvas to Blob conversion failed'));
-              return;
-            }
-            const resizedFile = new File([blob], file.name, {
-              type: 'image/jpeg',
-              lastModified: Date.now()
-            });
-            resolve(resizedFile);
-          }, 'image/jpeg', 0.7);
+
+          ctx.canvas.toBlob(
+            blob => {
+              if (!blob) {
+                reject(new Error('Canvas to Blob conversion failed'));
+                return;
+              }
+              const resizedFile = new File([blob], file.name, {
+                type: 'image/jpeg',
+                lastModified: Date.now()
+              });
+              resolve(resizedFile);
+            },
+            'image/jpeg',
+            0.7
+          );
         };
         img.src = event.target?.result as string;
       };
@@ -117,20 +120,22 @@ export class TrainingsComponent extends LitElement {
       reader.readAsDataURL(file);
     });
   }
-  
+
   private handleFileUpload(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) {
-      console.error("No file selected");
+      console.error('No file selected');
       return;
     }
     const file = input.files[0];
-  
-    this.scaleImageIfNeeded(file).then(scaledFile => {
-      this.processFile(scaledFile);
-    }).catch(error => {
-      console.error("Error scaling image:", error);
-    });
+
+    this.scaleImageIfNeeded(file)
+      .then(scaledFile => {
+        this.processFile(scaledFile);
+      })
+      .catch(error => {
+        console.error('Error scaling image:', error);
+      });
   }
   private processFile(file: File): void {
     const reader = new FileReader();
@@ -144,15 +149,15 @@ export class TrainingsComponent extends LitElement {
     reader.readAsDataURL(file);
   }
 
-  private removeImage(event : Event) {
-  event.stopPropagation();
-  this.imageData = null;
-  this.fileInput.value = ''; // Optional: Setzen Sie das Datei-Input-Feld zurück
-}
+  private removeImage(event: Event) {
+    event.stopPropagation();
+    this.imageData = null;
+    this.fileInput.value = ''; // Optional: Setzen Sie das Datei-Input-Feld zurück
+  }
 
-  
-render() {
-  return html`
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  render() {
+    return html`
   <main class="main-content">
       <div class="two-column-row" id="first-row">
       <div class="image-area">
@@ -188,15 +193,23 @@ render() {
           <div class="drop-area" @click="${() => this.fileInput.click()}" @dragover="${this.handleDragOver}" @drop="${this.handleDrop}">
 ${!this.imageData ? html`<p>Ziehe ein Bild hierher oder <strong>klicke, um ein Bild auszuwählen</strong>.</p>` : nothing}
 <input type="file" name="image" accept="image/*" @change="${this.handleFileUpload}" hidden>
-${this.imageData ? html`
-  <div class="image-preview">
-    <img src="${this.imageData}" alt="Vorschau" class="preview">
-    <button @click="${(event : Event) => this.removeImage(event)}" class="delete-image" id="remImg" title="Bild löschen">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="red" viewBox="0 0 24 24">
-        <path d="M3 6v18h18V6H3zm16 2v14H5V8h14zM1 4h22v2H1V4zm5 0h2v2H6V4zm4 0h2v2h-2V4zm4 0h2v2h-2V4z"/>
-      </svg>
-    </button>
-  </div>` : nothing}
+${
+  this.imageData
+    ? html` <div class="image-preview">
+        <img src="${this.imageData}" alt="Vorschau" class="preview" />
+        <button
+          @click="${(event: Event) => this.removeImage(event)}"
+          class="delete-image"
+          id="remImg"
+          title="Bild löschen"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="red" viewBox="0 0 24 24">
+            <path d="M3 6v18h18V6H3zm16 2v14H5V8h14zM1 4h22v2H1V4zm5 0h2v2H6V4zm4 0h2v2h-2V4zm4 0h2v2h-2V4z" />
+          </svg>
+        </button>
+      </div>`
+    : nothing
+}
 </div>
           <button type="submit">Hinzufügen</button>
         </form>
@@ -219,5 +232,5 @@ ${this.imageData ? html`
 
 </main>
 `;
-}
+  }
 }
