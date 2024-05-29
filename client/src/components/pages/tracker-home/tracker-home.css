@@ -1,15 +1,64 @@
+/* Allgemeines Styling */
 body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
   margin: 0;
   padding: 0;
+  background-color: #f8f9fa; /* Leicht grauer Hintergrund */
 }
+
+.StartText {
+  text-align: center;
+  margin-top: 20px;
+  padding: 20px;
+}
+
+p {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Hauptinhalt */
 .main-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  background-color: #ffffff; /* Weißer Hintergrund für den Kasten */
+  border-radius: 10px; /* Abgerundete Ecken */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Leichter Schatten */
+  max-width: 800px; /* Maximale Breite des Kastens */
+  margin: 40px auto; /* Zentrierung mit automatischen Rändern */
 }
+
+li {
+  list-style-type: none;
+  color: #666;
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 5px;
+  width: 100%;
+  text-align: left;
+}
+
+.Erklärung {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 5px;
+  width: 100%;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  border: #333 solid 1px;
+}
+
+ul {
+  padding: 10px;
+  margin: 10px;
+}
+
+/* Zwei-Spalten-Layout */
 .two-column-row {
   display: flex;
   flex-wrap: wrap;
@@ -24,20 +73,31 @@ body {
   max-width: 100%;
   height: auto;
 }
+
+/* Mittelsektion */
 .mid-section {
   text-align: center;
   padding: 20px;
 }
+
+/* Link-Button */
 .link-button {
   margin-top: 20px;
 }
 .link-button a {
   text-decoration: none;
-  background-color: #007BFF;
-  color: white;
+  background-color: #007BFF; /* Blaue Hintergrundfarbe */
+  color: white; /* Weiße Schriftfarbe */
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 5px; /* Abgerundete Ecken */
 }
+
 .hidden {
   display: none;
+}
+
+h1 {
+  color: #333;
+  font-size: 30px; /* vorher 24 */
+  text-align: center;
 }

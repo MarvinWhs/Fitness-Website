@@ -70,7 +70,7 @@ export class HomeComponent extends LitElement {
                     <p>
                         Hier geht es zu unserem Ernährungstracker!
                     </p>
-                    <button class="link-button" @click="${() => window.location.href='/nutrition-tracker'}">
+                    <button class="link-button" @click="${() => window.location.href='/tracker-home'}">
                         Zum Ernährungstracker
                     </button>
                 </div>

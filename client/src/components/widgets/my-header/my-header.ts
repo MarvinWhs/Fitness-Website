@@ -69,7 +69,7 @@ class MyHeader extends LitElement {
             <ul class="nav navbar-nav">
               <li data-page><a href="/fitness-home">Home</a></li>
               <li data-page><a href="/exercises">Trainingseinheiten</a></li>
-              <li data-page><a href="/nutrition-tracker">Ernährungstracker</a></li>
+              <li data-page><a href="/tracker-home">Ernährungstracker</a></li>
               <li data-page><a href="/kalendar">Kalendar</a></li>
               ${this.condition
                 ? html`<li data-page><a href="/profile">Profil</a></li>
@@ -84,7 +84,7 @@ class MyHeader extends LitElement {
           <ul class="sidebar-nav" @click="${this.closeSidebar}">
             <li data-page><a href="/fitness-home">Home</a></li>
             <li data-page><a href="/exercises">Trainingseinheiten</a></li>
-            <li data-page><a href="/nutrition-tracker">Ernährungstracker</a></li>
+            <li data-page><a href="/tracker-home">Ernährungstracker</a></li>
             <li data-page><a href="/kalendar">Kalendar</a></li>
             ${this.condition
               ? html`<li data-page><a href="/profile">Profil</a></li>
