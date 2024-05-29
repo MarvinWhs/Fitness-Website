@@ -17,3 +17,4 @@ import './components/widgets/my-header/my-header.js';
 import './components/widgets/nutrition-tracker/nutrition-tracker.js';
 import './components/widgets/pop-up/pop-up.js';
 import './components/widgets/trainings-card/trainings-card.js';
+import './components/widgets/dark-mode/dark-mode.js';

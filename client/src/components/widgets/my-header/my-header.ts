@@ -91,6 +91,7 @@ class MyHeader extends LitElement {
                   <li><button @click="${this.handleLogout}">Logout</button></li>`
               : html`<li data-page><a href="/login-page">Anmelden</a></li>
                   <li data-page><a href="/register-page">Registrieren</a></li>`}
+            <li><dark-mode></dark-mode></li>
           </ul>
         </div>
         <div class="overlay ${this.sidebarOpen ? 'active' : ''}" @click="${this.closeSidebar}"></div>

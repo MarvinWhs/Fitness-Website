@@ -1,0 +1,15 @@
+/* Dark Mode Button */
+.dark-mode button {
+    background-color: #343a40; /* Dunkler Hintergrundfarbe */
+    color: #ffffff; /* Weiße Schriftfarbe */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Flüssige Übergänge */
+  }
+  
+  .dark-mode button:hover {
+    background-color: #495057; /* Dunkleres Grau bei Hover */
+  }
+  
