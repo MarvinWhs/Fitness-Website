@@ -16,8 +16,9 @@ router.get('/foods', async (req, res) => {
         return {
           id: food.id,
           name: food.name,
+          calories: food.calories,
           description: food.description,
-          calories: food.calories
+          image: food.image
         };
       })
     );
@@ -33,14 +34,16 @@ router.post('/foods', authService.authenticationMiddleware, async (req, res) => 
       userId: res.locals.user.id,
       name: req.body.name,
       description: req.body.description,
-      calories: req.body.calories
+      calories: req.body.calories,
+      image: req.body.image
     });
     res.status(201).json({
       ...food,
       id: food.id,
       name: food.name,
       description: food.description,
-      calories: food.calories
+      calories: food.calories,
+      image: food.image
     });
   } catch (err) {
     res.status(500).send(err);
