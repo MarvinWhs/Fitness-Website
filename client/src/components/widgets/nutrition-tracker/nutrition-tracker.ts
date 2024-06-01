@@ -1,8 +1,15 @@
-import { LitElement, html, css, nothing } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import { HttpClient, httpClientContext } from '../../../http-client';
 import componentStyle from './nutrition-tracker.css?inline';
+
+interface Food {
+  id: string;
+  name: string;
+  calories: number;
+  image: string; // Base64-kodierte Bildinformation
+}
 
 @customElement('nutrition-tracker')
 export class NutritionTracker extends LitElement {
@@ -11,7 +18,7 @@ export class NutritionTracker extends LitElement {
   @consume({ context: httpClientContext })
   httpClient!: HttpClient;
 
-  @state() foodCards: FoodCard[] = [];
+  @state() foodCards: Food[] = [];
   @property({ type: Number }) totalCalories = 0;
   @state() isModalOpen: boolean = false;
   @state() imageData: string | ArrayBuffer | null = null;
@@ -21,15 +28,43 @@ export class NutritionTracker extends LitElement {
 
   constructor() {
     super();
-    this.loadFoodCards();
+  }
+
+  async connectedCallback() {
+    super.connectedCallback();
+    await this.loadFoodCards();
   }
 
   async loadFoodCards() {
     try {
-      const response = await this.httpClient.get<FoodCard[]>('http://localhost:3000/food-cards');
-      this.foodCards = response.data;
+      const response = await fetch('http://localhost:3000/food-cards', {
+        method: 'GET'
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch food cards');
+      }
+      const responseData = await response.json();
+      this.foodCards = responseData.map((food: any) => ({
+        ...food,
+        id: food.id.toString() // Konvertiere die ID zu einem String
+      }));
     } catch (error) {
-      console.error('Error loading food cards:', error);
+      console.error(error);
+    }
+  }
+
+  async deleteFoodCard(id: string) {
+    try {
+      const response = await fetch(`http://localhost:3000/food-cards/${id}`, {
+        method: 'DELETE'
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete food');
+      }
+      this.foodCards = this.foodCards.filter(food => food.id !== id);
+      this.requestUpdate(); // Sicherstellen, dass die Ansicht aktualisiert wird
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -69,15 +104,16 @@ export class NutritionTracker extends LitElement {
                     <button class="link-button" @click=${this.submitTotalCalories}>Eingabe</button>
                   </div>
                 `}
-            <!-- Liste der Food-Cards -->
             <div class="food-list">
               ${this.foodCards.map(
-                card => html`<food-card .data=${card} @delete=${() => this.deleteFoodCard(card.id)}></food-card>`
+                card =>
+                  html`<food-card
+                    .food=${card}
+                    @delete-food=${(e: CustomEvent) => this.deleteFoodCard(e.detail)}
+                  ></food-card>`
               )}
             </div>
-            <!-- Plus-Button für neue Food-Card -->
             <div class="plus-button" @click=${this.openModal}><strong>+</strong></div>
-            <!-- Modal für das Hinzufügen einer Food-Card -->
             ${this.isModalOpen
               ? html`
                   <div class="modal-overlay" @click=${this.closeModal}>
@@ -118,19 +154,11 @@ export class NutritionTracker extends LitElement {
 
     try {
       const response = await this.httpClient.post('http://localhost:3000/food-cards', foodCardData);
-      this.foodCards = [...this.foodCards, response.data];
+      console.log('Response:', response);
       this.closeModal();
+      await this.loadFoodCards();
     } catch (error) {
-      console.error('Error adding food card:', error);
-    }
-  }
-
-  private async deleteFoodCard(id: string) {
-    try {
-      await this.httpClient.delete(`http://localhost:3000/food-cards/${id}`);
-      this.foodCards = this.foodCards.filter(card => card.id !== id);
-    } catch (error) {
-      console.error('Error deleting food card:', error);
+      console.error('Fehler beim hinzufügen der Food-card: ', error);
     }
   }
 
