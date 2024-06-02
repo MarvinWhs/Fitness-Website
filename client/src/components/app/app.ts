@@ -23,6 +23,8 @@ export class AppComponent extends LitElement {
       { path: '/', render: () => html`<fitness-home></fitness-home>` },
       { path: '/fitness-home', render: () => html`<fitness-home></fitness-home>` },
       { path: '/exercises', render: () => html`<trainings-sessions></trainings-sessions>` },
+      { path: '/login-page', render: () => html`<login-page></login-page>` },
+      { path: '/register-page', render: () => html`<register-page></register-page>` },
       { path: '/tracker-home', render: () => html`<tracker-home></tracker-home>` }
     ],
     {
