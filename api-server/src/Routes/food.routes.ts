@@ -7,7 +7,7 @@ import { GenericDAO } from '../models/generic.dao.js';
 
 const router = express.Router();
 
-router.get('/foods', async (req, res) => {
+router.get('/food-cards', async (req, res) => {
   try {
     const foodDAO: MongoGenericDAO<Food> = req.app.locals.foodDAO;
     const foods = await foodDAO.findAll();
@@ -27,7 +27,7 @@ router.get('/foods', async (req, res) => {
   }
 });
 
-router.post('/foods', authService.authenticationMiddleware, async (req, res) => {
+router.post('/food-cards', authService.authenticationMiddleware, async (req, res) => {
   try {
     const foodDAO: GenericDAO<Food> = req.app.locals.foodDAO;
     const food = await foodDAO.create({
@@ -50,7 +50,7 @@ router.post('/foods', authService.authenticationMiddleware, async (req, res) => 
   }
 });
 
-router.delete('/foods/:id', authService.authenticationMiddleware, async (req, res) => {
+router.delete('/food-cards/:id', authService.authenticationMiddleware, async (req, res) => {
   try {
     const foodDAO: MongoGenericDAO<Food> = req.app.locals.foodDAO;
     const id = req.params.id;
@@ -65,3 +65,5 @@ router.delete('/foods/:id', authService.authenticationMiddleware, async (req, re
     res.status(500).send(err);
   }
 });
+
+export default router;

@@ -9,6 +9,7 @@ import startDB from './db.js';
 import config from '../config.json' assert { type: 'json' };
 import exerciseRoute from './Routes/exercise.route.js';
 import authRoutes from './Routes/auth.routes.js';
+import foodRoutes from './Routes/food.routes.js';
 import { corsService } from './Routes/services/cors.service.js';
 
 function configureApp(app: Express) {
@@ -23,6 +24,7 @@ function configureApp(app: Express) {
   app.use(cookieParser());
   app.use(cors());
   app.use(exerciseRoute);
+  app.use(foodRoutes);
   app.use(authRoutes);
   app.use(corsService.manageCors);
 

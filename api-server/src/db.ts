@@ -43,7 +43,7 @@ async function startMongoDB(app: Express) {
   // TODO: DAOs erstellen und in app.locals ablegen
   app.locals.exerciseDAO = new MongoGenericDAO<Exercise>(db, 'exercises');
   app.locals.userDAO = new MongoGenericDAO<User>(db, 'users'); // Initialisiere MongoGenericDAO für Benutzer
-  app.locals.foodDAO = new MongoGenericDAO<Food>(db, 'foods'); // Initialisiere MongoGenericDAO für Lebensmittel
+  app.locals.foodDAO = new MongoGenericDAO<Food>(db, 'food-cards'); // Initialisiere MongoGenericDAO für Lebensmittel
 }
 
 async function connectToMongoDB() {
@@ -66,7 +66,7 @@ async function startPsql(app: Express) {
   // TODO: DAOs erstellen und in app.locals ablegen
   app.locals.exerciseDAO = new PsqlGenericDAO<Exercise>(client!, 'exercises');
   app.locals.userDAO = new PsqlGenericDAO<User>(client!, 'users'); // Initialisiere UserDAO
-  app.locals.foodDAO = new PsqlGenericDAO<Food>(client!, 'foods'); // Initialisiere FoodDAO
+  app.locals.foodDAO = new PsqlGenericDAO<Food>(client!, 'food-cards'); // Initialisiere FoodDAO
 }
 
 async function connectToPsql() {
