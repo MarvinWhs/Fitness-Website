@@ -4,6 +4,7 @@ import { customElement, query, state } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import { HttpClient, httpClientContext } from '../../../http-client.js';
 import componentStyle from './trainings-sessions.css?inline';
+import { Notificator } from '../../widgets/notificator/notificator.js';
 
 @customElement('trainings-sessions')
 export class TrainingsComponent extends LitElement {
@@ -70,8 +71,10 @@ export class TrainingsComponent extends LitElement {
       console.log('Server Response:', response);
       this.closeModal();
       window.location.reload();
+      Notificator.showNotification('Übung erfolgreich hinzugefügt', 'erfolg');
     } catch (error) {
       console.error('Fehler beim Senden der Daten:', error);
+      Notificator.showNotification('Fehler beim Senden der Daten', 'fehler');
     }
   }
   private async scaleImageIfNeeded(file: File): Promise<File> {
@@ -125,6 +128,7 @@ export class TrainingsComponent extends LitElement {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) {
       console.error('No file selected');
+      Notificator.showNotification('Keine Datei ausgewählt', 'fehler');
       return;
     }
     const file = input.files[0];
@@ -145,6 +149,7 @@ export class TrainingsComponent extends LitElement {
     };
     reader.onerror = () => {
       console.error('Error reading file');
+      Notificator.showNotification('Fehler beim Lesen der Datei', 'fehler');
     };
     reader.readAsDataURL(file);
   }

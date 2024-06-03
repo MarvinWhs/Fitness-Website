@@ -48,6 +48,7 @@ export class AppComponent extends LitElement {
           <link rel="stylesheet" href="app.css" />
         </head>
         <my-header></my-header>
+        <notification-widget></notification-widget>
         <main>${this.router.outlet()}</main>
         <my-footer></my-footer>
       </html>
