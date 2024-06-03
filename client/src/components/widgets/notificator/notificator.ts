@@ -1,3 +1,4 @@
+/* Autor: Marvin Wiechers*/
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import componentStyle from './notificator.css?inline';
