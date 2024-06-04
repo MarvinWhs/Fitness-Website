@@ -21,6 +21,7 @@ export class HttpClient {
         'Content-Type': 'application/json; charset=utf-8',
         'X-PersPl-CSRF-PROTECTION': '13'
       },
+      credentials: 'include',
       body: JSON.stringify(data)
     });
     return this.result(response);

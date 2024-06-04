@@ -55,6 +55,7 @@ export class LoginPage extends LitElement {
           headers: {
             'Content-Type': 'application/json'
           },
+          credentials: 'include',
           body: JSON.stringify({
             username: this.username,
             password: this.password
@@ -65,11 +66,6 @@ export class LoginPage extends LitElement {
           const result = await response.json();
           localStorage.setItem('authToken', result.token); // Speichern des Tokens
           console.log('Login erfolgreich');
-          // Clear the input fields after successful login
-          this.username = '';
-          this.password = '';
-          this.generalErrorMessage = '';
-          // Update the component to reflect cleared input fields
           await this.requestUpdate();
           window.location.href = '/fitness-home';
         } else {
