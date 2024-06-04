@@ -1,27 +1,29 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import componentStyle from './my-header.css?inline';
+import { consume } from '@lit/context';
+import { authContext, AuthState } from '../../pages/login-page/auth-context';
+import { Router } from '../../../router.js';
+import { routerContext } from '../../../router.js';
 
 @customElement('my-header')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MyHeader extends LitElement {
   static styles = [componentStyle];
 
-  @property()
-  condition = false; // Ist dieser Person eingeloggt oder nicht
-
   @property({ type: Boolean })
   sidebarOpen = false;
 
   /* Autor Niklas Lobo */
-  constructor() {
-    super();
-    this.condition = this.isLoggedIn();
-  }
+  @consume({ context: authContext, subscribe: true })
+  authState!: AuthState;
+
+  @consume({ context: routerContext, subscribe: true })
+  router!: Router;
+
   /* Autor Niklas Lobo */
   isLoggedIn(): boolean {
-    const token = localStorage.getItem('authToken');
-    return !!token; // Wenn ein Token vorhanden ist, ist der Benutzer eingeloggt
+    return this.authState.isAuthenticated;
   }
 
   toggleSidebar() {
@@ -32,13 +34,12 @@ class MyHeader extends LitElement {
     this.sidebarOpen = false;
   }
 
-  /* Autor Niklas Lobo */
   handleLogout() {
-    // Entferne das Token aus dem localStorage
     localStorage.removeItem('authToken');
-
-    // Weiterleitung zur Login-Seite
-    window.location.href = '/fitness-home';
+    this.authState.isAuthenticated = false;
+    this.authState.user = null;
+    this.requestUpdate();
+    this.router.goto('/fitness-home');
   }
 
   firstUpdated() {
@@ -71,7 +72,7 @@ class MyHeader extends LitElement {
               <li data-page><a href="/exercises">Trainingseinheiten</a></li>
               <li data-page><a href="/tracker-home">Ernährungstracker</a></li>
               <li data-page><a href="/kalendar">Kalendar</a></li>
-              ${this.condition
+              ${this.authState.isAuthenticated
                 ? html`<li data-page><a href="/profile">Profil</a></li>
                     <li><button @click="${this.handleLogout}">Logout</button></li>`
                 : html`<li data-page><a href="/login-page">Anmelden</a></li>
@@ -87,7 +88,7 @@ class MyHeader extends LitElement {
             <li data-page><a href="/exercises">Trainingseinheiten</a></li>
             <li data-page><a href="/tracker-home">Ernährungstracker</a></li>
             <li data-page><a href="/kalendar">Kalendar</a></li>
-            ${this.condition
+            ${this.authState.isAuthenticated
               ? html`<li data-page><a href="/profile">Profil</a></li>
                   <li><button @click="${this.handleLogout}">Logout</button></li>`
               : html`<li data-page><a href="/login-page">Anmelden</a></li>

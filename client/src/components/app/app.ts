@@ -9,6 +9,7 @@ import { HttpClient, httpClientContext } from '../../http-client.js';
 import { Router } from '../../router.js';
 import '../widgets/my-header/my-header.js';
 import '../widgets/my-footer/my-footer.js';
+import { authContext, AuthState } from '../pages/login-page/auth-context.js';
 const APP_TITLE = 'All in One Fitness';
 
 @customElement('app-root')
@@ -17,6 +18,12 @@ export class AppComponent extends LitElement {
 
   @provide({ context: httpClientContext })
   httpClient = new HttpClient();
+
+  @provide({ context: authContext })
+  authState: AuthState = {
+    isAuthenticated: !!localStorage.getItem('authToken')
+  };
+
   router = new Router(
     this,
     [

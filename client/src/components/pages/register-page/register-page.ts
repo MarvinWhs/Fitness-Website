@@ -5,6 +5,8 @@ import componentStyle from './register-page.css?inline';
 import { customElement } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import { HttpClient, httpClientContext } from '../../../http-client.js';
+import { Router } from '../../../router.js';
+import { routerContext } from '../../../router.js';
 
 @customElement('register-page')
 export class RegisterPage extends LitElement {
@@ -12,6 +14,9 @@ export class RegisterPage extends LitElement {
 
   @consume({ context: httpClientContext })
   httpClient!: HttpClient;
+
+  @consume({ context: routerContext, subscribe: true })
+  router!: Router;
 
   username: string;
   password: string;
@@ -103,8 +108,10 @@ export class RegisterPage extends LitElement {
         const result = await response.json();
         localStorage.setItem('authToken', result.token); // Speichern des Tokens
         console.log('Registrierung erfolgreich');
-        await this.requestUpdate();
-        window.location.href = '/fitness-home';
+        this.updateComplete.then(() => {
+          this.requestUpdate();
+          this.router.goto('/fitness-home');
+        });
       } else {
         console.error('Registrierung fehlgeschlagen');
       }

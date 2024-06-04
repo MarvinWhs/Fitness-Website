@@ -5,6 +5,9 @@ import componentStyle from './login-page.css?inline';
 import { customElement } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import { HttpClient, httpClientContext } from '../../../http-client.js';
+import { Router } from '../../../router.js';
+import { routerContext } from '../../../router.js';
+import { authContext, AuthState } from './auth-context.js';
 
 @customElement('login-page')
 export class LoginPage extends LitElement {
@@ -12,6 +15,12 @@ export class LoginPage extends LitElement {
 
   @consume({ context: httpClientContext })
   httpClient!: HttpClient;
+
+  @consume({ context: routerContext, subscribe: true })
+  router!: Router;
+
+  @consume({ context: authContext, subscribe: true })
+  authState!: AuthState;
 
   username: string;
   password: string;
@@ -63,18 +72,21 @@ export class LoginPage extends LitElement {
           const result = await response.json();
           localStorage.setItem('authToken', result.token); // Speichern des Tokens
           console.log('Login erfolgreich');
-          await this.requestUpdate();
-          window.location.href = '/fitness-home';
+          this.authState.isAuthenticated = true;
+          console.log('AuthState:', this.authState);
+          this.updateComplete.then(() => {
+            this.requestUpdate();
+            console.log('Requested Update');
+          });
+          this.router.back();
         } else {
           const result = await response.json();
           this.generalErrorMessage = result.message || 'Login fehlgeschlagen';
           console.error('Login fehlgeschlagen');
-          await this.requestUpdate();
         }
       } catch (error) {
         this.generalErrorMessage = 'Fehler beim Anmelden';
         console.error('Fehler beim Anmelden', error);
-        await this.requestUpdate();
       }
     }
   }
