@@ -48,7 +48,7 @@ router.post('/login', async (req, res) => {
     const user = await userDAO.findOne({ username });
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      authService.createAndSetToken({ username: user.username }, res);
+      authService.createAndSetToken({ id: user.id }, res);
       res.status(200).send({ message: 'Erfolgreich angemeldet' });
     } else {
       res.status(401).send({ message: 'Falsche Eingabe' });
