@@ -6,7 +6,7 @@ import { customElement } from 'lit/decorators.js';
 import { provide } from '@lit/context';
 import componentStyle from './app.css?inline';
 import { HttpClient, httpClientContext } from '../../http-client.js';
-import { Router } from '../../router.js';
+import { Router, routerContext } from '../../router.js';
 import '../widgets/my-header/my-header.js';
 import '../widgets/my-footer/my-footer.js';
 import { authContext, AuthState } from '../pages/login-page/auth-context.js';
@@ -24,6 +24,7 @@ export class AppComponent extends LitElement {
     isAuthenticated: !!localStorage.getItem('authToken')
   };
 
+  @provide({ context: routerContext })
   router = new Router(
     this,
     [

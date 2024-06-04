@@ -76,9 +76,10 @@ export class LoginPage extends LitElement {
           console.log('AuthState:', this.authState);
           this.updateComplete.then(() => {
             this.requestUpdate();
-            console.log('Requested Update');
           });
-          this.router.back();
+          this.router.goto('/fitness-home');
+          this.dispatchEvent(new CustomEvent('user-login', { bubbles: true, composed: true }));
+          window.location.pathname = '/fitness-home';
         } else {
           const result = await response.json();
           this.generalErrorMessage = result.message || 'Login fehlgeschlagen';

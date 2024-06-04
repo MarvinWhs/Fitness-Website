@@ -7,6 +7,7 @@ import { consume } from '@lit/context';
 import { HttpClient, httpClientContext } from '../../../http-client.js';
 import { Router } from '../../../router.js';
 import { routerContext } from '../../../router.js';
+import { authContext, AuthState } from '../login-page/auth-context.js';
 
 @customElement('register-page')
 export class RegisterPage extends LitElement {
@@ -17,6 +18,9 @@ export class RegisterPage extends LitElement {
 
   @consume({ context: routerContext, subscribe: true })
   router!: Router;
+
+  @consume({ context: authContext, subscribe: true })
+  authState!: AuthState;
 
   username: string;
   password: string;
@@ -107,11 +111,15 @@ export class RegisterPage extends LitElement {
       if (response.ok) {
         const result = await response.json();
         localStorage.setItem('authToken', result.token); // Speichern des Tokens
-        console.log('Registrierung erfolgreich');
+        console.log('Login erfolgreich');
+        this.authState.isAuthenticated = true;
+        console.log('AuthState:', this.authState);
         this.updateComplete.then(() => {
           this.requestUpdate();
-          this.router.goto('/fitness-home');
         });
+        this.router.goto('/fitness-home');
+        this.dispatchEvent(new CustomEvent('user-login', { bubbles: true, composed: true }));
+        window.location.pathname = '/fitness-home';
       } else {
         console.error('Registrierung fehlgeschlagen');
       }

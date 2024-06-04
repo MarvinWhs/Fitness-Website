@@ -44,10 +44,11 @@ class MyHeader extends LitElement {
 
   firstUpdated() {
     document.addEventListener('click', this.handleOutsideClick.bind(this));
+    this.addEventListener('user-login', () => this.requestUpdate());
   }
-
   disconnectedCallback() {
     document.removeEventListener('click', this.handleOutsideClick.bind(this));
+    this.removeEventListener('user-login', () => this.requestUpdate());
     super.disconnectedCallback();
   }
 
