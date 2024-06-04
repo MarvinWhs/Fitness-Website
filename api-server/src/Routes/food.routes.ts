@@ -56,11 +56,19 @@ router.delete('/food-cards/:id', authService.authenticationMiddleware, async (re
     const id = req.params.id;
     const food = await foodDAO.findOne({ id });
     if (!food) {
-      res.status(404).send('Food not found');
+      res.status(404).send();
       return;
     }
-    await foodDAO.delete(id);
-    res.status(204).send();
+    if (res.locals.user.id !== food.userId) {
+      res.status(401).send();
+      return;
+    }
+    const success = await foodDAO.delete(id);
+    if (success) {
+      res.status(204).send();
+    } else {
+      res.status(404).send();
+    }
   } catch (err) {
     res.status(500).send(err);
   }
