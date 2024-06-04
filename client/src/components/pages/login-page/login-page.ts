@@ -3,10 +3,24 @@
 import { html, LitElement } from 'lit';
 import componentStyle from './login-page.css?inline';
 import { customElement } from 'lit/decorators.js';
+import { consume } from '@lit/context';
+import { HttpClient, httpClientContext } from '../../../http-client.js';
+import { Router } from '../../../router.js';
+import { routerContext } from '../../../router.js';
+import { authContext, AuthState } from './auth-context.js';
 
 @customElement('login-page')
 export class LoginPage extends LitElement {
   static styles = [componentStyle];
+
+  @consume({ context: httpClientContext })
+  httpClient!: HttpClient;
+
+  @consume({ context: routerContext, subscribe: true })
+  router!: Router;
+
+  @consume({ context: authContext, subscribe: true })
+  authState!: AuthState;
 
   username: string;
   password: string;
@@ -47,41 +61,33 @@ export class LoginPage extends LitElement {
     e.preventDefault();
     // Check if there are any error messages
     const hasErrors = this.usernameErrorMessage || this.passwordErrorMessage;
-
+    const userData = {
+      username: this.username,
+      password: this.password
+    };
     if (!hasErrors) {
       try {
-        const response = await fetch('http://localhost:3000/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            username: this.username,
-            password: this.password
-          })
-        });
-
+        const response = await this.httpClient.post('http://localhost:3000/login', userData);
         if (response.ok) {
           const result = await response.json();
           localStorage.setItem('authToken', result.token); // Speichern des Tokens
           console.log('Login erfolgreich');
-          // Clear the input fields after successful login
-          this.username = '';
-          this.password = '';
-          this.generalErrorMessage = '';
-          // Update the component to reflect cleared input fields
-          await this.requestUpdate();
-          window.location.href = '/fitness-home';
+          this.authState.isAuthenticated = true;
+          console.log('AuthState:', this.authState);
+          this.updateComplete.then(() => {
+            this.requestUpdate();
+          });
+          this.router.goto('/fitness-home');
+          this.dispatchEvent(new CustomEvent('user-login', { bubbles: true, composed: true }));
+          window.location.pathname = '/fitness-home';
         } else {
           const result = await response.json();
           this.generalErrorMessage = result.message || 'Login fehlgeschlagen';
           console.error('Login fehlgeschlagen');
-          await this.requestUpdate();
         }
       } catch (error) {
         this.generalErrorMessage = 'Fehler beim Anmelden';
         console.error('Fehler beim Anmelden', error);
-        await this.requestUpdate();
       }
     }
   }

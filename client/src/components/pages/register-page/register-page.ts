@@ -3,10 +3,24 @@
 import { html, LitElement } from 'lit';
 import componentStyle from './register-page.css?inline';
 import { customElement } from 'lit/decorators.js';
+import { consume } from '@lit/context';
+import { HttpClient, httpClientContext } from '../../../http-client.js';
+import { Router } from '../../../router.js';
+import { routerContext } from '../../../router.js';
+import { authContext, AuthState } from '../login-page/auth-context.js';
 
 @customElement('register-page')
 export class RegisterPage extends LitElement {
   static styles = [componentStyle];
+
+  @consume({ context: httpClientContext })
+  httpClient!: HttpClient;
+
+  @consume({ context: routerContext, subscribe: true })
+  router!: Router;
+
+  @consume({ context: authContext, subscribe: true })
+  authState!: AuthState;
 
   username: string;
   password: string;
@@ -85,30 +99,27 @@ export class RegisterPage extends LitElement {
       this.emailErrorMessage ||
       this.confirmPasswordErrorMessage;
 
-    if (!hasErrors) {
-      const response = await fetch('http://localhost:3000/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: this.username,
-          password: this.password,
-          passwordCheck: this.confirmPassword,
-          email: this.email
-        })
-      });
-      if (response.ok) {
-        console.log('Registrierung erfolgreich');
-        // Clear the input fields after successful registration
-        this.username = '';
-        this.password = '';
-        this.confirmPassword = '';
-        this.email = '';
-        // Update the component to reflect cleared input fields
-        await this.requestUpdate();
+    const userData = {
+      username: this.username,
+      password: this.password,
+      passwordCheck: this.confirmPassword,
+      email: this.email
+    };
 
-        window.location.href = '/fitness-home';
+    if (!hasErrors) {
+      const response = await this.httpClient.post('http://localhost:3000/register', userData);
+      if (response.ok) {
+        const result = await response.json();
+        localStorage.setItem('authToken', result.token); // Speichern des Tokens
+        console.log('Login erfolgreich');
+        this.authState.isAuthenticated = true;
+        console.log('AuthState:', this.authState);
+        this.updateComplete.then(() => {
+          this.requestUpdate();
+        });
+        this.router.goto('/fitness-home');
+        this.dispatchEvent(new CustomEvent('user-login', { bubbles: true, composed: true }));
+        window.location.pathname = '/fitness-home';
       } else {
         console.error('Registrierung fehlgeschlagen');
       }
