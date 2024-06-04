@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import componentStyle from './trainings-card.css?inline';
+import { Notificator } from '../notificator/notificator.js';
 
 interface Exercise {
   id: string; // Normale ID als string
@@ -70,10 +71,20 @@ export class TrainingsCard extends LitElement {
         method: 'DELETE'
       });
       if (!response.ok) {
-        throw new Error('Failed to delete exercise');
+        if (response.status === 404) {
+          Notificator.showNotification('Übung nicht gefunden', 'fehler');
+          throw new Error('Exercise not found');
+        }
+        if (response.status === 401) {
+          Notificator.showNotification('Sie können nur Übungen löschen, welche sie selber erstellt haben!', 'fehler');
+          throw new Error('User not authorized to delete exercise');
+        } else {
+          Notificator.showNotification('Fehler beim Löschen der Übung', 'fehler');
+          throw new Error('Failed to delete exercise');
+        }
       }
       this.exercises = this.exercises.filter(exercise => exercise.id !== exerciseId);
-      this.requestUpdate(); // Sicherstellen, dass die Ansicht aktualisiert wird
+      this.requestUpdate();
     } catch (error) {
       console.error(error);
     }

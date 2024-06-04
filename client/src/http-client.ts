@@ -13,11 +13,13 @@ export class HttpClient {
   async get(url: string) {
     return this.result(await fetch(this.resolve(url)));
   }
+  /*Autor: Marvin Wiechers */
   async post(url: string, data: unknown) {
     const response = await fetch(this.resolve(url), {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json; charset=utf-8',
+        'X-PersPl-CSRF-PROTECTION': '13'
       },
       body: JSON.stringify(data)
     });

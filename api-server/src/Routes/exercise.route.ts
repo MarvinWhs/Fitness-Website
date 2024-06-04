@@ -49,6 +49,7 @@ router.post('/exercises', authService.authenticationMiddleware, async (req, res)
       image: exercise.image
     });
   } catch (err) {
+    console.log(err);
     res.status(500).send(err);
   }
 });
