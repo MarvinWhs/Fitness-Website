@@ -1,7 +1,5 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
-import { consume } from '@lit/context';
-import { HttpClient, httpClientContext } from '../../../http-client';
 import componentStyle from './nutrition-tracker.css?inline';
 
 interface Food {
@@ -9,14 +7,12 @@ interface Food {
   name: string;
   calories: number;
   image: string; // Base64-kodierte Bildinformation
+  description: string; // Beschreibung der Mahlzeit
 }
 
 @customElement('nutrition-tracker')
 export class NutritionTracker extends LitElement {
   static styles = [componentStyle];
-
-  @consume({ context: httpClientContext })
-  httpClient!: HttpClient;
 
   @state() foodCards: Food[] = [];
   @property({ type: Number }) totalCalories = 0;
@@ -25,6 +21,7 @@ export class NutritionTracker extends LitElement {
 
   @query('input[type="file"]') fileInput!: HTMLInputElement;
   @query('.feld') totalCaloriesInput!: HTMLInputElement;
+  @query('pop-up') popUp!: HTMLElement & { show: (message: string) => void };
 
   constructor() {
     super();
@@ -41,13 +38,15 @@ export class NutritionTracker extends LitElement {
         method: 'GET'
       });
       if (!response.ok) {
-        throw new Error('Failed to fetch food cards');
+        const errorText = await response.text();
+        throw new Error(`Failed to fetch food cards: ${response.status} ${response.statusText} - ${errorText}`);
       }
       const responseData = await response.json();
       this.foodCards = responseData.map((food: any) => ({
         ...food,
-        id: food.id.toString() // Konvertiere die ID zu einem String
+        id: food.id.toString()
       }));
+      this.requestUpdate();
     } catch (error) {
       console.error(error);
     }
@@ -62,9 +61,40 @@ export class NutritionTracker extends LitElement {
         throw new Error('Failed to delete food');
       }
       this.foodCards = this.foodCards.filter(food => food.id !== id);
-      this.requestUpdate(); // Sicherstellen, dass die Ansicht aktualisiert wird
+      this.checkCalories();
+      this.requestUpdate();
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  async addFoodCard(event: Event): Promise<void> {
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const foodCardData = {
+      id: '',
+      name: formData.get('name') as string,
+      description: formData.get('description') as string,
+      calories: parseInt(formData.get('calories') as string),
+      image: this.imageData as string
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/food-cards', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(foodCardData)
+      });
+      if (!response.ok) {
+        throw new Error('Failed to add food');
+      }
+      this.closeModal();
+      await this.loadFoodCards();
+    } catch (error) {
+      console.error('Fehler beim Hinzufügen der Food-card: ', error);
     }
   }
 
@@ -72,11 +102,49 @@ export class NutritionTracker extends LitElement {
     const inputValue = this.totalCaloriesInput.value;
     this.totalCalories = parseInt(inputValue, 10);
     this.requestUpdate();
+    this.checkCalories();
   }
 
   getRemainingCalories() {
-    const consumedCalories = this.foodCards.reduce((sum, card) => sum + card.calories, 0);
+    const consumedCalories = this.foodCards.reduce((sum, card) => sum + Number(card.calories), 0);
+    console.log('consumedCalories', consumedCalories);
+    console.log('totalCalories', this.totalCalories);
     return this.totalCalories - consumedCalories;
+  }
+
+  checkCalories() {
+    const remainingCalories = this.getRemainingCalories();
+    if (remainingCalories < 0) {
+      this.openPopUp(`Kalorienüberschreitung um ${Math.abs(remainingCalories)} kcal!`);
+    }
+  }
+
+  openPopUp(message: string) {
+    this.popUp.show(message);
+  }
+
+  resetTotalCalories() {
+    this.totalCalories = 0;
+  }
+
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+  }
+
+  handleFileChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imageData = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   render() {
@@ -106,11 +174,12 @@ export class NutritionTracker extends LitElement {
                 `}
             <div class="food-list">
               ${this.foodCards.map(
-                card =>
-                  html`<food-card
+                card => html`
+                  <food-card
                     .food=${card}
                     @delete-food=${(e: CustomEvent) => this.deleteFoodCard(e.detail)}
-                  ></food-card>`
+                  ></food-card>
+                `
               )}
             </div>
             <div class="plus-button" @click=${this.openModal}><strong>+</strong></div>
@@ -122,7 +191,7 @@ export class NutritionTracker extends LitElement {
                       <h3>Neue Mahlzeit hinzufügen</h3>
                       <form @submit=${this.addFoodCard}>
                         <input type="text" name="name" placeholder="Name" required />
-                        <input type="textarea" name="description" placeholder="Beschreibung" required />
+                        <textarea name="description" placeholder="Beschreibung" required></textarea>
                         <input type="number" name="calories" placeholder="Kalorien" required />
                         <input type="file" name="image" @change=${this.handleFileChange} />
                         <button type="submit">Hinzufügen</button>
@@ -133,52 +202,8 @@ export class NutritionTracker extends LitElement {
               : nothing}
           </div>
         </div>
+        <pop-up></pop-up>
       </main>
     `;
-  }
-
-  resetTotalCalories() {
-    this.totalCalories = 0;
-  }
-
-  private async addFoodCard(event: Event): Promise<void> {
-    event.preventDefault();
-    const form = event.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const foodCardData = {
-      name: formData.get('name') as string,
-      description: formData.get('description') as string,
-      calories: parseInt(formData.get('calories') as string),
-      image: this.imageData
-    };
-
-    try {
-      const response = await this.httpClient.post('http://localhost:3000/food-cards', foodCardData);
-      console.log('Response:', response);
-      this.closeModal();
-      await this.loadFoodCards();
-    } catch (error) {
-      console.error('Fehler beim hinzufügen der Food-card: ', error);
-    }
-  }
-
-  private openModal(): void {
-    this.isModalOpen = true;
-  }
-
-  private closeModal(): void {
-    this.isModalOpen = false;
-  }
-
-  private handleFileChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imageData = reader.result;
-      };
-      reader.readAsDataURL(file);
-    }
   }
 }

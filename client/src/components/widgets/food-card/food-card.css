@@ -1,21 +1,21 @@
-
-.food-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.food-card .food-info {
-  padding: 10px;
-}
-
-.food-card-content {
+.container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
 }
 
-p {
-    margin: 0;
+.food-card {
+  border-radius: 20px; /* Abgerundete Ecken */
+  padding: 25px;
+  border: 1px solid #ccc;
+  background-color: #ccc;
+  margin-right: 300px;
+  margin-top: 12px;
+  flex: 1; /* Flexibles Wachstum */
+  width: 100%; /* Nutzt die gesamte Breite aus */
+  align-items: center;
+}
+
+img {
+  max-width: 100px;
+  max-height: 100px;
 }

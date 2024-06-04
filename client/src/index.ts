@@ -19,3 +19,4 @@ import './components/widgets/pop-up/pop-up.js';
 import './components/widgets/trainings-card/trainings-card.js';
 import './components/widgets/dark-mode/dark-mode.js';
 import './components/widgets/food-card/food-card.js';
+import './components/widgets/pop-up/pop-up.js';

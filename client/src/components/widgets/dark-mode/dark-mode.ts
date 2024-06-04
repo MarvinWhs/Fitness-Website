@@ -1,37 +1,40 @@
 import { LitElement, html } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import componentStyle from './dark-mode.css?inline';
 
 @customElement('dark-mode')
 export class DarkMode extends LitElement {
   static styles = [componentStyle];
 
+  @state() isDarkMode: boolean = false;
+
+  @property({ type: String, reflect: true })
+  theme: string = 'light';
+
   constructor() {
     super();
-    this.checkDarkMode(); // Überprüfen des aktuellen Dark-Mode-Status beim Laden des Widgets
+    this.theme = localStorage.getItem('theme') || 'light';
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.checkDarkMode(); // Überprüfen des aktuellen Dark-Mode-Status beim Hinzufügen des Widgets zum DOM
+  firstUpdated() {
+    this.initTheme();
   }
 
-  checkDarkMode() {
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
-    document.body.classList.toggle('dark-mode', isDarkMode); // Verwende toggle, um die Klasse entsprechend hinzuzufügen oder zu entfernen
+  toggleTheme() {
+    this.theme = this.theme === 'light' ? 'dark' : 'light';
+    localStorage.setItem('theme', this.theme);
+    this.initTheme();
   }
 
-  toggleDarkMode() {
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
-    localStorage.setItem('darkMode', isDarkMode ? 'false' : 'true'); // Ändere den Status umgekehrt
-    this.checkDarkMode(); // Aktualisiere den Dark-Mode-Status
+  initTheme() {
+    document.documentElement.setAttribute('theme', this.theme);
   }
 
   render() {
     return html`
-      <button @click=${this.toggleDarkMode}>
-        ${localStorage.getItem('darkMode') === 'true' ? 'Light Mode' : 'Dark Mode'}
-      </button>
+      <input type="checkbox" @change=${this.toggleTheme} ?checked=${this.theme === 'dark'} />
+      <div class="slider"></div>
+      <div class="icon">${this.theme === 'dark' ? html`<img src="./moon.png" />` : html`<img src="./sun.png" />`}</div>
     `;
   }
 }
