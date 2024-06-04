@@ -56,6 +56,7 @@ router.post('/exercises', authService.authenticationMiddleware, async (req, res)
 
 router.delete('/exercises/:id', authService.authenticationMiddleware, async (req, res) => {
   try {
+    console.log('Delete exercise');
     const exerciseDAO: MongoGenericDAO<Exercise> = req.app.locals.exerciseDAO;
     const id = req.params.id;
     const exercise = await exerciseDAO.findOne({ id });
@@ -64,6 +65,8 @@ router.delete('/exercises/:id', authService.authenticationMiddleware, async (req
       return;
     }
     if (res.locals.user.id !== exercise.userId) {
+      console.log('User not authorized');
+      console.log(res.locals.user.id);
       res.status(401).send();
       return;
     }

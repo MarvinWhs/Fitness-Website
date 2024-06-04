@@ -4,16 +4,18 @@ import { Request, Response, NextFunction } from 'express';
 class CorsService {
   manageCors = (req: Request, res: Response, next: NextFunction): void => {
     const requestOrigin = req.get('Origin');
-
     if (this.checkOrigin(requestOrigin)) {
       res.header('Access-Control-Allow-Origin', requestOrigin);
       res.header('Access-Control-Allow-Credentials', 'true');
     }
-
     if (this.isPreflightRequest(req)) {
       res.header('Access-Control-Allow-Headers', 'Content-Type, X-PersPl-CSRF-PROTECTION');
       res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-      res.sendStatus(204);
+      if (req.method === 'OPTIONS') {
+        res.sendStatus(204);
+      } else {
+        next();
+      }
     } else {
       next();
     }

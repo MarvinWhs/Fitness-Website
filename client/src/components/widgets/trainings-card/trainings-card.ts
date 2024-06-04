@@ -2,6 +2,8 @@ import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import componentStyle from './trainings-card.css?inline';
 import { Notificator } from '../notificator/notificator.js';
+import { HttpClient, httpClientContext } from './../../../http-client.js';
+import { consume } from '@lit/context';
 
 interface Exercise {
   id: string; // Normale ID als string
@@ -15,6 +17,9 @@ interface Exercise {
 
 @customElement('trainings-card')
 export class TrainingsCard extends LitElement {
+  @consume({ context: httpClientContext })
+  httpClient!: HttpClient;
+
   @state()
   exercises: Exercise[] = []; // Array von Übungen
 
@@ -67,9 +72,7 @@ export class TrainingsCard extends LitElement {
 
   async deleteExercise(exerciseId: string) {
     try {
-      const response = await fetch(`http://localhost:3000/exercises/${exerciseId}`, {
-        method: 'DELETE'
-      });
+      const response = await this.httpClient.delete(`http://localhost:3000/exercises/${exerciseId}`);
       if (!response.ok) {
         if (response.status === 404) {
           Notificator.showNotification('Übung nicht gefunden', 'fehler');

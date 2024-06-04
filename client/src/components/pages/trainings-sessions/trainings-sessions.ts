@@ -70,7 +70,6 @@ export class TrainingsComponent extends LitElement {
       const response = await this.httpClient.post('http://localhost:3000/exercises', exerciseData);
       console.log('Server Response:', response);
       this.closeModal();
-      window.location.reload();
       Notificator.showNotification('Übung erfolgreich hinzugefügt', 'erfolg');
     } catch (error) {
       console.error('Fehler beim Senden der Daten:', error);

@@ -2,7 +2,6 @@
 
 import express, { Express } from 'express';
 import cookieParser from 'cookie-parser';
-import cors from 'cors';
 import http from 'node:http';
 import startDB from './db.js';
 
@@ -22,11 +21,10 @@ function configureApp(app: Express) {
     })
   );
   app.use(cookieParser());
-  app.use(cors());
+  app.use(corsService.manageCors);
   app.use(exerciseRoute);
   app.use(foodRoutes);
   app.use(authRoutes);
-  app.use(corsService.manageCors);
 
   app.use((req, res, next) => {
     res.set('Content-Security-Policy', `script-src 'self'; style-src 'self'; frame-ancestor 'none';`);

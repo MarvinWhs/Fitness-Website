@@ -26,6 +26,20 @@ export class HttpClient {
     });
     return this.result(response);
   }
+  /*Autor: Marvin Wiechers */
+  async delete(url: string) {
+    return this.result(
+      await fetch(this.resolve(url), {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'X-PersPl-CSRF-PROTECTION': '13'
+        },
+        credentials: 'include'
+      })
+    );
+  }
+
   addQueryString(url: string, params: { [key: string]: string }) {
     const queryString = Object.entries(params)
       .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)

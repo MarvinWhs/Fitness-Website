@@ -12,9 +12,12 @@ class AuthService {
     } else {
       const token = req.cookies['jwt-token'] || '';
       try {
+        console.log('Token: ' + token);
         res.locals.user = this.verifyToken(token);
+        console.log('User: ' + res.locals.user);
         next();
       } catch {
+        console.log('Token invalid');
         res.redirect('/users/sign-in');
       }
     }
@@ -22,7 +25,7 @@ class AuthService {
 
   createAndSetToken(userClaimSet: Record<string, unknown>, res: Response) {
     const token = jwt.sign(userClaimSet, SECRET, { algorithm: 'HS256', expiresIn: '1h' });
-    res.cookie('jwt-token', token);
+    res.cookie('jwt-token', token, { /* httpOnly: true, */ sameSite: 'lax' });
   }
 
   verifyToken(token: string) {
