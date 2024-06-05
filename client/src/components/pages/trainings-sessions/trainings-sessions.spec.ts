@@ -1,3 +1,4 @@
+/* Autor: Marvin Wiechers */
 import { expect } from 'chai';
 import { html, fixture, fixtureCleanup } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
@@ -84,7 +85,7 @@ describe('TrainingsComponent', () => {
 
   it('should add exercise', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const spyCloseModal = sinon.spy(element, 'closeModal' as any); // Verwendung der richtigen Methode
+    const spyCloseModal = sinon.spy(element as any, 'closeModal'); // Verwendung der richtigen Methode
 
     element.imageData = 'data:image/png;base64,dummycontent';
     const button = element.shadowRoot!.querySelector('.link-button') as HTMLButtonElement;
