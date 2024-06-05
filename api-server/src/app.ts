@@ -28,8 +28,12 @@ function configureApp(app: Express) {
 
   app.use((req, res, next) => {
     res.set('Content-Security-Policy', `script-src 'self'; style-src 'self'; frame-ancestor 'none';`);
-    res.set('Strict-Transport-Security', 'max-age=36288000; includeSubDomains');
-    res.set('Cross-Origin-Ressource-Policy', 'same-origin');
+    res.set('Strict-Transport-Security', 'max-age=36288000; includeSubDomains; preload');
+    res.set('Cross-Origin-Resource-Policy', 'same-origin');
+    res.set('X-Frame-Options', 'SAMEORIGIN');
+    res.set('X-Content-Type-Options', 'nosniff');
+    res.set('X-XSS-Protection', '1; mode=block');
+    res.set('Referrer-Policy', 'same-origin');
     next();
   });
 }

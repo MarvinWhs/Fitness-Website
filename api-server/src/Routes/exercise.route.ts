@@ -4,6 +4,7 @@ import { Exercise } from '../models/exercise';
 import { GenericDAO } from '../models/generic.dao';
 import { MongoGenericDAO } from '../models/mongo-generic.dao';
 import { authService } from './services/auth.service.js';
+import { cryptoService } from './services/crypto.service.js';
 
 const router = express.Router();
 
@@ -15,10 +16,10 @@ router.get('/exercises', async (req, res) => {
       exercises.map(exercise => {
         return {
           id: exercise.id,
-          name: exercise.name,
-          description: exercise.description,
+          name: cryptoService.decrypt(exercise.name),
+          description: cryptoService.decrypt(exercise.description),
           duration: exercise.duration,
-          difficulty: exercise.difficulty,
+          difficulty: cryptoService.decrypt(exercise.difficulty),
           image: exercise.image
         };
       })
@@ -33,19 +34,19 @@ router.post('/exercises', authService.authenticationMiddleware, async (req, res)
     const exerciseDAO: GenericDAO<Exercise> = req.app.locals.exerciseDAO;
     const exercise = await exerciseDAO.create({
       userId: res.locals.user.id,
-      name: req.body.name,
-      description: req.body.description,
+      name: cryptoService.encrypt(req.body.name),
+      description: cryptoService.encrypt(req.body.description),
       duration: req.body.duration,
-      difficulty: req.body.difficulty,
+      difficulty: cryptoService.encrypt(req.body.difficulty),
       image: req.body.image
     });
     res.status(201).json({
       ...exercise,
       id: exercise.id,
-      name: exercise.name,
-      description: exercise.description,
+      name: cryptoService.decrypt(exercise.name),
+      description: cryptoService.decrypt(exercise.description),
       duration: exercise.duration,
-      difficulty: exercise.difficulty,
+      difficulty: cryptoService.decrypt(exercise.difficulty),
       image: exercise.image
     });
   } catch (err) {

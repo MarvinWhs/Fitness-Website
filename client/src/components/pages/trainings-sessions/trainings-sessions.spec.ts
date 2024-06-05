@@ -3,22 +3,28 @@ import { html, fixture, fixtureCleanup } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
 import './trainings-sessions';
 import { TrainingsComponent } from './trainings-sessions';
-import { describe, beforeEach, afterEach, it, before, after } from 'node:test';
+import { describe, beforeEach, afterEach, it, before, after } from 'mocha';
+import { HttpClient } from '../../../http-client'; // Import des neuen HTTP-Clients
 
 describe('TrainingsComponent', () => {
   let element: TrainingsComponent;
-  let httpClient: unknown;
+  let httpClient: HttpClient; // Verwendung des neuen HTTP-Clients
+  let httpClientStub: sinon.SinonStub;
 
   beforeEach(async () => {
     element = await fixture<TrainingsComponent>(html`<trainings-sessions></trainings-sessions>`);
-    httpClient = {
-      post: sinon.stub().resolves({ status: 200 })
-    };
-    (element as any).httpClient = httpClient;
+    httpClient = new HttpClient(); // Initialisierung des neuen HTTP-Clients
+    httpClient.init('http://localhost:3000'); // Setzen der Basis-URL für den HTTP-Client
+
+    // Stub für die HTTP-Post-Methode
+    httpClientStub = sinon.stub(httpClient, 'post').resolves(new Response(null, { status: 200 }));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (element as any).httpClient = httpClient; // Zuweisung des HTTP-Clients zur Komponente
   });
 
   afterEach(() => {
     fixtureCleanup();
+    httpClientStub.restore(); // Wiederherstellung des ursprünglichen HTTP-Clients
   });
 
   it('should render correctly', () => {
@@ -77,7 +83,8 @@ describe('TrainingsComponent', () => {
   });
 
   it('should add exercise', async () => {
-    const spyCloseModal = sinon.spy(element as any, 'closeModal'); // as any workaround for private method
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const spyCloseModal = sinon.spy(element, 'closeModal' as any); // Verwendung der richtigen Methode
 
     element.imageData = 'data:image/png;base64,dummycontent';
     const button = element.shadowRoot!.querySelector('.link-button') as HTMLButtonElement;
@@ -103,9 +110,9 @@ describe('TrainingsComponent', () => {
 
     await element.updateComplete;
 
-    expect(httpClient.post.calledOnce).to.be.true;
-    expect(httpClient.post.firstCall.args[0]).to.equal('http://localhost:3000/exercises');
-    expect(httpClient.post.firstCall.args[1]).to.deep.include({
+    expect(httpClientStub.calledOnce).to.be.true;
+    expect(httpClientStub.firstCall.args[0]).to.equal('http://localhost:3000/exercises');
+    expect(httpClientStub.firstCall.args[1]).to.deep.include({
       name: 'Test Exercise',
       description: 'This is a test exercise',
       duration: 30,
@@ -119,7 +126,7 @@ describe('TrainingsComponent', () => {
   });
 
   it('should handle error during add exercise', async () => {
-    httpClient.post.rejects(new Error('Failed to add exercise'));
+    httpClientStub.rejects(new Error('Failed to add exercise'));
     const consoleErrorSpy = sinon.spy(console, 'error');
 
     element.imageData = 'data:image/png;base64,dummycontent';
@@ -146,7 +153,7 @@ describe('TrainingsComponent', () => {
 
     await element.updateComplete;
 
-    expect(httpClient.post.calledOnce).to.be.true;
+    expect(httpClientStub.calledOnce).to.be.true;
     expect(consoleErrorSpy.calledWith('Fehler beim Senden der Daten:', sinon.match.any)).to.be.true;
 
     consoleErrorSpy.restore();

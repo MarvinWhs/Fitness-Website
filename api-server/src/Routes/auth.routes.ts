@@ -5,11 +5,12 @@ import bcrypt from 'bcrypt';
 import { GenericDAO } from '../models/generic.dao.js';
 import { User } from '../models/user.js';
 import { authService } from './services/auth.service.js';
+import { csrfService } from './services/csrf.service.js';
 
 const router = express.Router();
 
 // Register route with password confirmation and user existence check
-router.post('/register', async (req, res) => {
+router.post('/register', csrfService.manageCsrf, async (req, res) => {
   const { username, password, passwordCheck, email } = req.body;
 
   if (password !== passwordCheck) {
@@ -40,7 +41,7 @@ router.post('/register', async (req, res) => {
 });
 
 // Login route
-router.post('/login', async (req, res) => {
+router.post('/login', csrfService.manageCsrf, async (req, res) => {
   const { username, password } = req.body;
 
   const userDAO: GenericDAO<User> = req.app.locals.userDAO;

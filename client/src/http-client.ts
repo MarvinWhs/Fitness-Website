@@ -28,16 +28,15 @@ export class HttpClient {
   }
   /*Autor: Marvin Wiechers */
   async delete(url: string) {
-    return this.result(
-      await fetch(this.resolve(url), {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'X-PersPl-CSRF-PROTECTION': '13'
-        },
-        credentials: 'include'
-      })
-    );
+    const response = await fetch(this.resolve(url), {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'X-PersPl-CSRF-PROTECTION': '13'
+      },
+      credentials: 'include'
+    });
+    return response;
   }
 
   addQueryString(url: string, params: { [key: string]: string }) {

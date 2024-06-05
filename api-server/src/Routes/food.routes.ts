@@ -4,6 +4,7 @@ import { MongoGenericDAO } from '../models/mongo-generic.dao.js';
 import { Food } from '../models/food.js';
 import { authService } from './services/auth.service.js';
 import { GenericDAO } from '../models/generic.dao.js';
+import { cryptoService } from './services/crypto.service.js';
 
 const router = express.Router();
 
@@ -15,9 +16,9 @@ router.get('/food-cards', async (req, res) => {
       foods.map(food => {
         return {
           id: food.id,
-          name: food.name,
+          name: cryptoService.decrypt(food.name),
           calories: food.calories,
-          description: food.description,
+          description: cryptoService.decrypt(food.description),
           image: food.image
         };
       })
@@ -32,16 +33,16 @@ router.post('/food-cards', authService.authenticationMiddleware, async (req, res
     const foodDAO: GenericDAO<Food> = req.app.locals.foodDAO;
     const food = await foodDAO.create({
       userId: res.locals.user.id,
-      name: req.body.name,
-      description: req.body.description,
+      name: cryptoService.encrypt(req.body.name),
+      description: cryptoService.encrypt(req.body.description),
       calories: req.body.calories,
       image: req.body.image
     });
     res.status(201).json({
       ...food,
       id: food.id,
-      name: food.name,
-      description: food.description,
+      name: cryptoService.decrypt(food.name),
+      description: cryptoService.decrypt(food.description),
       calories: food.calories,
       image: food.image
     });
