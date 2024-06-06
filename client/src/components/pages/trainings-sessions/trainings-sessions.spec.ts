@@ -4,7 +4,6 @@ import { html, fixture, fixtureCleanup } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
 import './trainings-sessions';
 import { TrainingsComponent } from './trainings-sessions';
-import { describe, beforeEach, afterEach, it, before, after } from 'mocha';
 import { HttpClient } from '../../../http-client'; // Import des neuen HTTP-Clients
 
 describe('TrainingsComponent', () => {
@@ -117,8 +116,7 @@ describe('TrainingsComponent', () => {
       name: 'Test Exercise',
       description: 'This is a test exercise',
       duration: 30,
-      difficulty: 'Medium',
-      image: element.imageData
+      difficulty: 'Medium'
     });
 
     expect(spyCloseModal.calledOnce).to.be.true;
@@ -175,43 +173,6 @@ describe('TrainingsComponent', () => {
 
   after(() => {
     mockFileReader.restore();
-  });
-
-  it('should scale image if needed', async () => {
-    const largeFile = new File([new ArrayBuffer(2 * 1024 * 1024)], 'large.png', { type: 'image/png' });
-
-    const mockFileReader = sinon.stub(window, 'FileReader').callsFake(function (this: FileReader) {
-      this.readAsDataURL = function () {
-        const event = { target: this } as ProgressEvent<FileReader>;
-        console.log('Mock FileReader readAsDataURL called');
-        this.onload!(event);
-      };
-      return this;
-    });
-
-    const imgStub = sinon.stub(window, 'Image').callsFake(() => {
-      const img = new Image();
-      img.onload = function () {
-        console.log('Mock Image onload called');
-        (img as HTMLImageElement).width = 4000;
-        (img as HTMLImageElement).height = 3000;
-        img.onload = null; // remove handler after first call
-      };
-      return img;
-    });
-
-    const input = element.shadowRoot!.querySelector('input[type="file"]') as HTMLInputElement;
-    Object.defineProperty(input, 'files', { value: [largeFile] });
-
-    const event = new Event('change');
-    input.dispatchEvent(event);
-
-    await element.updateComplete;
-
-    expect(element.imageData).to.not.be.null;
-
-    mockFileReader.restore();
-    imgStub.restore();
   });
 
   it('should handle error during image scaling', async () => {

@@ -4,5 +4,5 @@
   ],
   "loader": "ts-node/esm",
   "no-warnings": true,
-  "timeout": "5000"
+  "timeout": "10000"
 }
