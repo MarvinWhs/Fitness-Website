@@ -5,7 +5,7 @@ import { consume } from '@lit/context';
 import { HttpClient, httpClientContext } from '../../../http-client';
 
 @customElement('tracker-home')
-export class Tracker extends LitElement {
+export class TrackerHome extends LitElement {
   static styles = [componentStyle];
 
   @consume({ context: httpClientContext })
@@ -13,7 +13,7 @@ export class Tracker extends LitElement {
 
   render() {
     return html`
-      <div class="trackerHome">
+      <div class="tracker-home">
         <h1>Willkommen bei Ihrem persönlichen Ernährungstracker!</h1>
         <div class="StartText">
           <h2>Verfolgen Sie Ihren Kalorienbedarf und Ihre Ernährung mühelos</h2>

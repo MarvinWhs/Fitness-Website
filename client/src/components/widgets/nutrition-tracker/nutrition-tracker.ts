@@ -34,7 +34,7 @@ export class NutritionTracker extends LitElement {
 
   async loadFoodCards() {
     try {
-      const response = await fetch('http://localhost:3000/food-cards', {
+      const response = await fetch('https://localhost:3000/food-cards', {
         method: 'GET'
       });
       if (!response.ok) {
@@ -54,7 +54,7 @@ export class NutritionTracker extends LitElement {
 
   async deleteFoodCard(id: string) {
     try {
-      const response = await fetch(`http://localhost:3000/food-cards/${id}`, {
+      const response = await fetch(`https://localhost:3000/food-cards/${id}`, {
         method: 'DELETE'
       });
       if (!response.ok) {
@@ -81,7 +81,7 @@ export class NutritionTracker extends LitElement {
     };
 
     try {
-      const response = await fetch('http://localhost:3000/food-cards', {
+      const response = await fetch('https://localhost:3000/food-cards', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -100,9 +100,16 @@ export class NutritionTracker extends LitElement {
 
   submitTotalCalories() {
     const inputValue = this.totalCaloriesInput.value;
-    this.totalCalories = parseInt(inputValue, 10);
-    this.requestUpdate();
-    this.checkCalories();
+    const test = parseInt(inputValue, 10);
+    console.log(test);
+
+    if (test > 0) {
+      this.totalCalories = parseInt(inputValue, 10);
+      this.requestUpdate();
+      this.checkCalories();
+    } else {
+      this.openPopUp('Bitte geben Sie einen gültigen Wert ein!');
+    }
   }
 
   getRemainingCalories() {
@@ -166,6 +173,7 @@ export class NutritionTracker extends LitElement {
                     <input
                       type="number"
                       class="feld"
+                      min="1"
                       placeholder="Gesamter Kalorienbedarf eingeben"
                       .value=${this.totalCalories}
                     />
@@ -192,7 +200,7 @@ export class NutritionTracker extends LitElement {
                       <form @submit=${this.addFoodCard}>
                         <input type="text" name="name" placeholder="Name" required />
                         <textarea name="description" placeholder="Beschreibung" required></textarea>
-                        <input type="number" name="calories" placeholder="Kalorien" required />
+                        <input type="number" name="calories" min="1" placeholder="Kalorien" required />
                         <input type="file" name="image" @change=${this.handleFileChange} />
                         <button type="submit">Hinzufügen</button>
                       </form>

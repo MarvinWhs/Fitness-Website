@@ -1,66 +1,13 @@
-:host {
-  display: inline-block;
-  position: relative;
-  width: 54px;
-  height: 32px;
-}
-
-input {
+button {
+  font-size: 1.5rem;
+  padding: 0.5rem;
   cursor: pointer;
-  position: absolute;
-  z-index: 1;
-  opacity: 0;
-  width: 100%;
-  height: 100%;
+  border: none;
+  background: none;
+  align-self: baseline;
 }
 
-.slider {
-  position: absolute;
-  cursor: pointer;
-
-  width: 100%;
-  height: 16px;
-  top: 50%;
-
-  border-radius: 1rem;
-  background-color: var(--white);
-  transition: all .4s ease;
-}
-
-.icon {
-  width: 32px;
-  height: 32px;
-  display: inline-block;
-
-  position: absolute;
-  top: 50%;
-  border: 2px solid var(--white);
-  border-radius: 50%;
-
-  transition: transform 300ms ease;
-}
-
-:host([theme="light"]) .icon {
-  transform: translate(0, -50%);
-}
-
-input:checked ~ .icon,
-:host([theme="dark"]) .icon {
-  transform: translate(calc(100% - 18px), -50%);
-}
-
-.moon {
-  display: none;
-}
-
-.moon svg {
-  transform: scale(0.6);
-}
-
-:host([theme="dark"]) .sun {
-  display: none;
-}
-
-:host([theme="dark"]) .moon {
-  display: inline-block;
+body {
+  background-color: white;
+  color: black;
 }

@@ -7,8 +7,20 @@ body {
 }
 
 :root {
-  --primary-color: #034da1;
-  --error-color: #c5344e;
-  --btn-color: #c5344e;
+  --primary-color: beige;
+  --secondary-color: cadetblue;
+  --text-color: #333;
+  --header-color: #d3c4a5;
+  --button-hover-color: #a8c0c0;
 }
+
+.dark-mode {
+  --primary-color: darkslategray;
+  --secondary-color: teal;
+  --text-color: #dcdcdc;
+  --button-hover-color: #406b6b;
+  --header-color: #4b5c5b;
+}
+
+/*darkslategray, teal, cadetblue, palegoldenrod, beige */
 
