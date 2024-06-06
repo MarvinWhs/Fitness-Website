@@ -35,6 +35,7 @@ export class CalendarPageComponent extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    this.selectedDate = new Date().toISOString().split('T')[0];
     this.fetchNotes();
   }
 
@@ -88,8 +89,8 @@ export class CalendarPageComponent extends LitElement {
 
   private handleDateClick(arg: DateClickArg) {
     this.selectedDate = arg.dateStr;
-    this.selectedNote = null;
-    this.openModal();
+    this.selectedNote = null; // Reset selected note
+    this.updateCalendarEvents(); // Update calendar events
   }
 
   private handleEventClick(arg: { event: EventApi }) {
