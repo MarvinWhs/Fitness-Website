@@ -89,7 +89,6 @@ export class CalendarPageComponent extends LitElement {
 
   private handleDateClick(arg: DateClickArg) {
     this.selectedDate = arg.dateStr;
-    this.selectedNote = null; // Reset selected note
     this.updateCalendarEvents(); // Update calendar events
   }
 
@@ -167,7 +166,7 @@ export class CalendarPageComponent extends LitElement {
     if (!this.selectedNote) return;
     const form = event.target as HTMLFormElement;
     const formData = new FormData(form);
-    const noteData = {
+    const updatedNoteData = {
       ...this.selectedNote,
       date: formData.get('date') as string,
       content: formData.get('content') as string,
@@ -175,12 +174,13 @@ export class CalendarPageComponent extends LitElement {
     };
 
     try {
-      if (!this.selectedNote) return;
-      const response = await this.httpClient.put(`http://localhost:3000/notes/${this.selectedNote.id}`, noteData);
+      const response = await this.httpClient.put(
+        `http://localhost:3000/notes/${this.selectedNote.id}`,
+        updatedNoteData
+      );
       const updatedNote = await response.json();
       this.notes = this.notes.map(note => (note.id === updatedNote.id ? updatedNote : note));
       this.closeEditModal();
-      this.updateCalendarEvents();
       Notificator.showNotification('Note successfully updated', 'erfolg');
     } catch (error) {
       console.error('Error updating note:', error);

@@ -11,7 +11,15 @@ export class HttpClient {
   }
 
   async get(url: string) {
-    return this.result(await fetch(this.resolve(url)));
+    const response = await fetch(this.resolve(url), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'X-PersPl-CSRF-PROTECTION': '13'
+      },
+      credentials: 'include'
+    });
+    return this.result(response);
   }
   /*Autor: Marvin Wiechers */
   async post(url: string, data: unknown) {
