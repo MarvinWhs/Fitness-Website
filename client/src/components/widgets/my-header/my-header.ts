@@ -73,7 +73,7 @@ class MyHeader extends LitElement {
               <li data-page><a href="/fitness-home">Home</a></li>
               <li data-page><a href="/exercises">Trainingseinheiten</a></li>
               <li data-page><a href="/tracker-home">Ernährungstracker</a></li>
-              <li data-page><a href="/kalendar">Kalendar</a></li>
+              <li data-page><a href="/calendar-page">Kalendar</a></li>
               ${this.authState.isAuthenticated
                 ? html`<li data-page><a href="/profile">Profil</a></li>
                     <li><button @click="${this.handleLogout}">Logout</button></li>`
@@ -89,7 +89,7 @@ class MyHeader extends LitElement {
             <li data-page><a href="/fitness-home">Home</a></li>
             <li data-page><a href="/exercises">Trainingseinheiten</a></li>
             <li data-page><a href="/tracker-home">Ernährungstracker</a></li>
-            <li data-page><a href="/kalendar">Kalendar</a></li>
+            <li data-page><a href="/calendar-page">Kalendar</a></li>
             ${this.authState.isAuthenticated
               ? html`<li data-page><a href="/profile">Profil</a></li>
                   <li><button @click="${this.handleLogout}">Logout</button></li>`

@@ -40,6 +40,20 @@ export class HttpClient {
     );
   }
 
+  /*Autor: Niklas Lobo */
+  async put(url: string, data: unknown) {
+    const response = await fetch(this.resolve(url), {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'X-PersPl-CSRF-PROTECTION': '13'
+      },
+      credentials: 'include',
+      body: JSON.stringify(data)
+    });
+    return this.result(response);
+  }
+
   addQueryString(url: string, params: { [key: string]: string }) {
     const queryString = Object.entries(params)
       .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
