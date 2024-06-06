@@ -34,6 +34,7 @@ class MyHeader extends LitElement {
     this.sidebarOpen = false;
   }
 
+  /* Autor Niklas Lobo */
   handleLogout() {
     localStorage.removeItem('authToken');
     this.authState.isAuthenticated = false;
