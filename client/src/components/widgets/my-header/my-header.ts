@@ -94,8 +94,7 @@ class MyHeader extends LitElement {
               <li data-page><a href="/tracker-home">Ernährungstracker</a></li>
               <li data-page><a href="/calendar-page">Kalendar</a></li>
               ${this.authState.isAuthenticated
-                ? html`<li data-page><a href="/profile">Profil</a></li>
-                    <li><button @click="${this.handleLogout}">Logout</button></li>`
+                ? html` <li><button @click="${this.handleLogout}">Ausloggen</button></li>`
                 : html`<li data-page><a href="/login-page">Anmelden</a></li>
                     <li data-page><a href="/register-page">Registrieren</a></li>`}
               <li><dark-mode></dark-mode></li>
@@ -110,8 +109,7 @@ class MyHeader extends LitElement {
             <li data-page><a href="/tracker-home">Ernährungstracker</a></li>
             <li data-page><a href="/calendar-page">Kalendar</a></li>
             ${this.authState.isAuthenticated
-              ? html`<li data-page><a href="/profile">Profil</a></li>
-                  <li><button @click="${this.handleLogout}">Logout</button></li>`
+              ? html` <li><button @click="${this.handleLogout}">Ausloggen</button></li>`
               : html`<li data-page><a href="/login-page">Anmelden</a></li>
                   <li data-page><a href="/register-page">Registrieren</a></li>`}
             <li><dark-mode></dark-mode></li>
