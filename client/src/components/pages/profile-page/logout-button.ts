@@ -17,6 +17,7 @@ export class LogoutButton extends LitElement {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       body: JSON.stringify({})
     })
       .then(response => {
