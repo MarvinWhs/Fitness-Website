@@ -2,14 +2,20 @@
 
 import express, { Express } from 'express';
 import cookieParser from 'cookie-parser';
-import http from 'node:http';
+import https from 'node:https';
+import fs from 'node:fs';
 import startDB from './db.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 import config from '../config.json' assert { type: 'json' };
 import exerciseRoute from './Routes/exercise.route.js';
 import authRoutes from './Routes/auth.routes.js';
 import foodRoutes from './Routes/food.routes.js';
 import { corsService } from './Routes/services/cors.service.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 function configureApp(app: Express) {
   app.use(express.json({ limit: '5mb' }));
@@ -29,7 +35,7 @@ function configureApp(app: Express) {
   app.use((req, res, next) => {
     res.set('Content-Security-Policy', `script-src 'self'; style-src 'self'; frame-ancestor 'none';`);
     res.set('Strict-Transport-Security', 'max-age=36288000; includeSubDomains');
-    res.set('Cross-Origin-Ressource-Policy', 'same-origin');
+    res.set('Cross-Origin-Resource-Policy', 'same-origin');
     next();
   });
 }
@@ -40,14 +46,21 @@ export async function start() {
   configureApp(app);
   await startDB(app);
 
-  startHttpServer(app, config.server.port);
+  startHttpsServer(app, config.server.port);
 }
 
-async function startHttpServer(app: Express, port: number) {
-  const httpServer = http.createServer(app);
-  httpServer.listen(port, () => {
+/* Autor: Lucas Berlage */
+async function startHttpsServer(app: Express, port: number) {
+  const httpsOptions = {
+    key: fs.readFileSync(path.join(__dirname, './certs/server.key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, './certs/server.cert.pem')),
+    ca: fs.readFileSync(path.join(__dirname, './certs/intermediate-ca.cert.pem'))
+  };
+
+  const httpsServer = https.createServer(httpsOptions, app);
+  httpsServer.listen(port, () => {
     app.locals.port = port;
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running at https://localhost:${port}`);
   });
 }
 
