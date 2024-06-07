@@ -55,10 +55,12 @@ export class AppComponent extends LitElement {
           <title>${APP_TITLE}</title>
           <link rel="stylesheet" href="app.css" />
         </head>
-        <my-header></my-header>
-        <notification-widget></notification-widget>
-        <main>${this.router.outlet()}</main>
-        <my-footer></my-footer>
+        <body>
+          <my-header></my-header>
+          <notification-widget></notification-widget>
+          <main>${this.router.outlet()}</main>
+          <my-footer></my-footer>
+        </body>
       </html>
     `;
   }

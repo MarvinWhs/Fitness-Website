@@ -1,13 +1,14 @@
 /* Allgemeiner Hintergrund */
 body {
-  background-color: #bdc3c7;
+  background-color: var(--primary-color);
+  color: var(--text-color);
 }
 
 /* Hauptinhalt */
 .main-content {
   max-width: 100%;
   padding: 80px;
-  background-color: #ecf0f1;
+  background-color: var(--secondary-color);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -19,25 +20,25 @@ body {
 
 /* Hintergrund der Überschrift */
 h1 {
-  background-color: #3498db;
+  background-color: var(--secondary-color);
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 15px;
   text-align: center;
-  color: #ffffff;
+  color: var(--primary-color);
   margin-top: 0px;
 }
 
 /* Absatz */
 p {
-  color: #2c3e50;
+  color: var(--text-color);
 }
 
 /* Links und Button */
 a,
 .link-button {
-  color: #ffffff; /* Textfarbe */
-  background-color: #2980b9; /* Hintergrundfarbe */
+  color: var(--primary-color); /* Textfarbe */
+  background-color: var(--secondary-color); /* Hintergrundfarbe */
   padding: 10px 20px;
   border-radius: 20px; /* Abgerundete Ecken */
   transition: background-color 0.3s ease;
@@ -45,11 +46,11 @@ a,
 
 a:hover,
 .link-button:hover {
-  background-color: #3498db;
+  background-color: var(--button-hover-color);
 }
 
 /* Eingabefelder */
-.feld{
+.feld {
   border-radius: 20px; /* Abgerundete Ecken */
   padding: 10px;
   border: 1px solid #ccc;
@@ -57,10 +58,10 @@ a:hover,
   flex: 1; /* Flexibles Wachstum */
 }
 
-.feld:focus{
+.feld:focus {
   outline: none;
-  border-color: #2980b9;
-  box-shadow: 0 2px 4px rgba(41, 128, 185, 0.2);
+  border-color: var(--secondary-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Suchleiste und Suche-Button */
@@ -73,8 +74,8 @@ a:hover,
 
 .search-button {
   border-radius: 20px;
-  background-color: #3498db;
-  color: #ffffff;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
   padding: 10px;
   margin-left: 10px;
   cursor: pointer;
@@ -82,7 +83,7 @@ a:hover,
 }
 
 .search-button:hover {
-  background-color: #2980b9;
+  background-color: var(--button-hover-color);
 }
 
 /* Food-Liste */
@@ -100,8 +101,8 @@ a:hover,
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #3498db;
-  color: #ffffff;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
@@ -110,7 +111,7 @@ a:hover,
 }
 
 .plus-button:hover {
-  background-color: #2980b9;
+  background-color: var(--button-hover-color);
 }
 
 /* Modal */
@@ -128,7 +129,7 @@ a:hover,
 }
 
 .modal-content {
-  background: #ecf0f1;
+  background: var(--primary-color);
   padding: 20px;
   border-radius: 10px;
   width: 90%;
@@ -139,7 +140,7 @@ a:hover,
 
 .close-button {
   background: none;
-  border: black solid 0,5px;
+  border: solid 1px var(--text-color);
   font-size: 20px;
   position: absolute;
   top: 10px;
@@ -159,19 +160,19 @@ a:hover,
 }
 
 .modal-content form button[type="submit"] {
-  background-color: #2980b9;
-  color: #ffffff;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .modal-content form button[type="submit"]:hover {
-  background-color: #3498db;
+  background-color: var(--button-hover-color);
 }
 
 /* Kasten für Gesamtkalorien und Zurücksetzen-Button */
 .total-calories {
-  background-color: #ffffff;
+  background-color: var(--primary-color);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -180,13 +181,13 @@ a:hover,
 }
 
 .total-calories p {
-  color: #2c3e50;
+  color: var(--text-color);
   margin: 10px 0;
 }
 
 .total-calories button {
-  background-color: #2980b9;
-  color: #ffffff;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
@@ -195,5 +196,5 @@ a:hover,
 }
 
 .total-calories button:hover {
-  background-color: #3498db;
+  background-color: var(--button-hover-color);
 }

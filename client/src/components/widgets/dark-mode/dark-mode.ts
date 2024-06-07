@@ -13,28 +13,33 @@ export class DarkMode extends LitElement {
 
   constructor() {
     super();
-    this.theme = localStorage.getItem('theme') || 'light';
+    this.theme = 'light'; // Standard-Thema ist 'light'
   }
 
-  firstUpdated() {
-    this.initTheme();
+  connectedCallback() {
+    super.connectedCallback();
+    this.updateTheme();
   }
 
-  toggleTheme() {
+  // Methode zum Wechseln des Themas
+  changeDarkMode() {
     this.theme = this.theme === 'light' ? 'dark' : 'light';
-    localStorage.setItem('theme', this.theme);
-    this.initTheme();
+    this.updateTheme();
   }
 
-  initTheme() {
-    document.documentElement.setAttribute('theme', this.theme);
+  // Methode zum Anwenden des Themas
+  updateTheme() {
+    if (this.theme === 'dark') {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
   }
 
+  // Render-Methode
   render() {
     return html`
-      <input type="checkbox" @change=${this.toggleTheme} ?checked=${this.theme === 'dark'} />
-      <div class="slider"></div>
-      <div class="icon">${this.theme === 'dark' ? html`<img src="./moon.png" />` : html`<img src="./sun.png" />`}</div>
+      <button @click=${this.changeDarkMode} id="dark-mode-button">${this.theme === 'light' ? '☀️' : '🌙'}</button>
     `;
   }
 }
