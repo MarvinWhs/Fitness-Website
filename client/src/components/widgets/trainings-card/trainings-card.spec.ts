@@ -3,7 +3,6 @@ import { html, fixture, fixtureCleanup } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
 import './trainings-card';
 import { TrainingsCard } from './trainings-card';
-import { describe, beforeEach, afterEach, it } from 'node:test';
 
 describe('TrainingsCard', () => {
   let element: TrainingsCard;

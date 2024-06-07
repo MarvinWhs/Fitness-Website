@@ -5,6 +5,7 @@ import { consume } from '@lit/context';
 import { HttpClient, httpClientContext } from '../../../http-client.js';
 import componentStyle from './trainings-sessions.css?inline';
 import { Notificator } from '../../widgets/notificator/notificator.js';
+import { Router, routerContext } from '../../../router.js';
 
 @customElement('trainings-sessions')
 export class TrainingsComponent extends LitElement {
@@ -12,6 +13,9 @@ export class TrainingsComponent extends LitElement {
 
   @consume({ context: httpClientContext })
   httpClient!: HttpClient;
+
+  @consume({ context: routerContext, subscribe: true })
+  router!: Router;
 
   @state() imageData: string | ArrayBuffer | null = null;
 
@@ -33,6 +37,11 @@ export class TrainingsComponent extends LitElement {
     if (modal) {
       modal.style.display = 'none';
     }
+
+    const form = modal.querySelector('form') as HTMLFormElement;
+    form.reset();
+    this.imageData = null;
+    this.fileInput.value = '';
   }
 
   private preventLink(event: Event): void {
@@ -43,8 +52,8 @@ export class TrainingsComponent extends LitElement {
   }
 
   private handleDragOver(event: DragEvent): void {
-    event.preventDefault(); // Dies ist entscheidend, um zu ermöglichen, dass das Drop-Event gefeuert wird.
-    event.dataTransfer!.dropEffect = 'copy'; // Visuelles Feedback, dass die Datei kopiert wird.
+    event.preventDefault();
+    event.dataTransfer!.dropEffect = 'copy';
   }
 
   private handleDrop(event: DragEvent): void {
@@ -70,10 +79,11 @@ export class TrainingsComponent extends LitElement {
       const response = await this.httpClient.post('http://localhost:3000/exercises', exerciseData);
       console.log('Server Response:', response);
       this.closeModal();
+      window.dispatchEvent(new CustomEvent('exercise-added'));
       Notificator.showNotification('Übung erfolgreich hinzugefügt', 'erfolg');
     } catch (error) {
       console.error('Fehler beim Senden der Daten:', error);
-      Notificator.showNotification('Fehler beim Senden der Daten', 'fehler');
+      Notificator.showNotification('Fehler beim Senden der Daten, melden Sie sich an!', 'fehler');
     }
   }
   private async scaleImageIfNeeded(file: File): Promise<File> {
@@ -123,14 +133,31 @@ export class TrainingsComponent extends LitElement {
     });
   }
 
-  private handleFileUpload(event: Event): void {
+  private async handleFileUpload(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) {
       console.error('No file selected');
       Notificator.showNotification('Keine Datei ausgewählt', 'fehler');
       return;
     }
+
     const file = input.files[0];
+
+    // Überprüfung des MIME-Typs
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/html'];
+    if (!validImageTypes.includes(file.type)) {
+      console.error('Invalid file type');
+      Notificator.showNotification('Ungültiger Dateityp. Bitte wählen Sie ein Bild.', 'fehler');
+      return;
+    }
+
+    // Überprüfung der Dateigröße
+    const maxSizeInBytes = 5 * 1024 * 1024; // 5 MB
+    if (file.size > maxSizeInBytes) {
+      console.error('File size exceeds limit');
+      Notificator.showNotification('Dateigröße überschreitet das Limit von 5 MB.', 'fehler');
+      return;
+    }
 
     this.scaleImageIfNeeded(file)
       .then(scaledFile => {
@@ -140,6 +167,7 @@ export class TrainingsComponent extends LitElement {
         console.error('Error scaling image:', error);
       });
   }
+
   private processFile(file: File): void {
     const reader = new FileReader();
     reader.onload = () => {

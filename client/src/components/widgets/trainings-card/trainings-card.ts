@@ -39,6 +39,15 @@ export class TrainingsCard extends LitElement {
   async connectedCallback() {
     super.connectedCallback();
     await this.fetchExercises();
+    window.addEventListener('exercise-added', this.handleExerciseAdded.bind(this));
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('exercise-added', this.handleExerciseAdded.bind(this));
+    super.disconnectedCallback();
+  }
+  async handleExerciseAdded() {
+    await this.fetchExercises();
   }
 
   async fetchExercises() {
@@ -73,10 +82,11 @@ export class TrainingsCard extends LitElement {
   async deleteExercise(exerciseId: string) {
     try {
       const response = await this.httpClient.delete(`http://localhost:3000/exercises/${exerciseId}`);
+      console.log('response in card' + response.status);
       if (!response.ok) {
         if (response.status === 404) {
-          Notificator.showNotification('Übung nicht gefunden', 'fehler');
-          throw new Error('Exercise not found');
+          Notificator.showNotification('Sie müssen sich anmelden, um Übungen löschen zu können!', 'fehler');
+          throw new Error('User not logged in');
         }
         if (response.status === 401) {
           Notificator.showNotification('Sie können nur Übungen löschen, welche sie selber erstellt haben!', 'fehler');
@@ -86,10 +96,11 @@ export class TrainingsCard extends LitElement {
           throw new Error('Failed to delete exercise');
         }
       }
+      Notificator.showNotification('Übung erfolgreich gelöscht', 'erfolg');
       this.exercises = this.exercises.filter(exercise => exercise.id !== exerciseId);
       this.requestUpdate();
     } catch (error) {
-      console.error(error);
+      //console.error(error);
     }
   }
 
