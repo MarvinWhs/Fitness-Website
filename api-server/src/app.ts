@@ -12,6 +12,7 @@ import config from '../config.json' assert { type: 'json' };
 import exerciseRoute from './Routes/exercise.route.js';
 import authRoutes from './Routes/auth.routes.js';
 import foodRoutes from './Routes/food.routes.js';
+import calendarRoutes from './Routes/calendar.routes.js';
 import { corsService } from './Routes/services/cors.service.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -31,6 +32,7 @@ function configureApp(app: Express) {
   app.use(exerciseRoute);
   app.use(foodRoutes);
   app.use(authRoutes);
+  app.use(calendarRoutes);
 
   app.use((req, res, next) => {
     res.set('Content-Security-Policy', `script-src 'self'; style-src 'self'; frame-ancestor 'none';`);

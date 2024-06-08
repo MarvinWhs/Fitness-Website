@@ -60,7 +60,7 @@ router.post('/login', csrfService.manageCsrf, async (req, res) => {
 });
 
 // Logout route
-router.delete('/logout', (req, res) => {
+router.delete('/logout', async (req, res) => {
   authService.removeToken(res);
   res.status(200).send({ message: 'Erfolgreich abgemeldet' });
 });

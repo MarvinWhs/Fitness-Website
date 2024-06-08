@@ -11,6 +11,7 @@ import { InMemoryGenericDAO } from './models/in-memory-generic.dao.js';
 import { MongoGenericDAO } from './models/mongo-generic.dao.js';
 import { User } from './models/user'; // Importiere User
 import { Food } from './models/food';
+import { Notes } from './models/notes';
 
 const { MongoClient } = mongodb;
 const { Client } = pg;
@@ -36,6 +37,7 @@ async function startInMemoryDB(app: Express) {
   app.locals.exerciseDAO = new InMemoryGenericDAO<Exercise>();
   app.locals.userDAO = new InMemoryGenericDAO<User>(); // Initialisiere UserDAO
   app.locals.foodDAO = new InMemoryGenericDAO<Food>(); // Initialisiere FoodDAO
+  app.locals.noteDAO = new InMemoryGenericDAO<Notes>();
 }
 
 async function startMongoDB(app: Express) {
@@ -44,6 +46,7 @@ async function startMongoDB(app: Express) {
   app.locals.exerciseDAO = new MongoGenericDAO<Exercise>(db, 'exercises');
   app.locals.userDAO = new MongoGenericDAO<User>(db, 'users'); // Initialisiere MongoGenericDAO für Benutzer
   app.locals.foodDAO = new MongoGenericDAO<Food>(db, 'food-cards'); // Initialisiere MongoGenericDAO für Lebensmittel
+  app.locals.noteDAO = new MongoGenericDAO<Notes>(db, 'notes');
 }
 
 async function connectToMongoDB() {
@@ -67,6 +70,7 @@ async function startPsql(app: Express) {
   app.locals.exerciseDAO = new PsqlGenericDAO<Exercise>(client!, 'exercises');
   app.locals.userDAO = new PsqlGenericDAO<User>(client!, 'users'); // Initialisiere UserDAO
   app.locals.foodDAO = new PsqlGenericDAO<Food>(client!, 'food-cards'); // Initialisiere FoodDAO
+  app.locals.noteDAO = new PsqlGenericDAO<Notes>(client!, 'notes');
 }
 
 async function connectToPsql() {

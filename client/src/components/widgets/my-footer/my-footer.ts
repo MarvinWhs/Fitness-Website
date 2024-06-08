@@ -15,7 +15,7 @@ class MyFooter extends LitElement {
           <div class="footer-column">
             <h3>Themen</h3>
             <a href="/fitness-home">Home</a>
-            <a href="/calendar">Kalendar</a>
+            <a href="/calendar-page">Kalendar</a>
             <a href="/trainings-sessions">Trainingseinheiten</a>
             <a href="/nutrition-tracker">Ernährungstracker</a>
             <a href="/register-page">Registrieren</a>

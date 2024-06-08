@@ -4,6 +4,7 @@ import componentStyle from './my-header.css?inline';
 import { consume } from '@lit/context';
 import { authContext, AuthState } from '../../pages/login-page/auth-context';
 import { Router } from '../../../router.js';
+import { HttpClient, httpClientContext } from '../../../http-client.js';
 import { routerContext } from '../../../router.js';
 
 @customElement('my-header')
@@ -17,6 +18,9 @@ class MyHeader extends LitElement {
   /* Autor Niklas Lobo */
   @consume({ context: authContext, subscribe: true })
   authState!: AuthState;
+
+  @consume({ context: httpClientContext })
+  httpClient!: HttpClient;
 
   @consume({ context: routerContext, subscribe: true })
   router!: Router;
@@ -34,13 +38,28 @@ class MyHeader extends LitElement {
     this.sidebarOpen = false;
   }
 
-  /* Autor Niklas Lobo */
   handleLogout() {
     localStorage.removeItem('authToken');
+    this.logout();
     this.authState.isAuthenticated = false;
     this.authState.user = null;
     this.requestUpdate();
-    this.router.goto('/fitness-home');
+    window.location.pathname = '/fitness-home';
+  }
+
+  async logout() {
+    try {
+      console.log('Logout');
+      const response = await this.httpClient.delete('http://localhost:3000/logout');
+      console.log('Logout erfolgt durch server');
+      if (response.ok) {
+        this.dispatchEvent(new CustomEvent('logout'));
+      } else {
+        console.error('Fehler bei der Abmeldung');
+      }
+    } catch (error) {
+      console.error('Fehler bei der Abmeldung:', error);
+    }
   }
 
   firstUpdated() {
@@ -73,10 +92,9 @@ class MyHeader extends LitElement {
               <li data-page><a href="/fitness-home">Home</a></li>
               <li data-page><a href="/exercises">Trainingseinheiten</a></li>
               <li data-page><a href="/tracker-home">Ernährungstracker</a></li>
-              <li data-page><a href="/kalendar">Kalendar</a></li>
+              <li data-page><a href="/calendar-page">Kalendar</a></li>
               ${this.authState.isAuthenticated
-                ? html`<li data-page><a href="/profile">Profil</a></li>
-                    <li><button @click="${this.handleLogout}">Logout</button></li>`
+                ? html` <li><button @click="${this.handleLogout}">Ausloggen</button></li>`
                 : html`<li data-page><a href="/login-page">Anmelden</a></li>
                     <li data-page><a href="/register-page">Registrieren</a></li>`}
               <li><dark-mode></dark-mode></li>
@@ -89,10 +107,9 @@ class MyHeader extends LitElement {
             <li data-page><a href="/fitness-home">Home</a></li>
             <li data-page><a href="/exercises">Trainingseinheiten</a></li>
             <li data-page><a href="/tracker-home">Ernährungstracker</a></li>
-            <li data-page><a href="/kalendar">Kalendar</a></li>
+            <li data-page><a href="/calendar-page">Kalendar</a></li>
             ${this.authState.isAuthenticated
-              ? html`<li data-page><a href="/profile">Profil</a></li>
-                  <li><button @click="${this.handleLogout}">Logout</button></li>`
+              ? html` <li><button @click="${this.handleLogout}">Ausloggen</button></li>`
               : html`<li data-page><a href="/login-page">Anmelden</a></li>
                   <li data-page><a href="/register-page">Registrieren</a></li>`}
             <li><dark-mode></dark-mode></li>
