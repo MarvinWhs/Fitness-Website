@@ -10,7 +10,7 @@ body {
   padding: 80px;
   background-color: var(--secondary-color);
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: solid 1px var(--text-color);
 }
 
 .main-section {
@@ -20,12 +20,12 @@ body {
 
 /* Hintergrund der Überschrift */
 h1 {
-  background-color: var(--secondary-color);
+  background-color: var(--header-color);
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 15px;
   text-align: center;
-  color: var(--primary-color);
+  color: var(black);
   margin-top: 0px;
 }
 
@@ -37,8 +37,8 @@ p {
 /* Links und Button */
 a,
 .link-button {
-  color: var(--primary-color); /* Textfarbe */
-  background-color: var(--secondary-color); /* Hintergrundfarbe */
+  color: var(--black); /* Textfarbe */
+  background-color: var(--primary-color); /* Hintergrundfarbe */
   padding: 10px 20px;
   border-radius: 20px; /* Abgerundete Ecken */
   transition: background-color 0.3s ease;
@@ -56,6 +56,7 @@ a:hover,
   border: 1px solid #ccc;
   margin-right: 10px;
   flex: 1; /* Flexibles Wachstum */
+  font-size: 16px;
 }
 
 .feld:focus {
@@ -70,20 +71,6 @@ a:hover,
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-}
-
-.search-button {
-  border-radius: 20px;
-  background-color: var(--secondary-color);
-  color: var(--primary-color);
-  padding: 10px;
-  margin-left: 10px;
-  cursor: pointer;
-  border: none;
-}
-
-.search-button:hover {
-  background-color: var(--button-hover-color);
 }
 
 /* Food-Liste */
@@ -101,8 +88,9 @@ a:hover,
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: var(--secondary-color);
-  color: var(--primary-color);
+  background-color: var(--primary-color);
+  color: var(--black);
+  border: var(--white) 1px solid;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
@@ -188,10 +176,8 @@ a:hover,
 .total-calories button {
   background-color: var(--secondary-color);
   color: var(--primary-color);
-  border: none;
   padding: 10px 20px;
   border-radius: 5px;
-  cursor: pointer;
   transition: background-color 0.3s;
 }
 

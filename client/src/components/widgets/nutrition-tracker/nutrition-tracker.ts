@@ -48,7 +48,8 @@ export class NutritionTracker extends LitElement {
       }));
       this.requestUpdate();
     } catch (error) {
-      console.error(error);
+      console.error('Error fetching food cards:', error);
+      throw error;
     }
   }
 
@@ -157,10 +158,10 @@ export class NutritionTracker extends LitElement {
   render() {
     return html`
       <main class="main-content">
-        <div class="main-section">
-          <h1>Willkommen bei Ihrem Ernährungstracker!</h1>
-          <div class="mid-section">
-            ${this.totalCalories !== 0
+        <h1>Willkommen bei Ihrem Ernährungstracker!</h1>
+        
+          ${
+            this.totalCalories !== 0
               ? html`
                   <div class="total-calories">
                     <p>Gesamter Kalorienbedarf: ${this.totalCalories} kcal</p>
@@ -179,19 +180,18 @@ export class NutritionTracker extends LitElement {
                     />
                     <button class="link-button" @click=${this.submitTotalCalories}>Eingabe</button>
                   </div>
-                `}
-            <div class="food-list">
-              ${this.foodCards.map(
-                card => html`
-                  <food-card
-                    .food=${card}
-                    @delete-food=${(e: CustomEvent) => this.deleteFoodCard(e.detail)}
-                  ></food-card>
                 `
-              )}
-            </div>
-            <div class="plus-button" @click=${this.openModal}><strong>+</strong></div>
-            ${this.isModalOpen
+          }
+          <div class="plus-button" @click=${this.openModal}><strong>+</strong></div>
+          <div class="food-list">
+            ${this.foodCards.map(
+              card => html`
+                <food-card .food=${card} @delete-food=${(e: CustomEvent) => this.deleteFoodCard(e.detail)}></food-card>
+              `
+            )}
+          </div>
+          ${
+            this.isModalOpen
               ? html`
                   <div class="modal-overlay" @click=${this.closeModal}>
                     <div class="modal-content" @click=${(e: Event) => e.stopPropagation()}>
@@ -207,9 +207,10 @@ export class NutritionTracker extends LitElement {
                     </div>
                   </div>
                 `
-              : nothing}
-          </div>
+              : nothing
+          }
         </div>
+
         <pop-up></pop-up>
       </main>
     `;
