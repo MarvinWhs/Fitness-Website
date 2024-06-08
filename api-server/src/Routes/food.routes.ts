@@ -19,7 +19,7 @@ router.get('/food-cards', async (req, res) => {
           name: cryptoService.decrypt(food.name),
           calories: food.calories,
           description: cryptoService.decrypt(food.description),
-          image: food.image
+          quantity: food.quantity
         };
       })
     );
@@ -36,7 +36,7 @@ router.post('/food-cards', authService.authenticationMiddleware, async (req, res
       name: cryptoService.encrypt(req.body.name),
       description: cryptoService.encrypt(req.body.description),
       calories: req.body.calories,
-      image: req.body.image
+      quantity: req.body.quantity
     });
     res.status(201).json({
       ...food,
@@ -44,7 +44,7 @@ router.post('/food-cards', authService.authenticationMiddleware, async (req, res
       name: cryptoService.decrypt(food.name),
       description: cryptoService.decrypt(food.description),
       calories: food.calories,
-      image: food.image
+      quantity: food.quantity
     });
   } catch (err) {
     res.status(500).send(err);
