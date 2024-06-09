@@ -11,6 +11,7 @@ interface Food {
   calories: number;
   description: string;
   quantity: number;
+  createdAt: string;
 }
 
 @customElement('nutrition-tracker')
@@ -38,49 +39,28 @@ export class NutritionTracker extends LitElement {
     await this.loadFoodCards();
   }
 
-  async loadFoodCards() {
+  async loadFoodCards(): Promise<void> {
     try {
-      const response = await fetch('https://localhost:3000/food-cards', {
-        method: 'GET'
-      });
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to fetch food cards: ${response.status} ${response.statusText} - ${errorText}`);
+      const response = await this.httpClient.get(`https://localhost:3000/food-cards`);
+      if (!response) {
+        throw new Error(`Failed to fetch food cards`);
       }
-      const responseData = await response.json();
-      this.foodCards = responseData.map((food: any) => ({
-        ...food,
-        id: food.id.toString()
-      }));
+      this.foodCards = await response.json();
       this.requestUpdate();
     } catch (error) {
       console.error('Error fetching food cards:', error);
-      throw error;
     }
   }
 
-  async deleteFoodCard(id: string) {
+  async deleteFoodCard(id: string): Promise<void> {
     try {
-      const response = await this.httpClient.delete(`https://localhost:3000/food-cards/${id}`);
-      console.log('response in card' + response.status);
-      if (!response.ok) {
-        if (response.status === 404) {
-          Notificator.showNotification('Sie müssen sich anmelden, um Essen löschen zu können!', 'fehler');
-          throw new Error('User not logged in');
-        }
-        if (response.status === 401) {
-          Notificator.showNotification('Sie können nur Essen löschen, welche sie selber erstellt haben!', 'fehler');
-          throw new Error('User not authorized to delete exercise');
-        } else {
-          Notificator.showNotification('Fehler beim Löschen', 'fehler');
-          throw new Error('Failed to delete exercise');
-        }
-      }
-      Notificator.showNotification('Übung erfolgreich gelöscht', 'erfolg');
+      await this.httpClient.delete(`https://localhost:3000/food-cards/${id}`);
       this.foodCards = this.foodCards.filter(foodCards => foodCards.id !== id);
       this.requestUpdate();
+      Notificator.showNotification('Note successfully deleted', 'erfolg');
     } catch (error) {
-      console.error(error);
+      console.error('Error deleting note:', error);
+      Notificator.showNotification('Error deleting note', 'fehler');
     }
   }
 

@@ -1,6 +1,6 @@
 import { consume } from '@lit/context';
-import { LitElement, css, html, nothing } from 'lit';
-import { customElement, query, state } from 'lit/decorators.js';
+import { LitElement, html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { HttpClient, httpClientContext } from '../../../http-client';
 import componentStyle from './fitness-home.css?inline';
 
@@ -31,7 +31,7 @@ export class HomeComponent extends LitElement {
                  Mit unseren Trainingseinheiten kannst du deine Leistung steigern und dich rundum wohlfühlen. Dabei kannst du deinen Traumkörper erreichen
                  und wirst von unseren Trainern unterstützt.
                 </p>
-                <button class="link-button" @click="${() => window.location.href='/exercises'}">
+                <button class="link-button" @click="${() => (window.location.href = '/exercises')}">
                     Jetzt starten
                 </button>
             </div>
@@ -56,7 +56,7 @@ export class HomeComponent extends LitElement {
                         hilft dir dabei, deine Ziele zu erreichen.
                     </p>
                     <p>Entdecke jetzt unseren Kalendar!</p>
-                    <button class="link-button" @click="${() => window.location.href='/kalendar'}">
+                    <button class="link-button" @click="${() => (window.location.href = '/kalendar')}">
                         Zum Kalendar
                     </button>
                 </div>
@@ -70,7 +70,7 @@ export class HomeComponent extends LitElement {
                     <p>
                         Hier geht es zu unserem Ernährungstracker!
                     </p>
-                    <button class="link-button" @click="${() => window.location.href='/tracker-home'}">
+                    <button class="link-button" @click="${() => (window.location.href = '/tracker-home')}">
                         Zum Ernährungstracker
                     </button>
                 </div>

@@ -1,13 +1,13 @@
 /* Autor: Marvin Wiechers */
 
 h1 {
-  color: #333;
+  color: var(--h-textcolor);
   font-size: 30px; 
   text-align: center;
 }
 
 p {
-  color: #666;
+  color:var(--p-textcolor);
   font-size: 16px;
   line-height: 1.5;
 }

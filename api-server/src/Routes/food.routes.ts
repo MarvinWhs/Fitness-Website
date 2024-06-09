@@ -8,12 +8,14 @@ import { cryptoService } from './services/crypto.service.js';
 
 const router = express.Router();
 
-router.get('/food-cards', async (req, res) => {
+router.get('/food-cards', authService.authenticationMiddleware, async (req, res) => {
   try {
     const foodDAO: MongoGenericDAO<Food> = req.app.locals.foodDAO;
-    const foods = await foodDAO.findAll();
+    const userId = res.locals.user.id; // Holen Sie sich die userId aus den Abfrageparametern
+    const foods = await foodDAO.findAll(); // Filtern nach userId
+    const filteredFoods = foods.filter(food => food.userId === userId);
     res.status(200).send(
-      foods.map(food => {
+      filteredFoods.map(food => {
         return {
           id: food.id,
           name: cryptoService.decrypt(food.name),
@@ -24,6 +26,7 @@ router.get('/food-cards', async (req, res) => {
       })
     );
   } catch (err) {
+    console.error(err);
     res.status(500).send(err);
   }
 });
@@ -53,7 +56,7 @@ router.post('/food-cards', authService.authenticationMiddleware, async (req, res
 
 router.put('/food-cards/:id', authService.authenticationMiddleware, async (req, res) => {
   try {
-    const foodDAO = req.app.locals.foodDAO;
+    const foodDAO: MongoGenericDAO<Food> = req.app.locals.foodDAO;
     const id = req.params.id;
     const food = await foodDAO.findOne({ id });
     if (!food) {

@@ -4,6 +4,8 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 100%;
   margin: 0;
+  background-color: var(--leichtes-black);
+  color: var(--text-color);
 }
 
 :root {
@@ -14,6 +16,9 @@ body {
   --button-hover-color: #b0bec5; /* Soft gray */
   --white: #fff; /* White */
   --black: #000; /* Black */
+  --leichtes-black: white; /* Black */
+  --p-textcolor: #666;
+  --h-textcolor: #333;
 }
 
 .dark-mode {
@@ -24,6 +29,8 @@ body {
   --button-hover-color: #546e7a; /* Medium dark blue-gray */
   --white: #000; /* Black */
   --black: #fff; /* White */
+  --leichtes-black: #333333;
+  --h-textcolor: #e0e7ef;
 }
 
 /*darkslategray, teal, cadetblue, palegoldenrod, beige */

@@ -2,23 +2,20 @@
 CSS für die Home-Seite */
 
 /* Hintergrundbild */
-
-body {
-  background-size: cover;
-}
-
 /* Überschrift */
+
+
 h1 {
-  color: #333;
+  color: var(--h-textcolor);
   font-size: 30px; /* vorher 24 */
   text-align: center;
 }
 
 /* Absätze */
 p {
-  color: #666;
   font-size: 16px;
   line-height: 1.5;
+  color:var(--p-textcolor);
 }
 
 /* Links */
@@ -35,6 +32,7 @@ a:hover {
   max-width: 80%; /* Begrenzt die Breite des Hauptinhalts */
   margin: 0 auto; /* Zentriert den Hauptinhalt */
   padding: 0px;
+  background-color: var(--leichtes-black);
 }
 
 .two-column-row {

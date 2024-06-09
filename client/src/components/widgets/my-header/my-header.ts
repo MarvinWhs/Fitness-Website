@@ -37,9 +37,9 @@ class MyHeader extends LitElement {
     this.sidebarOpen = false;
   }
 
-  handleLogout() {
+  async handleLogout() {
     localStorage.removeItem('authToken');
-    this.logout();
+    await this.logout();
     this.authState.isAuthenticated = false;
     this.authState.user = null;
     this.requestUpdate();
@@ -49,7 +49,7 @@ class MyHeader extends LitElement {
   async logout() {
     try {
       console.log('Logout');
-      const response = await this.httpClient.delete('http://localhost:3000/logout');
+      const response = await this.httpClient.delete('https://localhost:3000/logout');
       console.log('Logout erfolgt durch server');
       if (response.ok) {
         this.dispatchEvent(new CustomEvent('logout'));

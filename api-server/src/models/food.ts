@@ -4,6 +4,6 @@ export interface Food extends Entity {
   name: string;
   calories: number;
   description: string;
-  image?: string;
-  userId: string;
+  quantity: number;
+  userId?: string;
 }
