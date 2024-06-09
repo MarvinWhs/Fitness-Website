@@ -1,11 +1,8 @@
+/* Autor: Marvin Wiechers */
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Browser, BrowserContext, Page, chromium } from 'playwright';
 import { expect } from 'chai';
-import * as path from 'path';
-import { fileURLToPath } from 'url';
-
-// Falls du TypeScript verwendest, um den aktuellen Dateipfad zu bekommen
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 describe('TrainingsCardComponent', () => {
   let browser: Browser | undefined;
@@ -41,14 +38,14 @@ describe('TrainingsCardComponent', () => {
 
   it('should render the component and display initial elements', async () => {
     if (!page) throw new Error('Page is not initialized');
-    await page.goto('http://localhost:8080/exercises');
+    await page.goto('https://localhost:8080/exercises');
     const title = await page.textContent('h1');
     expect(title).to.equal('Fitness-Übungen');
   });
 
   it('should filter exercises based on search input', async () => {
     if (!page) throw new Error('Page is not initialized');
-    await page.goto('http://localhost:8080/exercises');
+    await page.goto('https://localhost:8080/exercises');
 
     await page.fill('input.search-box', 'test exercise');
     await page.waitForTimeout(1000); // Warte auf die Filterung
@@ -61,7 +58,7 @@ describe('TrainingsCardComponent', () => {
 
   it('should filter exercises based on difficulty', async () => {
     if (!page) throw new Error('Page is not initialized');
-    await page.goto('http://localhost:8080/exercises');
+    await page.goto('https://localhost:8080/exercises');
 
     await page.selectOption('select.difficulty-filter', 'Medium');
     await page.waitForTimeout(1000); // Warte auf die Filterung
@@ -72,7 +69,8 @@ describe('TrainingsCardComponent', () => {
 
   it('should prevent deleting an exercise without authentication', async () => {
     if (!page) throw new Error('Page is not initialized');
-    await page.goto('http://localhost:8080/exercises');
+    await page.goto('https://localhost:8080/exercises');
+    await page.hover('.exercise-container-container:first-child');
 
     const deleteButton = await page.$('.delete-exercise');
     await deleteButton?.click();
@@ -87,18 +85,33 @@ describe('TrainingsCardComponent', () => {
 
   it('should delete an exercise when authenticated', async () => {
     if (!page) throw new Error('Page is not initialized');
-    await page.goto('http://localhost:8080/login-page');
+    await page.goto('https://localhost:8080');
 
-    // Führe hier die Login-Schritte aus
-    await page.fill('input[name="username"]', 'Testie2');
-    await page.fill('input[name="password"]', 'Test123!');
-    await page.click('button[type="submit"]');
+    await page.locator('#myNavbar').getByRole('link', { name: 'Anmelden' }).click();
+    await page.getByLabel('Benutzer:').click();
+    await page.getByLabel('Benutzer:').fill('Testie2');
+    await page.getByLabel('Benutzer:').press('Tab');
+    await page.getByLabel('Passwort:').fill('Test123!');
+    await page.getByLabel('Passwort:').press('Enter');
     await page.waitForNavigation();
 
-    await page.goto('http://localhost:8080/exercises');
+    await page.locator('#myNavbar').getByRole('link', { name: 'Trainingseinheiten' }).click();
+    await page.goto('https://localhost:8080/exercises');
 
-    const deleteButton = await page.$('.delete-exercise');
-    await deleteButton?.click();
+    await page.getByRole('button', { name: 'Jetzt Übungen hinzufügen' }).click();
+    await page.getByPlaceholder('Name der Übung').click();
+    await page.getByPlaceholder('Name der Übung').fill('Übung 1');
+    await page.getByPlaceholder('Beschreibung der Übung').click();
+    await page.getByPlaceholder('Beschreibung der Übung').fill('hier ist die erste Beschreibung');
+    await page.getByPlaceholder('Dauer in Minuten').click();
+    await page.getByPlaceholder('Dauer in Minuten').fill('5');
+    await page.locator('select[name="difficulty"]').selectOption('Medium');
+    await page.getByRole('button', { name: 'Hinzufügen', exact: true }).click();
+
+    await page.waitForTimeout(1000);
+
+    await page.hover('.exercise-container-container:first-child');
+    await page.getByRole('button', { name: 'Übung löschen' }).click();
 
     await page.waitForTimeout(1000);
 
@@ -106,32 +119,78 @@ describe('TrainingsCardComponent', () => {
     const shadowRoot = await notification?.evaluateHandle((element: any) => element.shadowRoot);
     const successText = await shadowRoot?.evaluate((root: any) => root.querySelector('div')?.textContent);
     expect(successText).to.include('Übung erfolgreich gelöscht');
+    await page.locator('#myNavbar').getByRole('button', { name: 'Ausloggen' }).click();
   });
 
   it("should prevent deleting another user's exercise", async () => {
     if (!page) throw new Error('Page is not initialized');
-    await page.goto('http://localhost:8080/login-page');
+    await page.goto('https://localhost:8080');
 
-    // Führe hier die Login-Schritte aus
-    await page.fill('input[name="username"]', 'Testie2');
-    await page.fill('input[name="password"]', 'Test123!');
-    await page.click('button[type="submit"]');
+    await page.locator('#myNavbar').getByRole('link', { name: 'Anmelden' }).click();
+    await page.getByLabel('Benutzer:').click();
+    await page.getByLabel('Benutzer:').fill('Testie2');
+    await page.getByLabel('Benutzer:').press('Tab');
+    await page.getByLabel('Passwort:').fill('Test123!');
+    await page.getByLabel('Passwort:').press('Enter');
     await page.waitForNavigation();
+    await page.locator('#myNavbar').getByRole('link', { name: 'Trainingseinheiten' }).click();
+    await page.goto('https://localhost:8080/exercises');
 
-    await page.goto('http://localhost:8080/exercises');
+    await page.evaluate(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+    await page.hover('.exercise-container-container:last-child');
+    await page.getByRole('button', { name: 'Übung löschen' }).click();
 
-    // Suche nach einer Übung, die nicht dem angemeldeten Benutzer gehört
-    const otherUsersExercise = await page.$('.exercise:has-text("Nicht Testuser Übung") .delete-exercise');
-    if (otherUsersExercise) {
-      await otherUsersExercise.click();
-      await page.waitForTimeout(1000);
+    await page.waitForTimeout(1000);
 
-      const notification = await page.$('notification-widget');
-      const shadowRoot = await notification?.evaluateHandle((element: any) => element.shadowRoot);
-      const errorText = await shadowRoot?.evaluate((root: any) => root.querySelector('div')?.textContent);
-      expect(errorText).to.include('Sie können nur Übungen löschen, welche sie selber erstellt haben!');
-    } else {
-      console.warn('Keine Übung von einem anderen Benutzer zum Testen gefunden');
-    }
+    const notification = await page.$('notification-widget');
+    const shadowRoot = await notification?.evaluateHandle((element: any) => element.shadowRoot);
+    const errorText = await shadowRoot?.evaluate((root: any) => root.querySelector('div')?.textContent);
+    expect(errorText).to.include('Sie können nur Übungen löschen, welche sie selber erstellt haben!');
+    await page.locator('#myNavbar').getByRole('button', { name: 'Ausloggen' }).click();
+  });
+
+  it('should add and edit an exercise', async () => {
+    if (!page) throw new Error('Page is not initialized');
+    await page.goto('https://localhost:8080');
+
+    await page.locator('#myNavbar').getByRole('link', { name: 'Anmelden' }).click();
+    await page.getByLabel('Benutzer:').click();
+    await page.getByLabel('Benutzer:').fill('Testie2');
+    await page.getByLabel('Benutzer:').press('Tab');
+    await page.getByLabel('Passwort:').fill('Test123!');
+    await page.getByLabel('Passwort:').press('Enter');
+    await page.waitForNavigation();
+    await page.locator('#myNavbar').getByRole('link', { name: 'Trainingseinheiten' }).click();
+    await page.goto('https://localhost:8080/exercises');
+
+    await page.getByRole('button', { name: 'Jetzt Übungen hinzufügen' }).click();
+    await page.getByPlaceholder('Name der Übung').click();
+    await page.getByPlaceholder('Name der Übung').fill('Test');
+    await page.getByPlaceholder('Name der Übung').press('Tab');
+    await page.getByPlaceholder('Beschreibung der Übung').fill('Testentesten');
+    await page.getByPlaceholder('Beschreibung der Übung').press('Tab');
+    await page.getByPlaceholder('Dauer in Minuten').press('Enter');
+    await page.getByPlaceholder('Dauer in Minuten').press('ArrowUp');
+    await page.getByPlaceholder('Dauer in Minuten').press('ArrowUp');
+    await page.getByPlaceholder('Dauer in Minuten').press('ArrowUp');
+    await page.locator('select[name="difficulty"]').selectOption('Easy');
+    await page.getByRole('button', { name: 'Hinzufügen', exact: true }).click();
+
+    await page.waitForTimeout(1000);
+    await page.hover('.exercise-container-container:first-child');
+    await page.getByRole('button', { name: 'Übung bearbeiten' }).click();
+    await page.getByRole('textbox', { name: 'Beschreibung der Übung' }).click();
+    await page.getByRole('textbox', { name: 'Beschreibung der Übung' }).fill('Hier wurde neu getestet');
+    await page.getByRole('button', { name: 'Ändern' }).click();
+
+    await page.waitForTimeout(1000);
+
+    const notification = await page.$('notification-widget');
+    const shadowRoot = await notification?.evaluateHandle((element: any) => element.shadowRoot);
+    const successText = await shadowRoot?.evaluate((root: any) => root.querySelector('div')?.textContent);
+    expect(successText).to.include('Übung erfolgreich aktualisiert');
+    await page.locator('#myNavbar').getByRole('button', { name: 'Ausloggen' }).click();
   });
 });
