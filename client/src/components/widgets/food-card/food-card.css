@@ -1,21 +1,83 @@
-.container {
+.food-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 600px; /* Breiter */
+  height: 100px; /* Schmaler */
+  border-radius: 10px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  margin: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s, height 0.2s;
+  overflow: hidden;
+}
+.food-card:hover {
+  transform: scale(1.0);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  height: auto; /* Höhe passt sich automatisch an, wenn Beschreibung angezeigt wird */
+}
+.food-info {
   display: flex;
   flex-direction: column;
+  margin-right: 20px;
 }
-
-.food-card {
-  border-radius: 20px; /* Abgerundete Ecken */
-  padding: 25px;
-  border: 1px solid #ccc;
-  background-color: #ccc;
-  margin-right: 300px;
-  margin-top: 12px;
-  flex: 1; /* Flexibles Wachstum */
-  width: 100%; /* Nutzt die gesamte Breite aus */
+.food-info h2 {
+  font-size: 1.2em;
+  margin: 0;
+  display: flex;
   align-items: center;
 }
-
-img {
-  max-width: 100px;
+.food-info h2::before {
+  content: "•";
+  color: red;
+  margin-right: 8px;
+}
+.food-info p {
+  margin: 5px 0;
+}
+.description {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out, opacity 0.2s;
+  opacity: 0;
+}
+.food-card:hover .description {
   max-height: 100px;
+  opacity: 1;
+}
+.controls {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  margin-right: 20px;
+}
+.controls button {
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  margin: 0 5px;
+}
+.controls .quantity {
+  margin: 0 10px;
+}
+.delete-button {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+.delete-button:hover {
+  transform: scale(1.1);
+}
+.delete-button:active {
+  background-color: #ffdddd;
 }

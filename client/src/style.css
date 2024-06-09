@@ -7,19 +7,23 @@ body {
 }
 
 :root {
-  --primary-color: beige;
-  --secondary-color: cadetblue;
-  --text-color: #333;
-  --header-color: #d3c4a5;
-  --button-hover-color: #a8c0c0;
+  --primary-color: #f3f6f9; /* Very light blue-gray */
+  --secondary-color: #e0e7ef; /* Light blue-gray */
+  --text-color: #2c3e50; /* Strong dark gray */
+  --header-color: #A5B8CB; /* Muted blue */
+  --button-hover-color: #b0bec5; /* Soft gray */
+  --white: #fff; /* White */
+  --black: #000; /* Black */
 }
 
 .dark-mode {
-  --primary-color: darkslategray;
-  --secondary-color: teal;
-  --text-color: #dcdcdc;
-  --button-hover-color: #406b6b;
-  --header-color: #4b5c5b;
+  --primary-color: #1c2733; /* Very dark blue-gray */
+  --secondary-color: #243447; /* Dark blue-gray */
+  --text-color: #cfd8dc; /* Light gray */
+  --header-color: #607d8b; /* Muted blue-gray */
+  --button-hover-color: #546e7a; /* Medium dark blue-gray */
+  --white: #000; /* Black */
+  --black: #fff; /* White */
 }
 
 /*darkslategray, teal, cadetblue, palegoldenrod, beige */
