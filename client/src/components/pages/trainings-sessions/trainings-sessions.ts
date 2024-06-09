@@ -76,8 +76,12 @@ export class TrainingsComponent extends LitElement {
     };
 
     try {
-      const response = await this.httpClient.post('http://localhost:3000/exercises', exerciseData);
-      console.log('Server Response:', response);
+      const response = await this.httpClient.post('https://localhost:3000/exercises', exerciseData);
+      if (!response.ok) {
+        console.error('Failed to add exercise');
+        Notificator.showNotification('Fehler beim Hinzufügen der Übung', 'fehler');
+        return;
+      }
       this.closeModal();
       window.dispatchEvent(new CustomEvent('exercise-added'));
       Notificator.showNotification('Übung erfolgreich hinzugefügt', 'erfolg');

@@ -10,7 +10,7 @@ class CorsService {
     }
     if (this.isPreflightRequest(req)) {
       res.header('Access-Control-Allow-Headers', 'Content-Type, X-PersPl-CSRF-PROTECTION');
-      res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+      res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
       if (req.method === 'OPTIONS') {
         res.sendStatus(204);
       } else {

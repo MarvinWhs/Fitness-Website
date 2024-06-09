@@ -79,4 +79,59 @@ router.delete('/exercises/:id', authService.authenticationMiddleware, async (req
   }
 });
 
+router.put('/exercises/:id', authService.authenticationMiddleware, async (req, res) => {
+  try {
+    const exerciseDAO: MongoGenericDAO<Exercise> = req.app.locals.exerciseDAO;
+    const id = req.params.id;
+    const exercise = await exerciseDAO.findOne({ id });
+    if (!exercise) {
+      res.status(404).send();
+      return;
+    }
+    if (res.locals.user.id !== exercise.userId) {
+      res.status(401).send();
+      return;
+    }
+    const updatedExercise = {
+      ...exercise,
+      name: cryptoService.encrypt(req.body.name),
+      description: cryptoService.encrypt(req.body.description),
+      duration: req.body.duration,
+      difficulty: cryptoService.encrypt(req.body.difficulty),
+      image: req.body.image
+    };
+    const success = await exerciseDAO.update(updatedExercise);
+    if (success) {
+      res.status(200).json({
+        ...updatedExercise,
+        id: updatedExercise.id,
+        name: cryptoService.decrypt(updatedExercise.name),
+        description: cryptoService.decrypt(updatedExercise.description),
+        duration: updatedExercise.duration,
+        difficulty: cryptoService.decrypt(updatedExercise.difficulty),
+        image: updatedExercise.image
+      });
+    } else {
+      res.status(404).send();
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+});
+router.post('/exercises/test/:id', authService.authenticationMiddleware, async (req, res) => {
+  const exerciseDAO: MongoGenericDAO<Exercise> = req.app.locals.exerciseDAO;
+  const id = req.params.id;
+  const exercise = await exerciseDAO.findOne({ id });
+  if (!exercise) {
+    res.status(404).send();
+    return;
+  }
+  if (res.locals.user.id !== exercise.userId) {
+    res.status(401).send();
+    return;
+  }
+  res.status(200).send();
+});
+
 export default router;
