@@ -42,8 +42,8 @@ router.post('/notes', authService.authenticationMiddleware, async (req, res) => 
     res.status(201).json({
       ...note,
       id: note.id,
-      date: cryptoService.encrypt(note.date),
-      content: cryptoService.encrypt(note.content),
+      date: cryptoService.decrypt(note.date),
+      content: cryptoService.decrypt(note.content),
       name: cryptoService.decrypt(note.name)
     });
   } catch (err) {

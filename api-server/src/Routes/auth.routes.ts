@@ -6,6 +6,7 @@ import { GenericDAO } from '../models/generic.dao.js';
 import { User } from '../models/user.js';
 import { authService } from './services/auth.service.js';
 import { csrfService } from './services/csrf.service.js';
+import { cryptoService } from './services/crypto.service.js';
 
 const router = express.Router();
 
@@ -18,8 +19,9 @@ router.post('/register', csrfService.manageCsrf, async (req, res) => {
   }
 
   const userDAO: GenericDAO<User> = req.app.locals.userDAO;
-  const existingUser = await userDAO.findOne({ username });
-  const existingEmail = await userDAO.findOne({ email });
+  const existingUsers = await userDAO.findAll();
+  const existingUser = existingUsers.find(user => cryptoService.decrypt(user.username) === username);
+  const existingEmail = existingUsers.find(user => cryptoService.decrypt(user.email) === email);
 
   if (existingUser) {
     return res.status(400).send({ message: 'Benutzer existiert bereits' });
@@ -30,7 +32,9 @@ router.post('/register', csrfService.manageCsrf, async (req, res) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  const user = { username, password: hashedPassword, email } as User;
+  const encryptedUsername = cryptoService.encrypt(username);
+  const encryptedEmail = cryptoService.encrypt(email);
+  const user = { username: encryptedUsername, password: hashedPassword, email: encryptedEmail } as User;
 
   try {
     await userDAO.create(user);
@@ -46,7 +50,8 @@ router.post('/login', csrfService.manageCsrf, async (req, res) => {
 
   const userDAO: GenericDAO<User> = req.app.locals.userDAO;
   try {
-    const user = await userDAO.findOne({ username });
+    const users = await userDAO.findAll();
+    const user = users.find(user => cryptoService.decrypt(user.username) === username);
 
     if (user && (await bcrypt.compare(password, user.password))) {
       authService.createAndSetToken({ id: user.id }, res);
