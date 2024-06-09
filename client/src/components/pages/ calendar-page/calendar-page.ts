@@ -45,11 +45,18 @@ export class CalendarPageComponent extends LitElement {
 
   private async fetchNotes(): Promise<void> {
     try {
-      const response = await this.httpClient.get('http://localhost:3000/notes');
+      const response = await fetch('https://localhost:3000/notes', {
+        method: 'GET'
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch notes');
       }
-      this.notes = await response.json();
+      const responseData = await response.json();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.notes = responseData.map((note: any) => ({
+        ...note,
+        id: note.id.toString()
+      }));
       this.updateCalendarEvents();
     } catch (error) {
       console.error('Error fetching notes:', error);
@@ -150,7 +157,7 @@ export class CalendarPageComponent extends LitElement {
     };
 
     try {
-      const response = await this.httpClient.post('http://localhost:3000/notes', noteData);
+      const response = await this.httpClient.post('https://localhost:3000/notes', noteData);
       this.notes.push(await response.json());
       this.closeModal();
       this.updateCalendarEvents();
@@ -175,7 +182,7 @@ export class CalendarPageComponent extends LitElement {
 
     try {
       const response = await this.httpClient.put(
-        `http://localhost:3000/notes/${this.selectedNote.id}`,
+        `https://localhost:3000/notes/${this.selectedNote.id}`,
         updatedNoteData
       );
       const updatedNote = await response.json();
@@ -190,7 +197,7 @@ export class CalendarPageComponent extends LitElement {
 
   private async deleteNote(noteId: string): Promise<void> {
     try {
-      await this.httpClient.delete(`http://localhost:3000/notes/${noteId}`);
+      await this.httpClient.delete(`https://localhost:3000/notes/${noteId}`);
       this.notes = this.notes.filter(note => note.id !== noteId);
       this.updateCalendarEvents();
       Notificator.showNotification('Note successfully deleted', 'erfolg');
