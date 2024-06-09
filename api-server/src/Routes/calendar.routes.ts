@@ -5,6 +5,7 @@ import { authService } from '../Routes/services/auth.service.js';
 import { GenericDAO } from '../models/generic.dao.js';
 import { Notes } from '../models/notes.js';
 import { MongoGenericDAO } from '../models/mongo-generic.dao.js';
+import { cryptoService } from './services/crypto.service.js';
 
 const router = express.Router();
 
@@ -17,9 +18,9 @@ router.get('/notes', authService.authenticationMiddleware, async (req, res) => {
       notes.map(note => {
         return {
           id: note.id,
-          date: note.date,
-          content: note.content,
-          name: note.name
+          date: cryptoService.decrypt(note.date),
+          content: cryptoService.decrypt(note.content),
+          name: cryptoService.decrypt(note.name)
         };
       })
     );
@@ -34,16 +35,16 @@ router.post('/notes', authService.authenticationMiddleware, async (req, res) => 
     const noteDAO: GenericDAO<Notes> = req.app.locals.noteDAO;
     const note = await noteDAO.create({
       userId: res.locals.user.id,
-      date: req.body.date,
-      content: req.body.content,
-      name: req.body.name
+      date: cryptoService.encrypt(req.body.date),
+      content: cryptoService.encrypt(req.body.content),
+      name: cryptoService.encrypt(req.body.name)
     });
     res.status(201).json({
       ...note,
       id: note.id,
-      date: note.date,
-      content: note.content,
-      name: note.name
+      date: cryptoService.encrypt(note.date),
+      content: cryptoService.encrypt(note.content),
+      name: cryptoService.decrypt(note.name)
     });
   } catch (err) {
     console.error(err);
@@ -88,10 +89,21 @@ router.put('/notes/:id', authService.authenticationMiddleware, async (req, res) 
       res.status(401).send();
       return;
     }
-    const updatedNote = { ...note, ...req.body }; // Merge the existing note with the updated fields
+    const updatedNote = {
+      ...note,
+      date: cryptoService.encrypt(req.body.date),
+      content: cryptoService.encrypt(req.body.content),
+      name: cryptoService.encrypt(req.body.name)
+    };
     const success = await noteDAO.update(updatedNote);
     if (success) {
-      res.status(200).json(updatedNote);
+      res.status(200).json({
+        ...updatedNote,
+        id: updatedNote.id,
+        date: cryptoService.decrypt(updatedNote.date),
+        content: cryptoService.decrypt(updatedNote.content),
+        name: cryptoService.decrypt(updatedNote.name)
+      });
     } else {
       res.status(404).send();
     }

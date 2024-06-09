@@ -45,18 +45,11 @@ export class CalendarPageComponent extends LitElement {
 
   private async fetchNotes(): Promise<void> {
     try {
-      const response = await fetch('https://localhost:3000/notes', {
-        method: 'GET'
-      });
+      const response = await this.httpClient.get('https://localhost:3000/notes');
       if (!response.ok) {
         throw new Error('Failed to fetch notes');
       }
-      const responseData = await response.json();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.notes = responseData.map((note: any) => ({
-        ...note,
-        id: note.id.toString()
-      }));
+      this.notes = await response.json();
       this.updateCalendarEvents();
     } catch (error) {
       console.error('Error fetching notes:', error);

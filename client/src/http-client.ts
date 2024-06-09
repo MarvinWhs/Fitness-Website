@@ -69,7 +69,7 @@ export class HttpClient {
   }
 
   private resolve(url: string) {
-    return url.startsWith('http') ? url : `${this.baseURL}${url.startsWith('/') ? url.substring(1) : url}`;
+    return url.startsWith('https') ? url : `${this.baseURL}${url.startsWith('/') ? url.substring(1) : url}`;
   }
 
   private async result(response: Response) {
