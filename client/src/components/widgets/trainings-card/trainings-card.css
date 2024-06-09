@@ -1,3 +1,4 @@
+/* Autor: Marvin Wiechers */
 .search-box-container {
   display: flex;
   justify-content: center;
@@ -41,6 +42,7 @@
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  position: relative;
 }
 
 .exercise {
@@ -64,11 +66,11 @@
 }
 
 .exercise-content {
+  margin-top: 20px;
   flex-grow: 1;
 }
 
 .exercise-content h3 {
-  margin-top: 0;
   color: #333;
 }
 
@@ -85,10 +87,11 @@
 .exercise-details {
   flex-grow: 1;
   padding-left: 20px;
+  padding-top: 20px;
 }
 
 .exercise-description {
-  margin-top: 10px; /* Abstand zwischen Details und Beschreibung */
+  margin-top: 10px;
 }
 
 .exercise-description p {
@@ -96,35 +99,125 @@
   color: #666;
   font-size: 0.9rem;
   flex-grow: 1;
+  line-height: 1.2;
 }
 
-.delete-exercise {
+.exercise-buttons {
   position: absolute;
   top: 20px;
   right: 20px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+}
+
+.exercise-buttons button {
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
-  display: none; /* Standardmäßig versteckt */
+  display: none;
   align-items: center;
   justify-content: center;
-  outline: none; /* Entfernt den Fokus-Umriss */
-  background-color: transparent;
+  outline: none; 
 }
 
-.delete-exercise svg {
-  fill: red; /* Farbe des Icons */
+.exercise-buttons .delete-exercise svg {
+  fill: red; 
 }
 
-.exercise-container-container:hover .delete-exercise {
-  display: inline-flex; /* Nur beim Hover anzeigen */
+.exercise-buttons .edit-exercise svg {
+  fill: blue; 
+}
+.exercise-container-container:hover .exercise-buttons button {
+  display: inline-flex; 
+}
+
+.exercise-buttons button:hover {
+  transform: scale(1.1);
+}
+
+
+.modal {
+  display: none;  /* initial hidden */
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  max-width: 500px;
+  position: relative;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content form input[type="text"],
+.modal-content form input[type="number"],
+.modal-content form select,
+.modal-content form textarea {
+  margin-bottom: 10px;
+  height: 40px;
+  padding: 0 10px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.modal-content form textarea {
+  height: 80px;
+  padding: 10px;
+  line-height: 1.3;
+}
+
+.modal-content form button {
+  align-self: center;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  color: #aaa;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #f00;
 }
 
 @media (max-width: 1060px) {
   .exercises-container {
     grid-template-columns: 1fr; /* Eine Spalte für kleinere Bildschirmgrößen */
     gap: 20px; /* Kleinere Lücke zwischen den Elementen */
+  }
+
+  .main-content {
+    padding: 0px;
   }
 }
 
@@ -133,12 +226,20 @@
     flex-direction: column;
     gap: 10px;
   }
+
   .search-box, .difficulty-filter {
     width: 75%;
   }
-  .exercise{
+
+  .exercise {
     display: flex;
     flex-direction: column;
     gap: 5px;
+  }
+}
+
+@media (max-width: 650px) {
+  .modal-content {
+    width: 75%;
   }
 }

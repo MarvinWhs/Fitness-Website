@@ -93,9 +93,9 @@ p {
     opacity: 0.6;
     transition: transform 0.3s ease, margin 0.3s ease, opacity 1s;
     position: relative;
-    height: 1.5em; /* Festgelegte Höhe */
-    margin-left: 0.5em; /* Abstand für Animation */
-    margin-right: 0.5em; /* Abstand für Animation */
+    height: 1.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
   }
   
   
@@ -103,8 +103,8 @@ p {
     color: var(--black);
     transform: scale(1.2);
     opacity: 1;
-    margin-left: -0.1em; /* Anpassung für Animation */
-    margin-right: -0.1em; /* Anpassung für Animation */
+    margin-left: -0.1em;
+    margin-right: -0.1em; 
   }
   
   header {
@@ -192,6 +192,23 @@ p {
     visibility: visible;
     opacity: 1;
   }
+  .logout-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    vertical-align: middle;
+    padding: 1em 1em;
+    padding-top: 0.8em;
+}
+
+.logout-icon {
+    width: 28px; 
+    height: 28px;
+    fill: #333;
+}
+.logout-button:hover{
+    transform: scale(1.1);
+}
   
   @media (max-width: 1060px) {
     #myNavbar {
@@ -203,6 +220,12 @@ p {
   
     .menu-icon {
       display: block;
+    }
+    .logout-icon{
+      fill: white;
+    }
+    .logout-button:hover{
+      background-color: #575757;
     }
   }
   

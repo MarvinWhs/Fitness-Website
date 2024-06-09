@@ -1,3 +1,4 @@
+/* Autor: Marvin Wiechers */
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import componentStyle from './my-header.css?inline';
@@ -15,7 +16,6 @@ class MyHeader extends LitElement {
   @property({ type: Boolean })
   sidebarOpen = false;
 
-  /* Autor Niklas Lobo */
   @consume({ context: authContext, subscribe: true })
   authState!: AuthState;
 
@@ -25,7 +25,6 @@ class MyHeader extends LitElement {
   @consume({ context: routerContext, subscribe: true })
   router!: Router;
 
-  /* Autor Niklas Lobo */
   isLoggedIn(): boolean {
     return this.authState.isAuthenticated;
   }
@@ -94,7 +93,27 @@ class MyHeader extends LitElement {
               <li data-page><a href="/tracker-home">Ernährungstracker</a></li>
               <li data-page><a href="/calendar-page">Kalendar</a></li>
               ${this.authState.isAuthenticated
-                ? html` <li><button @click="${this.handleLogout}">Ausloggen</button></li>`
+                ? html` <li>
+                    <button @click="${this.handleLogout}" class="logout-button" title="Ausloggen">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="logout-icon"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"
+                        />
+                      </svg>
+                    </button>
+                  </li>`
                 : html`<li data-page><a href="/login-page">Anmelden</a></li>
                     <li data-page><a href="/register-page">Registrieren</a></li>`}
               <li><dark-mode></dark-mode></li>
@@ -109,7 +128,27 @@ class MyHeader extends LitElement {
             <li data-page><a href="/tracker-home">Ernährungstracker</a></li>
             <li data-page><a href="/calendar-page">Kalendar</a></li>
             ${this.authState.isAuthenticated
-              ? html` <li><button @click="${this.handleLogout}">Ausloggen</button></li>`
+              ? html` <li>
+                  <button @click="${this.handleLogout}" class="logout-button" title="Ausloggen">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="logout-icon"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"
+                      />
+                    </svg>
+                  </button>
+                </li>`
               : html`<li data-page><a href="/login-page">Anmelden</a></li>
                   <li data-page><a href="/register-page">Registrieren</a></li>`}
             <li><dark-mode></dark-mode></li>

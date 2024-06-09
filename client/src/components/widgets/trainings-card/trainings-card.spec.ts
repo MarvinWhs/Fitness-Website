@@ -3,12 +3,17 @@ import { html, fixture, fixtureCleanup } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
 import './trainings-card';
 import { TrainingsCard } from './trainings-card';
+import { HttpClient } from './../../../http-client.js';
 
 describe('TrainingsCard', () => {
   let element: TrainingsCard;
+  let httpClientStub: sinon.SinonStubbedInstance<HttpClient>;
 
   beforeEach(async () => {
+    httpClientStub = sinon.createStubInstance(HttpClient);
     element = await fixture<TrainingsCard>(html`<trainings-card></trainings-card>`);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (element as any).httpClient = httpClientStub;
   });
 
   afterEach(() => {
@@ -105,6 +110,60 @@ describe('TrainingsCard', () => {
     expect(filteredExercises.length).to.equal(1);
   });
 
+  it('should open edit modal, edit exercise, and close edit modal', async () => {
+    element.exercises = [
+      {
+        id: '1',
+        createdAt: Date.now(),
+        name: 'Push Up',
+        description: 'Do push ups',
+        duration: 10,
+        difficulty: 'Easy',
+        image: ''
+      }
+    ];
+
+    httpClientStub.post.resolves(new Response(null, { status: 200 }));
+
+    await element.updateComplete;
+
+    const editButton = element.shadowRoot!.querySelector('.edit-exercise') as HTMLButtonElement;
+    editButton.click();
+    await element.updateComplete;
+
+    expect(element.isEditModalOpen).to.be.true;
+    await element.updateComplete;
+    const modal = element.shadowRoot!.getElementById('editExerciseModal');
+    expect(modal).to.not.be.null;
+    if (modal) {
+      expect(modal.style.display).to.equal('flex');
+    }
+
+    const nameInput = element.shadowRoot!.querySelector('input[name="name"]') as HTMLInputElement;
+    expect(nameInput).to.not.be.null;
+    if (nameInput) {
+      nameInput.value = 'Updated Push Up';
+      nameInput.dispatchEvent(new Event('input'));
+    }
+
+    const form = element.shadowRoot!.querySelector('form') as HTMLFormElement;
+    expect(form).to.not.be.null;
+    if (form) {
+      httpClientStub.put.resolves(new Response(null, { status: 200 }));
+      const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+      form.dispatchEvent(submitEvent);
+    }
+
+    await element.updateComplete;
+
+    expect(httpClientStub.put.calledOnce).to.be.true;
+    expect(httpClientStub.put.args[0][0]).to.equal(`https://localhost:3000/exercises/1`);
+
+    await element.updateComplete;
+
+    expect(element.isEditModalOpen).to.be.false;
+  });
+
   it('should delete exercise', async () => {
     element.exercises = [
       {
@@ -118,7 +177,7 @@ describe('TrainingsCard', () => {
       }
     ];
 
-    const fetchStub = sinon.stub(window, 'fetch').resolves(new Response(null, { status: 200 }));
+    httpClientStub.delete.resolves(new Response(null, { status: 200 }));
 
     await element.updateComplete;
 
@@ -127,7 +186,33 @@ describe('TrainingsCard', () => {
 
     await element.updateComplete;
 
+    expect(httpClientStub.delete.calledOnce).to.be.true;
     expect(element.exercises.length).to.equal(0);
-    fetchStub.restore();
+  });
+
+  it('should not delete exercise if not authorized', async () => {
+    element.exercises = [
+      {
+        id: '1',
+        createdAt: Date.now(),
+        name: 'Push Up',
+        description: 'Do push ups',
+        duration: 10,
+        difficulty: 'Easy',
+        image: ''
+      }
+    ];
+
+    httpClientStub.delete.resolves(new Response(null, { status: 401 }));
+
+    await element.updateComplete;
+
+    const deleteButton = element.shadowRoot!.querySelector('.delete-exercise') as HTMLButtonElement;
+    deleteButton.click();
+
+    await element.updateComplete;
+
+    expect(httpClientStub.delete.calledOnce).to.be.true;
+    expect(element.exercises.length).to.equal(1);
   });
 });

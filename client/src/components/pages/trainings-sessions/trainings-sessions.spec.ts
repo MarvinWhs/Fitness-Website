@@ -14,7 +14,7 @@ describe('TrainingsComponent', () => {
   beforeEach(async () => {
     element = await fixture<TrainingsComponent>(html`<trainings-sessions></trainings-sessions>`);
     httpClient = new HttpClient(); // Initialisierung des neuen HTTP-Clients
-    httpClient.init('http://localhost:3000'); // Setzen der Basis-URL für den HTTP-Client
+    httpClient.init('https://localhost:3000'); // Setzen der Basis-URL für den HTTP-Client
 
     // Stub für die HTTP-Post-Methode
     httpClientStub = sinon.stub(httpClient, 'post').resolves(new Response(null, { status: 200 }));
@@ -111,7 +111,7 @@ describe('TrainingsComponent', () => {
     await element.updateComplete;
 
     expect(httpClientStub.calledOnce).to.be.true;
-    expect(httpClientStub.firstCall.args[0]).to.equal('http://localhost:3000/exercises');
+    expect(httpClientStub.firstCall.args[0]).to.equal('https://localhost:3000/exercises');
     expect(httpClientStub.firstCall.args[1]).to.deep.include({
       name: 'Test Exercise',
       description: 'This is a test exercise',

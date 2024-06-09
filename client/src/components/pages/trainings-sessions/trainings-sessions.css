@@ -1,19 +1,17 @@
 /* Autor: Marvin Wiechers */
-/* Überschrift */
+
 h1 {
   color: #333;
-  font-size: 30px; /* vorher 24 */
+  font-size: 30px; 
   text-align: center;
 }
 
-/* Absätze */
 p {
   color: #666;
   font-size: 16px;
   line-height: 1.5;
 }
 
-/* Links */
 a {
   color: #fff;
   text-decoration: none;
@@ -24,17 +22,17 @@ a:hover {
 }
 
 .main-content {
-  max-width: 80%; /* Begrenzt die Breite des Hauptinhalts */
-  margin: auto; /* Zentriert den Hauptinhalt */
+  max-width: 80%; 
+  margin: auto; 
   padding: 30px;
 }
 
 .two-column-row {
   display: flex;
-  align-items: center; /* Vertikales Zentrieren der Elemente */
-  justify-content: center; /* Horizontales Zentrieren der Elemente */
+  align-items: center; 
+  justify-content: center;
   margin-top: 0px;
-  padding: 15px; /* Etwas Abstand zum Rand */
+  padding: 15px; 
 }
 
 #first-row {
@@ -43,7 +41,7 @@ a:hover {
 
 .two-column-row-content {
   flex: 1;
-  padding: 15px; /* Etwas Abstand zum Rand */
+  padding: 15px; 
   text-align: justify;
 }
 
@@ -56,23 +54,23 @@ a:hover {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 20px; /* Abstand nach oben */
-  text-align: center; /* Zentrierter Text */
+  margin-top: 20px; 
+  text-align: center; 
 }
 
 .image-area {
   flex: 1;
   display: flex;
-  justify-content: center; /* Bild am rechten Rand ausrichten */
-  position: relative; /* Für die Positionierung des Bildes */
+  justify-content: center; 
+  position: relative; 
 }
 
 .image-area img {
-  max-width: 60%; /* Stellt sicher, dass das Bild nicht größer als sein Container ist */
+  max-width: 60%; 
   height: auto;
-  border-radius: 50%; /* Kreisförmigen Rand erzeugen */
-  clip-path: circle(50% at 50% 50%); /* Kreisförmigen Ausschnitt erzeugen */
-  position: absolute; /* Ermöglicht die genaue Platzierung des Bildes */
+  border-radius: 50%; 
+  clip-path: circle(50% at 50% 50%); 
+  position: absolute; 
   transform: translate(0%, -50%);
   display: block;
 }
@@ -94,7 +92,7 @@ a:hover {
 }
 
 .modal {
-  display: none;  /* initial hidden */
+  display: none;
   position: fixed;
   left: 0;
   top: 0;
@@ -111,8 +109,8 @@ a:hover {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 50%; /* oder eine andere Breite, abhängig vom Design */
-  max-width: 500px; /* begrenzt die maximale Breite */
+  width: 50%;
+  max-width: 500px; 
   position: relative;
 }
 
@@ -128,11 +126,13 @@ a:hover {
   margin-bottom: 10px;
   height: 40px;
   padding: 0 10px;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .modal-content form textarea {
-  height: 80px; /* Spezielle Höhe für die Textarea, um mehr Text sichtbar zu machen */
-  padding: 10px; /* Mehr Polsterung für bessere Textdarstellung */
+  height: 80px;
+  padding: 10px;
+  line-height: 1.3; 
 }
 
 .modal-content form button {
@@ -155,10 +155,10 @@ a:hover {
 }
 
 .drop-area {
-  border: 2px dashed #ccc; /* Gestrichelte Linie für den Umriss */
-  padding: 20px; /* Innenabstand */
-  text-align: center; /* Zentrierter Text */
-  margin-bottom: 10px; /* Abstand nach unten */
+  border: 2px dashed #ccc; 
+  padding: 20px; 
+  text-align: center; 
+  margin-bottom: 10px; 
   margin-top: 10px;
   cursor: pointer;
 }
@@ -185,12 +185,12 @@ img.preview {
 }
 
 .delete-image:focus {
-  outline: none; /* Spezifischer für den Fokus-Zustand */
-  box-shadow: none; /* Entfernt Schatten, falls vorhanden */
+  outline: none; 
+  box-shadow: none; 
 }
 
 .delete-image svg {
-  fill: red; /* Farbe des Icons */
+  fill: red; 
 }
 
 .delete-image:focus {
@@ -209,13 +209,13 @@ img.preview {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  outline: none; /* Entfernt den Fokus-Umriss */
+  outline: none; 
   background-color: transparent;
   position: absolute;
-  top: 50%; /* Zentriert den Button vertikal */
-  right: 10px; /* Platzierung am rechten Rand */
-  transform: translateY(-50%); /* Zentriert den Button vertikal */
-}
+  top: 50%; 
+  right: 10px;
+  transform: translateY(-50%);
+  } 
 
 #remImg:hover {
   color: red;
@@ -237,20 +237,20 @@ img.preview {
 
   .image-area-mobile {
       display: block;
-      text-align: center; /* Zentriert das Bild in der mobilen Ansicht */
+      text-align: center; 
   }
 
   .image-area-mobile img {
       max-width: 50%;
       height: auto;
-      border-radius: 50%; /* Kreisförmigen Rand erzeugen */
-      clip-path: circle(50% at 50% 50%); /* Kreisförmigen Ausschnitt erzeugen */
-      margin: 20px 0; /* Abstand oben und unten */
+      border-radius: 50%;
+      clip-path: circle(50% at 50% 50%);
+      margin: 20px 0; 
   }
 
   .link-button {
       display: block;
-      margin: 20px auto; /* Zentriert den Button horizontal */
+      margin: 20px auto; 
   }
 }
 @media(max-width:500px){
