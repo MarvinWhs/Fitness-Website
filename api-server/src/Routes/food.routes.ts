@@ -51,6 +51,32 @@ router.post('/food-cards', authService.authenticationMiddleware, async (req, res
   }
 });
 
+router.put('/food-cards/:id', authService.authenticationMiddleware, async (req, res) => {
+  try {
+    const foodDAO = req.app.locals.foodDAO;
+    const id = req.params.id;
+    const food = await foodDAO.findOne({ id });
+    if (!food) {
+      res.status(404).send();
+      return;
+    }
+    if (res.locals.user.id !== food.userId) {
+      res.status(401).send();
+      return;
+    }
+    const updatedfood = { ...food, ...req.body };
+    const success = await foodDAO.update(updatedfood);
+    if (success) {
+      res.status(200).json(updatedfood);
+    } else {
+      res.status(404).send();
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+});
+
 router.delete('/food-cards/:id', authService.authenticationMiddleware, async (req, res) => {
   try {
     const foodDAO: MongoGenericDAO<Food> = req.app.locals.foodDAO;

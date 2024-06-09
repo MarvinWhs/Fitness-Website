@@ -48,7 +48,7 @@ p {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
   max-width: 800px;
   margin: 40px auto;
-  padding: 20px;
+  padding: 10px auto;
 }
 
 li {

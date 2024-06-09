@@ -1,18 +1,24 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import componentStyle from './nutrition-tracker.css?inline';
+import { HttpClient, httpClientContext } from '../../../http-client.js';
+import { consume } from '@lit/context';
+import { Notificator } from '../notificator/notificator.js';
 
 interface Food {
   id: string;
   name: string;
   calories: number;
-  image: string; // Base64-kodierte Bildinformation
-  description: string; // Beschreibung der Mahlzeit
+  description: string;
+  quantity: number;
 }
 
 @customElement('nutrition-tracker')
 export class NutritionTracker extends LitElement {
   static styles = [componentStyle];
+
+  @consume({ context: httpClientContext })
+  httpClient!: HttpClient;
 
   @state() foodCards: Food[] = [];
   @property({ type: Number }) totalCalories = 0;
@@ -55,14 +61,23 @@ export class NutritionTracker extends LitElement {
 
   async deleteFoodCard(id: string) {
     try {
-      const response = await fetch(`https://localhost:3000/food-cards/${id}`, {
-        method: 'DELETE'
-      });
+      const response = await this.httpClient.delete(`https://localhost:3000/food-cards/${id}`);
+      console.log('response in card' + response.status);
       if (!response.ok) {
-        throw new Error('Failed to delete food');
+        if (response.status === 404) {
+          Notificator.showNotification('Sie müssen sich anmelden, um Essen löschen zu können!', 'fehler');
+          throw new Error('User not logged in');
+        }
+        if (response.status === 401) {
+          Notificator.showNotification('Sie können nur Essen löschen, welche sie selber erstellt haben!', 'fehler');
+          throw new Error('User not authorized to delete exercise');
+        } else {
+          Notificator.showNotification('Fehler beim Löschen', 'fehler');
+          throw new Error('Failed to delete exercise');
+        }
       }
-      this.foodCards = this.foodCards.filter(food => food.id !== id);
-      this.checkCalories();
+      Notificator.showNotification('Übung erfolgreich gelöscht', 'erfolg');
+      this.foodCards = this.foodCards.filter(foodCards => foodCards.id !== id);
       this.requestUpdate();
     } catch (error) {
       console.error(error);
@@ -78,17 +93,12 @@ export class NutritionTracker extends LitElement {
       name: formData.get('name') as string,
       description: formData.get('description') as string,
       calories: parseInt(formData.get('calories') as string),
-      image: this.imageData as string
+      quantity: parseInt(formData.get('quantity') as string)
     };
 
     try {
-      const response = await fetch('https://localhost:3000/food-cards', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(foodCardData)
-      });
+      const response = await this.httpClient.post('https://localhost:3000/food-cards', foodCardData);
+
       if (!response.ok) {
         throw new Error('Failed to add food');
       }
@@ -96,6 +106,25 @@ export class NutritionTracker extends LitElement {
       await this.loadFoodCards();
     } catch (error) {
       console.error('Fehler beim Hinzufügen der Food-card: ', error);
+    }
+  }
+
+  async updateFoodCard(id: string, quantity: number): Promise<void> {
+    try {
+      const foodCard = this.foodCards.find(food => food.id === id);
+      if (foodCard) {
+        const updatedFoodCard = { ...foodCard, quantity };
+        const response = await this.httpClient.put(`https://localhost:3000/food-cards/${id}`, updatedFoodCard);
+
+        if (!response.ok) {
+          throw new Error('Failed to update food card');
+        }
+
+        this.foodCards = this.foodCards.map(food => (food.id === id ? updatedFoodCard : food));
+        this.requestUpdate();
+      }
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren der Food-card:', error);
     }
   }
 
@@ -114,7 +143,7 @@ export class NutritionTracker extends LitElement {
   }
 
   getRemainingCalories() {
-    const consumedCalories = this.foodCards.reduce((sum, card) => sum + Number(card.calories), 0);
+    const consumedCalories = this.foodCards.reduce((sum, card) => sum + Number(card.calories * card.quantity), 0);
     console.log('consumedCalories', consumedCalories);
     console.log('totalCalories', this.totalCalories);
     return this.totalCalories - consumedCalories;
@@ -143,18 +172,6 @@ export class NutritionTracker extends LitElement {
     this.isModalOpen = false;
   }
 
-  handleFileChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imageData = reader.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
   render() {
     return html`
       <main class="main-content">
@@ -168,6 +185,7 @@ export class NutritionTracker extends LitElement {
                     <p>Verbleibende Kalorien: ${this.getRemainingCalories()} kcal</p>
                     <button @click=${this.resetTotalCalories}>Zurücksetzen</button>
                   </div>
+                  <div class="plus-button" @click=${this.openModal}><strong>+</strong></div>
                 `
               : html`
                   <div class="row">
@@ -179,14 +197,18 @@ export class NutritionTracker extends LitElement {
                       .value=${this.totalCalories}
                     />
                     <button class="link-button" @click=${this.submitTotalCalories}>Eingabe</button>
+                    <div class="plus-button" @click=${this.openModal}><strong>+</strong></div>
                   </div>
                 `
           }
-          <div class="plus-button" @click=${this.openModal}><strong>+</strong></div>
           <div class="food-list">
             ${this.foodCards.map(
               card => html`
-                <food-card .food=${card} @delete-food=${(e: CustomEvent) => this.deleteFoodCard(e.detail)}></food-card>
+                <food-card
+                  .food=${card}
+                  @delete-food=${(e: CustomEvent) => this.deleteFoodCard(e.detail)}
+                  @update-food=${(e: CustomEvent) => this.updateFoodCard(e.detail.id, e.detail.quantity)}
+                ></food-card>
               `
             )}
           </div>
@@ -201,7 +223,7 @@ export class NutritionTracker extends LitElement {
                         <input type="text" name="name" placeholder="Name" required />
                         <textarea name="description" placeholder="Beschreibung" required></textarea>
                         <input type="number" name="calories" min="1" placeholder="Kalorien" required />
-                        <input type="file" name="image" @change=${this.handleFileChange} />
+                        <input type="number" name="quantity" min="1" max="99" placeholder="Anzahl" required />
                         <button type="submit">Hinzufügen</button>
                       </form>
                     </div>
