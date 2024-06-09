@@ -259,7 +259,7 @@ ${this.editedExercise.description}</textarea
                     type="number"
                     name="duration"
                     placeholder="Dauer in Minuten"
-                    .value="${this.editedExercise.duration}"
+                    .value="${this.editedExercise.duration.toString()}"
                     @input="${this.handleEditInput}"
                     required
                   />

@@ -71,7 +71,7 @@ describe('TrainingsComponent', () => {
 
     await page.getByRole('button', { name: 'Jetzt Übungen hinzufügen' }).click();
     await page.getByPlaceholder('Name der Übung').click();
-    await page.getByPlaceholder('Name der Übung').fill('Test');
+    await page.getByPlaceholder('Name der Übung').fill('Übung 1');
     await page.getByPlaceholder('Name der Übung').press('Tab');
     await page.getByPlaceholder('Beschreibung der Übung').fill('Testentesten');
     await page.getByPlaceholder('Beschreibung der Übung').press('Tab');
@@ -87,7 +87,11 @@ describe('TrainingsComponent', () => {
     const exercises = await page.$$('.exercise');
     const exerciseNames = await Promise.all(exercises.map(async exercise => await exercise.textContent()));
     expect(exerciseNames.some(name => name?.includes('Übung 1'))).to.be.true;
-    await page.locator('#myNavbar').getByRole('button', { name: 'Ausloggen' }).click();
+
+    await page.waitForTimeout(1000);
+
+    await page.hover('.exercise-container-container:first-child');
+    await page.getByRole('button', { name: 'Übung löschen' }).click();
   });
 
   it('should prevent adding an exercise without authentication', async () => {
