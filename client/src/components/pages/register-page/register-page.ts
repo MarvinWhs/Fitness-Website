@@ -53,7 +53,8 @@ export class RegisterPage extends LitElement {
       if (usernameRegex.test(this.username)) {
         this.usernameErrorMessage = '';
       } else {
-        this.usernameErrorMessage = 'Ungültiger Benutzername';
+        this.usernameErrorMessage =
+          'Der Benutzername muss zwischen 6 und 20 Zeichen lang sein und mindestens einen Buchstaben enthalten';
       }
     } else if (target.name === 'password') {
       this.password = target.value;
@@ -61,7 +62,8 @@ export class RegisterPage extends LitElement {
       if (passwordRegex.test(this.password)) {
         this.passwordErrorMessage = '';
       } else {
-        this.passwordErrorMessage = 'Ungültiges Passwort';
+        this.passwordErrorMessage =
+          'Das Passwort muss mindestens 7 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten';
       }
     } else if (target.name === 'confirmPassword') {
       this.confirmPassword = target.value;
@@ -76,7 +78,7 @@ export class RegisterPage extends LitElement {
       if (emailRegex.test(this.email)) {
         this.emailErrorMessage = '';
       } else {
-        this.emailErrorMessage = 'Ungültige E-Mail';
+        this.emailErrorMessage = 'Bitte geben Sie eine gültige E-Mail-Adresse an';
       }
     }
 
