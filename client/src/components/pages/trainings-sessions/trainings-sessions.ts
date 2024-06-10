@@ -220,7 +220,7 @@ export class TrainingsComponent extends LitElement {
           <input type="text" placeholder="Name der Übung" name="name" required>
           <textarea placeholder="Beschreibung der Übung" name="description" required></textarea>
           <input type="number" placeholder="Dauer in Minuten" name="duration" min="1" required>
-          <select name="difficulty" required>
+          <select name="difficulty" class="difficulty" required>
             <option value="">Schwierigkeitsgrad wählen</option>
             <option value="Easy">Easy</option>
             <option value="Medium">Medium</option>

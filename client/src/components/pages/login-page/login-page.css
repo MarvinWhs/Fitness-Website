@@ -1,6 +1,7 @@
 /* Autor Niklas Lobo */
 
 .login-container {
+    height: 46.5vh;
     width: 90%;
     max-width: 800px;
     margin: 100px auto; /* Erhöhung des oberen und unteren Randes auf 100px */

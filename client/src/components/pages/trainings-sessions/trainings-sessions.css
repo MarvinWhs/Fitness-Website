@@ -91,6 +91,10 @@ a:hover {
   max-width: 1000%;
 }
 
+.difficulty {
+  color: var(--p-textcolor);
+}
+
 .modal {
   display: none;
   position: fixed;
@@ -105,7 +109,8 @@ a:hover {
 }
 
 .modal-content {
-  background-color: white;
+  background-color: var(--header-color);
+  color: var(--p-textcolor);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

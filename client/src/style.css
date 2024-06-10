@@ -12,7 +12,7 @@ body {
   --primary-color: #f3f6f9; /* Very light blue-gray */
   --secondary-color: #e0e7ef; /* Light blue-gray */
   --text-color: #2c3e50; /* Strong dark gray */
-  --header-color: #A5B8CB; /* Muted blue */
+  --header-color: #f3f6f9; /* Muted blue */
   --button-hover-color: #b0bec5; /* Soft gray */
   --white: #fff; /* White */
   --black: #000; /* Black */
@@ -25,12 +25,13 @@ body {
   --primary-color: #1c2733; /* Very dark blue-gray */
   --secondary-color: #243447; /* Dark blue-gray */
   --text-color: #cfd8dc; /* Light gray */
-  --header-color: #607d8b; /* Muted blue-gray */
+  --header-color: #535353; /* Muted blue-gray */
   --button-hover-color: #546e7a; /* Medium dark blue-gray */
   --white: #000; /* Black */
   --black: #fff; /* White */
   --leichtes-black: #333333;
   --h-textcolor: #e0e7ef;
+  --p-textcolor: #bac2c6;
 }
 
 /*darkslategray, teal, cadetblue, palegoldenrod, beige */

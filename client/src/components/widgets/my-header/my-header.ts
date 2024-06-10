@@ -88,10 +88,18 @@ class MyHeader extends LitElement {
         <div class="collapse navbar-collapse auto-responsive isScrollTop" id="myNavbar">
           <div class="row">
             <ul class="nav navbar-nav">
-              <li data-page><a href="/fitness-home">Home</a></li>
-              <li data-page><a href="/exercises">Trainingseinheiten</a></li>
-              <li data-page><a href="/tracker-home">Ernährungstracker</a></li>
-              <li data-page><a href="/calendar-page">Kalendar</a></li>
+              <li data-page>
+                <a href="/fitness-home"><strong>Home</strong></a>
+              </li>
+              <li data-page>
+                <a href="/exercises"><strong>Trainingseinheiten</strong></a>
+              </li>
+              <li data-page>
+                <a href="/tracker-home"><strong>Ernährungstracker</strong></a>
+              </li>
+              <li data-page>
+                <a href="/calendar-page"><strong>Kalendar</strong></a>
+              </li>
               ${this.authState.isAuthenticated
                 ? html` <li>
                     <button @click="${this.handleLogout}" class="logout-button" title="Ausloggen">
@@ -114,8 +122,12 @@ class MyHeader extends LitElement {
                       </svg>
                     </button>
                   </li>`
-                : html`<li data-page><a href="/login-page">Anmelden</a></li>
-                    <li data-page><a href="/register-page">Registrieren</a></li>`}
+                : html`<li data-page>
+                      <a href="/login-page"><strong>Anmelden</strong></a>
+                    </li>
+                    <li data-page>
+                      <a href="/register-page"><strong>Registrieren</strong></a>
+                    </li>`}
               <li><dark-mode></dark-mode></li>
             </ul>
           </div>

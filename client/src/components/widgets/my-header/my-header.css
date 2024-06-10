@@ -171,7 +171,7 @@ p {
   }
   
   .sidebar .sidebar-nav li a:hover {
-    background-color: var(--primary-color);
+    background-color: var(--secondary-color);
   }
   
   .overlay {
@@ -204,7 +204,7 @@ p {
 .logout-icon {
     width: 28px; 
     height: 28px;
-    fill: #333;
+    fill: var(--text-color);
 }
 .logout-button:hover{
     transform: scale(1.1);
@@ -221,11 +221,6 @@ p {
     .menu-icon {
       display: block;
     }
-    .logout-icon{
-      fill: white;
-    }
-    .logout-button:hover{
-      background-color: #575757;
-    }
+
   }
   

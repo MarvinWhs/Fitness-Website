@@ -1,8 +1,8 @@
 /*Autor: Marvin Wiechers */
 
 footer{
-    background-color: rgba(0,0,0,0.8);
-    color: white;
+    background-color: var(--header-color);
+    color: var(--text-color);
     text-align: center;
     width: 100%;
 
@@ -12,7 +12,6 @@ footer{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    padding: 30px;
     
 }
 
@@ -26,7 +25,7 @@ footer{
 }
 
 a{
-    color: white;
+    color: var(--text-color);
     text-decoration: none;
     padding: 2px;
 }
@@ -44,6 +43,7 @@ h3{
 
 p{
     font-size: 14px;
+    margin-bottom: 0px;
     
 
 }
