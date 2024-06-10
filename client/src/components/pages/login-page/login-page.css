@@ -4,7 +4,7 @@
     height: 46.5vh;
     width: 90%;
     max-width: 800px;
-    margin: 100px auto; /* Erhöhung des oberen und unteren Randes auf 100px */
+    margin: 100px auto;
 }
 
 input[type="text"],
@@ -13,14 +13,14 @@ input[type="password"] {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-bottom: 20px; /* Erhöhter Abstand zwischen den Eingabefeldern */
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
     font-weight: bold;
-    font-size: 14px; /* Kleinerer Schriftgrad für die Bezeichnungen */
-    margin-bottom: 5px; /* Abstand zwischen Label und Eingabefeld */
+    font-size: 14px;
+    margin-bottom: 5px;
 }
 
 button[type="submit"] {
@@ -39,5 +39,5 @@ button[type="submit"]:hover {
 
 .error-message {
     color: red;
-    margin-top: 5px; /* Abstand zwischen Button und Fehlermeldung */
+    margin-top: 5px;
 }

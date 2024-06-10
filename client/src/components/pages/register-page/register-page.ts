@@ -27,7 +27,6 @@ export class RegisterPage extends LitElement {
   confirmPassword: string;
   email: string;
 
-  // Validierungsnachrichten
   usernameErrorMessage: string;
   emailErrorMessage: string;
   passwordErrorMessage: string;
@@ -94,7 +93,6 @@ export class RegisterPage extends LitElement {
 
   async handleSubmit(e: Event) {
     e.preventDefault();
-    // Check if there are any error messages
     const hasErrors =
       this.usernameErrorMessage ||
       this.passwordErrorMessage ||
@@ -112,7 +110,7 @@ export class RegisterPage extends LitElement {
       const response = await this.httpClient.post('https://localhost:3000/register', userData);
       if (response.ok) {
         const result = await response.json();
-        localStorage.setItem('authToken', result.token); // Speichern des Tokens
+        localStorage.setItem('authToken', result.token);
         console.log('Login erfolgreich');
         this.authState.isAuthenticated = true;
         console.log('AuthState:', this.authState);

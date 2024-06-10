@@ -89,7 +89,7 @@ export class CalendarPageComponent extends LitElement {
 
   private handleDateClick(arg: DateClickArg) {
     this.selectedDate = arg.dateStr;
-    this.updateCalendarEvents(); // Update calendar events
+    this.updateCalendarEvents();
   }
 
   private handleEventClick(arg: { event: EventApi }) {

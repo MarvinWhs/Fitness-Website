@@ -22,3 +22,4 @@ import './components/widgets/dark-mode/dark-mode.js';
 import './components/widgets/food-card/food-card.js';
 import './components/widgets/pop-up/pop-up.js';
 import './components/widgets/notificator/notificator.js';
+import './components/widgets/trainings-timer/trainings-timer.js';
