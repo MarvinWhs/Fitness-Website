@@ -6,13 +6,13 @@ import { HttpClient, httpClientContext } from './../../../http-client.js';
 import { consume } from '@lit/context';
 
 interface Exercise {
-  id: string; // Normale ID als string
+  id: string;
   createdAt: number;
   name: string;
   description: string;
   duration: number;
   difficulty: string;
-  image: string; // Base64-kodierte Bildinformation
+  image: string;
 }
 
 @customElement('trainings-card')
@@ -21,7 +21,7 @@ export class TrainingsCard extends LitElement {
   httpClient!: HttpClient;
 
   @state()
-  exercises: Exercise[] = []; // Array von Übungen
+  exercises: Exercise[] = [];
 
   @state()
   searchTerm: string = '';

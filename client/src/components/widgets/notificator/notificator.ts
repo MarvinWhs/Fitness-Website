@@ -15,7 +15,6 @@ export class Notificator extends LitElement {
     return html`${this.content ? html`<div class="${this.type}">${this.content}</div>` : nothing}`;
   }
 
-  // Singleton Instanz
   // eslint-disable-next-line @typescript-eslint/member-ordering
   static instance: Notificator | null = null;
 
@@ -34,7 +33,7 @@ export class Notificator extends LitElement {
     if (Notificator.instance) {
       Notificator.instance.content = content;
       Notificator.instance.type = type;
-      Notificator.instance.requestUpdate(); // Aktualisierung der Komponente anfordern
+      Notificator.instance.requestUpdate();
       setTimeout(() => Notificator.instance?.clearNotification(), 5000);
     }
   }
@@ -42,6 +41,6 @@ export class Notificator extends LitElement {
   clearNotification() {
     this.content = '';
     this.type = 'info';
-    this.requestUpdate(); // Aktualisierung der Komponente anfordern
+    this.requestUpdate();
   }
 }

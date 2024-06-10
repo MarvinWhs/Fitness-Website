@@ -1,4 +1,4 @@
-/*Autor: Marvin Wiechers*/
+/*Autor: Marvin Wiechers */
 import { Request, Response, NextFunction } from 'express';
 
 class CorsService {

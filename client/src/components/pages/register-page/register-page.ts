@@ -112,7 +112,7 @@ export class RegisterPage extends LitElement {
       const response = await this.httpClient.post('https://localhost:3000/register', userData);
       if (response.ok) {
         const result = await response.json();
-        localStorage.setItem('authToken', result.token); // Speichern des Tokens
+        localStorage.setItem('authToken', result.token);
         console.log('Login erfolgreich');
         this.authState.isAuthenticated = true;
         console.log('AuthState:', this.authState);
