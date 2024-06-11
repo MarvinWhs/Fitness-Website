@@ -1,9 +1,11 @@
+/* Autor: Marvin Wiechers */
 import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import componentStyle from './trainings-card.css?inline';
 import { Notificator } from '../notificator/notificator.js';
 import { HttpClient, httpClientContext } from './../../../http-client.js';
 import { consume } from '@lit/context';
+import config from '../../../../config.json';
 
 interface Exercise {
   id: string;
@@ -58,7 +60,7 @@ export class TrainingsCard extends LitElement {
 
   async fetchExercises() {
     try {
-      const response = await fetch('https://localhost:3000/exercises', {
+      const response = await fetch(`${config.protocol}://${config.serverAdress}:${config.serverPort}/exercises`, {
         method: 'GET'
       });
       if (!response.ok) {
@@ -89,10 +91,7 @@ export class TrainingsCard extends LitElement {
     this.editedExercise = { ...exercise };
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const response = await this.httpClient.post(
-        `https://localhost:3000/exercises/test/${exercise.id}`,
-        this.editedExercise
-      );
+      const response = await this.httpClient.post(`/exercises/test/${exercise.id}`, this.editedExercise);
       this.isEditModalOpen = true;
       await this.updateComplete;
       const modal = this.shadowRoot!.getElementById('editExerciseModal') as HTMLElement;
@@ -126,10 +125,7 @@ export class TrainingsCard extends LitElement {
     e.preventDefault();
     if (this.editedExercise) {
       try {
-        const response = await this.httpClient.put(
-          `https://localhost:3000/exercises/${this.editedExercise.id}`,
-          this.editedExercise
-        );
+        const response = await this.httpClient.put(`/exercises/${this.editedExercise.id}`, this.editedExercise);
         if (response.ok) {
           await this.closeEditModal();
           await this.fetchExercises();
@@ -153,7 +149,7 @@ export class TrainingsCard extends LitElement {
 
   async deleteExercise(exerciseId: string) {
     try {
-      const response = await this.httpClient.delete(`https://localhost:3000/exercises/${exerciseId}`);
+      const response = await this.httpClient.delete(`/exercises/${exerciseId}`);
       if (!response.ok) {
         if (response.status === 404) {
           Notificator.showNotification('Sie müssen sich anmelden, um Übungen löschen zu können!', 'fehler');

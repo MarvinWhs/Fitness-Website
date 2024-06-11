@@ -1,6 +1,7 @@
 /* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
 
 import { createContext } from '@lit/context';
+import config from '../config.json';
 export const httpClientContext = createContext<HttpClient>('http-client');
 
 export class HttpClient {
@@ -11,53 +12,65 @@ export class HttpClient {
   }
 
   async get(url: string) {
-    const response = await fetch(this.resolve(url), {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'X-PersPl-CSRF-PROTECTION': '13'
-      },
-      credentials: 'include'
-    });
+    const response = await fetch(
+      this.resolve(`${config.protocol}://${config.serverAdress}:${config.serverPort}/` + url),
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'X-PersPl-CSRF-PROTECTION': '13'
+        },
+        credentials: 'include'
+      }
+    );
     return this.result(response);
   }
   /*Autor: Marvin Wiechers */
   async post(url: string, data: unknown) {
-    const response = await fetch(this.resolve(url), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'X-PersPl-CSRF-PROTECTION': '13'
-      },
-      credentials: 'include',
-      body: JSON.stringify(data)
-    });
+    const response = await fetch(
+      this.resolve(`${config.protocol}://${config.serverAdress}:${config.serverPort}` + url),
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'X-PersPl-CSRF-PROTECTION': '13'
+        },
+        credentials: 'include',
+        body: JSON.stringify(data)
+      }
+    );
     return this.result(response);
   }
   /*Autor: Marvin Wiechers */
   async delete(url: string) {
-    const response = await fetch(this.resolve(url), {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'X-PersPl-CSRF-PROTECTION': '13'
-      },
-      credentials: 'include'
-    });
+    const response = await fetch(
+      this.resolve(`${config.protocol}://${config.serverAdress}:${config.serverPort}` + url),
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'X-PersPl-CSRF-PROTECTION': '13'
+        },
+        credentials: 'include'
+      }
+    );
     return response;
   }
 
   /*Autor: Niklas Lobo */
   async put(url: string, data: unknown) {
-    const response = await fetch(this.resolve(url), {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'X-PersPl-CSRF-PROTECTION': '13'
-      },
-      credentials: 'include',
-      body: JSON.stringify(data)
-    });
+    const response = await fetch(
+      this.resolve(`${config.protocol}://${config.serverAdress}:${config.serverPort}` + url),
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'X-PersPl-CSRF-PROTECTION': '13'
+        },
+        credentials: 'include',
+        body: JSON.stringify(data)
+      }
+    );
     return this.result(response);
   }
 

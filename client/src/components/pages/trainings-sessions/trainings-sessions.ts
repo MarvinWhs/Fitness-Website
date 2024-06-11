@@ -76,7 +76,7 @@ export class TrainingsComponent extends LitElement {
     };
 
     try {
-      const response = await this.httpClient.post('https://localhost:3000/exercises', exerciseData);
+      const response = await this.httpClient.post('/exercises', exerciseData);
       if (!response.ok) {
         console.error('Failed to add exercise');
         Notificator.showNotification('Fehler beim Hinzufügen der Übung', 'fehler');

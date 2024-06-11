@@ -41,7 +41,7 @@ export class NutritionTracker extends LitElement {
 
   async loadFoodCards(): Promise<void> {
     try {
-      const response = await this.httpClient.get(`https://localhost:3000/food-cards`);
+      const response = await this.httpClient.get(`/food-cards`);
       if (!response) {
         throw new Error(`Failed to fetch food cards`);
       }
@@ -54,7 +54,7 @@ export class NutritionTracker extends LitElement {
 
   async deleteFoodCard(id: string): Promise<void> {
     try {
-      await this.httpClient.delete(`https://localhost:3000/food-cards/${id}`);
+      await this.httpClient.delete(`/food-cards/${id}`);
       this.foodCards = this.foodCards.filter(foodCards => foodCards.id !== id);
       this.requestUpdate();
       Notificator.showNotification('Note successfully deleted', 'erfolg');
@@ -77,7 +77,7 @@ export class NutritionTracker extends LitElement {
     };
 
     try {
-      const response = await this.httpClient.post('https://localhost:3000/food-cards', foodCardData);
+      const response = await this.httpClient.post('/food-cards', foodCardData);
 
       if (!response.ok) {
         throw new Error('Failed to add food');
@@ -94,7 +94,7 @@ export class NutritionTracker extends LitElement {
       const foodCard = this.foodCards.find(food => food.id === id);
       if (foodCard) {
         const updatedFoodCard = { ...foodCard, quantity };
-        const response = await this.httpClient.put(`https://localhost:3000/food-cards/${id}`, updatedFoodCard);
+        const response = await this.httpClient.put(`/food-cards/${id}`, updatedFoodCard);
 
         if (!response.ok) {
           throw new Error('Failed to update food card');
