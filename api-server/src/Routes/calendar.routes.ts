@@ -6,6 +6,7 @@ import { GenericDAO } from '../models/generic.dao.js';
 import { Notes } from '../models/notes.js';
 import { MongoGenericDAO } from '../models/mongo-generic.dao.js';
 import { cryptoService } from './services/crypto.service.js';
+import { csrfService } from './services/csrf.service.js';
 
 const router = express.Router();
 
@@ -30,7 +31,7 @@ router.get('/notes', authService.authenticationMiddleware, async (req, res) => {
   }
 });
 
-router.post('/notes', authService.authenticationMiddleware, async (req, res) => {
+router.post('/notes', authService.authenticationMiddleware, csrfService.validateToken, async (req, res) => {
   try {
     const noteDAO: GenericDAO<Notes> = req.app.locals.noteDAO;
     const note = await noteDAO.create({
@@ -52,7 +53,7 @@ router.post('/notes', authService.authenticationMiddleware, async (req, res) => 
   }
 });
 
-router.delete('/notes/:id', authService.authenticationMiddleware, async (req, res) => {
+router.delete('/notes/:id', authService.authenticationMiddleware, csrfService.validateToken, async (req, res) => {
   try {
     const noteDAO: GenericDAO<Notes> = req.app.locals.noteDAO;
     const id = req.params.id;
@@ -76,7 +77,7 @@ router.delete('/notes/:id', authService.authenticationMiddleware, async (req, re
   }
 });
 
-router.put('/notes/:id', authService.authenticationMiddleware, async (req, res) => {
+router.put('/notes/:id', authService.authenticationMiddleware, csrfService.validateToken, async (req, res) => {
   try {
     const noteDAO: GenericDAO<Notes> = req.app.locals.noteDAO;
     const id = req.params.id;

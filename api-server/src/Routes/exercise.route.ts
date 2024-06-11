@@ -5,6 +5,7 @@ import { GenericDAO } from '../models/generic.dao';
 import { MongoGenericDAO } from '../models/mongo-generic.dao';
 import { authService } from './services/auth.service.js';
 import { cryptoService } from './services/crypto.service.js';
+import { csrfService } from './services/csrf.service.js';
 
 const router = express.Router();
 
@@ -29,7 +30,7 @@ router.get('/exercises', async (req, res) => {
   }
 });
 
-router.post('/exercises', authService.authenticationMiddleware, async (req, res) => {
+router.post('/exercises', authService.authenticationMiddleware, csrfService.validateToken, async (req, res) => {
   try {
     const exerciseDAO: GenericDAO<Exercise> = req.app.locals.exerciseDAO;
     const exercise = await exerciseDAO.create({
@@ -55,7 +56,7 @@ router.post('/exercises', authService.authenticationMiddleware, async (req, res)
   }
 });
 
-router.delete('/exercises/:id', authService.authenticationMiddleware, async (req, res) => {
+router.delete('/exercises/:id', authService.authenticationMiddleware, csrfService.validateToken, async (req, res) => {
   try {
     const exerciseDAO: MongoGenericDAO<Exercise> = req.app.locals.exerciseDAO;
     const id = req.params.id;
@@ -79,7 +80,7 @@ router.delete('/exercises/:id', authService.authenticationMiddleware, async (req
   }
 });
 
-router.put('/exercises/:id', authService.authenticationMiddleware, async (req, res) => {
+router.put('/exercises/:id', authService.authenticationMiddleware, csrfService.validateToken, async (req, res) => {
   try {
     const exerciseDAO: MongoGenericDAO<Exercise> = req.app.locals.exerciseDAO;
     const id = req.params.id;
@@ -119,19 +120,24 @@ router.put('/exercises/:id', authService.authenticationMiddleware, async (req, r
     res.status(500).send(err);
   }
 });
-router.post('/exercises/test/:id', authService.authenticationMiddleware, async (req, res) => {
-  const exerciseDAO: MongoGenericDAO<Exercise> = req.app.locals.exerciseDAO;
-  const id = req.params.id;
-  const exercise = await exerciseDAO.findOne({ id });
-  if (!exercise) {
-    res.status(404).send();
-    return;
+router.post(
+  '/exercises/test/:id',
+  authService.authenticationMiddleware,
+  csrfService.validateToken,
+  async (req, res) => {
+    const exerciseDAO: MongoGenericDAO<Exercise> = req.app.locals.exerciseDAO;
+    const id = req.params.id;
+    const exercise = await exerciseDAO.findOne({ id });
+    if (!exercise) {
+      res.status(404).send();
+      return;
+    }
+    if (res.locals.user.id !== exercise.userId) {
+      res.status(401).send();
+      return;
+    }
+    res.status(200).send();
   }
-  if (res.locals.user.id !== exercise.userId) {
-    res.status(401).send();
-    return;
-  }
-  res.status(200).send();
-});
+);
 
 export default router;

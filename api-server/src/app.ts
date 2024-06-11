@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import startDB from './db.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { Request, Response } from 'express';
 
 import config from '../config.json' assert { type: 'json' };
 import exerciseRoute from './Routes/exercise.route.js';
@@ -14,6 +15,7 @@ import authRoutes from './Routes/auth.routes.js';
 import foodRoutes from './Routes/food.routes.js';
 import calendarRoutes from './Routes/calendar.routes.js';
 import { corsService } from './Routes/services/cors.service.js';
+import { csrfService } from './Routes/services/csrf.service.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,6 +46,7 @@ function configureApp(app: Express) {
     res.set('Referrer-Policy', 'same-origin');
     next();
   });
+  app.get('/csrf-token', (req: Request, res: Response) => csrfService.getCsrfToken(req, res));
 }
 
 export async function start() {
