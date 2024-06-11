@@ -1,4 +1,5 @@
-/* Autor: Prof. Dr. Norman Lahme-Hütig (FH Münster) */
+/* eslint-disable @typescript-eslint/member-ordering */
+/* Autor: Marvin Wiechers */
 
 import { createContext } from '@lit/context';
 import config from '../config.json';
@@ -6,72 +7,59 @@ export const httpClientContext = createContext<HttpClient>('http-client');
 
 export class HttpClient {
   private baseURL!: string;
+  private csrfToken: string | null = null;
 
   init(baseURL: string) {
     this.baseURL = baseURL;
+    this.fetchCsrfToken();
+  }
+
+  private async fetchCsrfToken() {
+    const response = await fetch(`${this.baseURL}csrf-token`, {
+      method: 'GET',
+      credentials: 'include'
+    });
+    const data = await response.json();
+    this.csrfToken = data.csrfToken;
+  }
+
+  private async request(method: string, url: string, data?: unknown) {
+    if (!this.csrfToken) {
+      await this.fetchCsrfToken();
+    }
+
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json; charset=utf-8',
+      'X-CSRF-Token': this.csrfToken as string
+    };
+
+    const response = await fetch(
+      this.resolve(`${config.protocol}://${config.serverAdress}:${config.serverPort}` + url),
+      {
+        method,
+        headers,
+        credentials: 'include',
+        body: data ? JSON.stringify(data) : undefined
+      }
+    );
+    return this.result(response);
   }
 
   async get(url: string) {
-    const response = await fetch(
-      this.resolve(`${config.protocol}://${config.serverAdress}:${config.serverPort}/` + url),
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'X-PersPl-CSRF-PROTECTION': '13'
-        },
-        credentials: 'include'
-      }
-    );
-    return this.result(response);
+    return this.request('GET', url);
   }
-  /*Autor: Marvin Wiechers */
+
   async post(url: string, data: unknown) {
-    const response = await fetch(
-      this.resolve(`${config.protocol}://${config.serverAdress}:${config.serverPort}` + url),
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'X-PersPl-CSRF-PROTECTION': '13'
-        },
-        credentials: 'include',
-        body: JSON.stringify(data)
-      }
-    );
-    return this.result(response);
+    return this.request('POST', url, data);
   }
-  /*Autor: Marvin Wiechers */
+
   async delete(url: string) {
-    const response = await fetch(
-      this.resolve(`${config.protocol}://${config.serverAdress}:${config.serverPort}` + url),
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'X-PersPl-CSRF-PROTECTION': '13'
-        },
-        credentials: 'include'
-      }
-    );
+    const response = await this.request('DELETE', url);
     return response;
   }
 
-  /*Autor: Niklas Lobo */
   async put(url: string, data: unknown) {
-    const response = await fetch(
-      this.resolve(`${config.protocol}://${config.serverAdress}:${config.serverPort}` + url),
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'X-PersPl-CSRF-PROTECTION': '13'
-        },
-        credentials: 'include',
-        body: JSON.stringify(data)
-      }
-    );
-    return this.result(response);
+    return this.request('PUT', url, data);
   }
 
   addQueryString(url: string, params: { [key: string]: string }) {
