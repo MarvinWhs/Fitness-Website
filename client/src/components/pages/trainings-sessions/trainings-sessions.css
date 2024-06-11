@@ -58,6 +58,10 @@ a:hover {
   text-align: center; 
 }
 
+.link-button:hover {
+  background-color: #0056b3;
+}
+
 .image-area {
   flex: 1;
   display: flex;

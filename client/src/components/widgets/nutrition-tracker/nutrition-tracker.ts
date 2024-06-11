@@ -176,7 +176,7 @@ export class NutritionTracker extends LitElement {
                       placeholder="Gesamter Kalorienbedarf eingeben"
                       .value=${this.totalCalories}
                     />
-                    <button class="link-button" @click=${this.submitTotalCalories}>Eingabe</button>
+                    <button class="link-button" @click=${this.submitTotalCalories}><strong>Eingabe</strong></button>
                     <div class="plus-button" @click=${this.openModal}><strong>+</strong></div>
                   </div>
                 `
