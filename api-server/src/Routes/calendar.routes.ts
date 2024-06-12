@@ -1,4 +1,4 @@
-/* Autor Niklas Lobo */
+/* Autor: Niklas Lobo */
 
 import express from 'express';
 import { authService } from '../Routes/services/auth.service.js';

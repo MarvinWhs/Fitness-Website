@@ -1,4 +1,4 @@
-/* Autor Niklas Lobo */
+/* Autor: Niklas Lobo */
 
 import { html, LitElement } from 'lit';
 import componentStyle from './login-page.css?inline';
@@ -59,7 +59,6 @@ export class LoginPage extends LitElement {
 
   async handleSubmit(e: Event) {
     e.preventDefault();
-    // Check if there are any error messages
     const hasErrors = this.usernameErrorMessage || this.passwordErrorMessage;
     const userData = {
       username: this.username,

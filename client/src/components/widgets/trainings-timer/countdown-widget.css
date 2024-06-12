@@ -1,0 +1,64 @@
+/* Autor: Niklas Lobo */
+
+:host {
+  display: block;
+  position: relative;
+}
+
+:host([open]) .popup {
+  display: block;
+  position: fixed; /* Change this from absolute to fixed */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust position to truly center */
+  width: 80%; /* Adjust to desired width */
+  max-width: 300px; /* Don't let the popup get too wide on large screens */
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent overlay */
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  display: block;
+  position: fixed; /* Position the popup relative to the viewport */
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 200px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  top: 0%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust position to truly center */
+  border-radius: 15px;
+}
+
+.minutes-input {
+  width: 40px;
+  position: inherit;
+}
+
+.seconds-input {
+  width: 40px; 
+  position: inherit;
+}
+
+button {
+  border: none;
+  padding: 0;
+  background: none;
+  position: relative;
+  top: 2px;
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* if you also want to center them horizontally */
+}
+
+button:hover {
+  transform: scale(1.1); /* Increase size to 110% when hovered */
+}
