@@ -27,7 +27,7 @@ export class NutritionTracker extends LitElement {
   @state() imageData: string | ArrayBuffer | null = null;
 
   @query('input[type="file"]') fileInput!: HTMLInputElement;
-  @query('.feld') totalCaloriesInput!: HTMLInputElement;
+  @query('.input_calories') totalCaloriesInput!: HTMLInputElement;
   @query('pop-up') popUp!: HTMLElement & { show: (message: string) => void };
 
   constructor() {
@@ -111,7 +111,7 @@ export class NutritionTracker extends LitElement {
   submitTotalCalories() {
     const inputValue = this.totalCaloriesInput.value;
     const test = parseInt(inputValue, 10);
-    console.log(test);
+    Notificator.showNotification('Gesamtkalorien erfolgreich gesetzt: ' + test, 'erfolg');
 
     if (test > 0) {
       this.totalCalories = parseInt(inputValue, 10);
@@ -142,6 +142,7 @@ export class NutritionTracker extends LitElement {
 
   resetTotalCalories() {
     this.totalCalories = 0;
+    Notificator.showNotification('Gesamtkalorien erfolgreich zurückgesetzt', 'erfolg');
   }
 
   openModal() {
@@ -163,7 +164,7 @@ export class NutritionTracker extends LitElement {
                   <div class="total-calories">
                     <p>Gesamter Kalorienbedarf: ${this.totalCalories} kcal</p>
                     <p>Verbleibende Kalorien: ${this.getRemainingCalories()} kcal</p>
-                    <button @click=${this.resetTotalCalories}>Zurücksetzen</button>
+                    <button class="reset" @click=${this.resetTotalCalories}>Zurücksetzen</button>
                   </div>
                   <div class="plus-button" @click=${this.openModal}><strong>+</strong></div>
                 `
@@ -171,12 +172,12 @@ export class NutritionTracker extends LitElement {
                   <div class="row">
                     <input
                       type="number"
-                      class="feld"
+                      class="input_calories"
                       min="1"
                       placeholder="Gesamter Kalorienbedarf eingeben"
                       .value=${this.totalCalories}
                     />
-                    <button class="link-button" @click=${this.submitTotalCalories}><strong>Eingabe</strong></button>
+                    <button class="submitCalories" @click=${this.submitTotalCalories}><strong>Eingabe</strong></button>
                     <div class="plus-button" @click=${this.openModal}><strong>+</strong></div>
                   </div>
                 `

@@ -30,7 +30,7 @@ p {
 
 /* Links und Button */
 a,
-.link-button {
+.submitCalories {
   color: var(--black); /* Textfarbe */
   background-color: var(--leichtes-black); /* Hintergrundfarbe */
   padding: 10px 20px;
@@ -39,12 +39,12 @@ a,
 }
 
 a:hover,
-.link-button:hover {
+.submitCalories:hover {
   background-color: var(--secondary-color);
 }
 
-/* Eingabefelder */
-.feld {
+/* Eingabefelder */ 
+.input_calories{
   border-radius: 20px; /* Abgerundete Ecken */
   padding: 10px;
   border: 1px solid #ccc;
@@ -53,7 +53,7 @@ a:hover,
   font-size: 16px;
 }
 
-.feld:focus {
+.input_calories {
   outline: none;
   border-color: var(--secondary-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -103,14 +103,14 @@ a:hover,
   margin-top: 10px;
 }
 
-.link-button {
+.submitCalories {
   background-color: #007BFF;
   color: white;
   box-shadow: none;
   border: none;
 }
 
-.link-button:hover {
+.submitCalories:hover {
   background-color: #0056b3;
 }
 
