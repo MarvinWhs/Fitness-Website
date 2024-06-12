@@ -1,4 +1,4 @@
-/* Autor Niklas Lobo */
+/* Autor: Niklas Lobo */
 
 import { html, LitElement } from 'lit';
 import componentStyle from './register-page.css?inline';

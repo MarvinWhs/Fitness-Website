@@ -4,6 +4,7 @@ import componentStyle from './trainings-card.css?inline';
 import { Notificator } from '../notificator/notificator.js';
 import { HttpClient, httpClientContext } from './../../../http-client.js';
 import { consume } from '@lit/context';
+import '../trainings-timer/countdown-widget.js';
 
 interface Exercise {
   id: string; // Normale ID als string
@@ -197,6 +198,7 @@ export class TrainingsCard extends LitElement {
             <div class="exercise-container-container">
               <div class="exercise">
                 <div class="exercise-buttons">
+                  <countdown-widget></countdown-widget>
                   <button
                     @click="${() => this.deleteExercise(exercise.id)}"
                     class="delete-exercise"
