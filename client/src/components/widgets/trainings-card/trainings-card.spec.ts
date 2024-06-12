@@ -158,7 +158,7 @@ describe('TrainingsCard', () => {
     await element.updateComplete;
 
     expect(httpClientStub.put.calledOnce).to.be.true;
-    expect(httpClientStub.put.args[0][0]).to.equal(`https://localhost:3000/exercises/1`);
+    expect(httpClientStub.put.args[0][0]).to.equal(`/exercises/1`);
 
     await element.updateComplete;
 

@@ -243,3 +243,11 @@
     width: 75%;
   }
 }
+
+  .exercise-container-container countdown-widget {
+    display: none;
+  }
+
+  .exercise-container-container:hover countdown-widget {
+    display: block;
+  }

@@ -43,6 +43,160 @@ export class CalendarPageComponent extends LitElement {
     this.initializeCalendar();
   }
 
+  async fetchNotes(): Promise<void> {
+    try {
+      const response = await this.httpClient.get('/notes');
+      if (!response.ok) {
+        throw new Error('Failed to fetch notes');
+      }
+      this.notes = await response.json();
+      this.updateCalendarEvents();
+    } catch (error) {
+      console.error('Error fetching notes:', error);
+    }
+  }
+
+  initializeCalendar() {
+    const calendarEl = this.shadowRoot?.querySelector('#calendar') as HTMLElement;
+    if (calendarEl) {
+      this.calendar = new Calendar(calendarEl, {
+        plugins: [dayGridPlugin, interactionPlugin],
+        initialView: 'dayGridMonth',
+        dateClick: this.handleDateClick.bind(this),
+        eventClick: this.handleEventClick.bind(this),
+        events: this.notes.map(note => ({
+          id: note.id,
+          title: note.name,
+          start: note.date
+        }))
+      });
+      this.calendar.render();
+    }
+  }
+
+  updateCalendarEvents() {
+    if (this.calendar) {
+      this.calendar.removeAllEvents();
+      this.notes.forEach(note => {
+        this.calendar.addEvent({
+          id: note.id,
+          title: note.name,
+          start: note.date
+        });
+      });
+    }
+  }
+
+  handleDateClick(arg: DateClickArg) {
+    this.selectedDate = arg.dateStr;
+    this.updateCalendarEvents();
+  }
+
+  handleEventClick(arg: { event: EventApi }) {
+    const event = arg.event;
+    const note = this.notes.find(note => note.id === event.id);
+    if (note) {
+      this.selectedNote = note;
+      this.openEditModal();
+    }
+  }
+
+  openModal(): void {
+    this.isModalOpen = true;
+    const modal = this.shadowRoot!.getElementById('addNoteModal') as HTMLElement;
+    if (modal) {
+      modal.style.display = 'flex';
+    }
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
+    const modal = this.shadowRoot!.getElementById('addNoteModal') as HTMLElement;
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+  openEditModal(): void {
+    this.isEditModalOpen = true;
+    const modal = this.shadowRoot!.getElementById('editNoteModal') as HTMLElement;
+    if (modal) {
+      modal.style.display = 'flex';
+    }
+  }
+
+  handleEditButtonClick(note: Note) {
+    this.selectedNote = note;
+    this.openEditModal();
+  }
+
+  closeEditModal(): void {
+    this.isEditModalOpen = false;
+    this.selectedNote = null;
+    const modal = this.shadowRoot!.getElementById('editNoteModal') as HTMLElement;
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+  async addNote(event: Event): Promise<void> {
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const noteData = {
+      date: formData.get('date') as string,
+      content: formData.get('content') as string,
+      name: formData.get('name') as string
+    };
+
+    try {
+      const response = await this.httpClient.post('/notes', noteData);
+      this.notes.push(await response.json());
+      this.closeModal();
+      this.updateCalendarEvents();
+      Notificator.showNotification('Note successfully added', 'erfolg');
+    } catch (error) {
+      console.error('Error adding note:', error);
+      Notificator.showNotification('Error adding note', 'fehler');
+    }
+  }
+
+  async editNote(event: Event): Promise<void> {
+    event.preventDefault();
+    if (!this.selectedNote) return;
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const updatedNoteData = {
+      ...this.selectedNote,
+      date: formData.get('date') as string,
+      content: formData.get('content') as string,
+      name: formData.get('name') as string
+    };
+
+    try {
+      const response = await this.httpClient.put(`/notes/${this.selectedNote.id}`, updatedNoteData);
+      const updatedNote = await response.json();
+      this.notes = this.notes.map(note => (note.id === updatedNote.id ? updatedNote : note));
+      this.closeEditModal();
+      Notificator.showNotification('Note successfully updated', 'erfolg');
+    } catch (error) {
+      console.error('Error updating note:', error);
+      Notificator.showNotification('Error updating note', 'fehler');
+    }
+  }
+
+  async deleteNote(noteId: string): Promise<void> {
+    try {
+      await this.httpClient.delete(`/notes/${noteId}`);
+      this.notes = this.notes.filter(note => note.id !== noteId);
+      this.updateCalendarEvents();
+      Notificator.showNotification('Note successfully deleted', 'erfolg');
+    } catch (error) {
+      console.error('Error deleting note:', error);
+      Notificator.showNotification('Error deleting note', 'fehler');
+    }
+  }
+
   render() {
     return html`
       <main class="main-content">
@@ -102,158 +256,5 @@ export class CalendarPageComponent extends LitElement {
         </div>
       </main>
     `;
-  }
-
-  private async fetchNotes(): Promise<void> {
-    try {
-      const response = await this.httpClient.get('/notes');
-      if (!response.ok) {
-        throw new Error('Failed to fetch notes');
-      }
-      this.notes = await response.json();
-      this.updateCalendarEvents();
-    } catch (error) {
-      console.error('Error fetching notes:', error);
-    }
-  }
-
-  private initializeCalendar() {
-    const calendarEl = this.shadowRoot?.querySelector('#calendar') as HTMLElement;
-    if (calendarEl) {
-      this.calendar = new Calendar(calendarEl, {
-        plugins: [dayGridPlugin, interactionPlugin],
-        initialView: 'dayGridMonth',
-        dateClick: this.handleDateClick.bind(this),
-        eventClick: this.handleEventClick.bind(this),
-        events: this.notes.map(note => ({
-          id: note.id,
-          title: note.name,
-          start: note.date
-        }))
-      });
-      this.calendar.render();
-    }
-  }
-
-  private updateCalendarEvents() {
-    if (this.calendar) {
-      this.calendar.removeAllEvents();
-      this.notes.forEach(note => {
-        this.calendar.addEvent({
-          id: note.id,
-          title: note.name,
-          start: note.date
-        });
-      });
-    }
-  }
-
-  private handleDateClick(arg: DateClickArg) {
-    this.selectedDate = arg.dateStr;
-    this.updateCalendarEvents();
-  }
-
-  private handleEventClick(arg: { event: EventApi }) {
-    const event = arg.event;
-    const note = this.notes.find(note => note.id === event.id);
-    if (note) {
-      this.selectedNote = note;
-      this.openEditModal();
-    }
-  }
-
-  private openModal(): void {
-    this.isModalOpen = true;
-    const modal = this.shadowRoot!.getElementById('addNoteModal') as HTMLElement;
-    if (modal) {
-      modal.style.display = 'flex';
-    }
-  }
-
-  private closeModal(): void {
-    this.isModalOpen = false;
-    const modal = this.shadowRoot!.getElementById('addNoteModal') as HTMLElement;
-    if (modal) {
-      modal.style.display = 'none';
-    }
-  }
-
-  private openEditModal(): void {
-    this.isEditModalOpen = true;
-    const modal = this.shadowRoot!.getElementById('editNoteModal') as HTMLElement;
-    if (modal) {
-      modal.style.display = 'flex';
-    }
-  }
-
-  private handleEditButtonClick(note: Note) {
-    this.selectedNote = note;
-    this.openEditModal();
-  }
-
-  private closeEditModal(): void {
-    this.isEditModalOpen = false;
-    this.selectedNote = null;
-    const modal = this.shadowRoot!.getElementById('editNoteModal') as HTMLElement;
-    if (modal) {
-      modal.style.display = 'none';
-    }
-  }
-
-  private async addNote(event: Event): Promise<void> {
-    event.preventDefault();
-    const form = event.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const noteData = {
-      date: formData.get('date') as string,
-      content: formData.get('content') as string,
-      name: formData.get('name') as string
-    };
-
-    try {
-      const response = await this.httpClient.post('/notes', noteData);
-      this.notes.push(await response.json());
-      this.closeModal();
-      this.updateCalendarEvents();
-      Notificator.showNotification('Note successfully added', 'erfolg');
-    } catch (error) {
-      console.error('Error adding note:', error);
-      Notificator.showNotification('Error adding note', 'fehler');
-    }
-  }
-  private async editNote(event: Event): Promise<void> {
-    event.preventDefault();
-    if (!this.selectedNote) return;
-    const form = event.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const updatedNoteData = {
-      ...this.selectedNote,
-      date: formData.get('date') as string,
-      content: formData.get('content') as string,
-      name: formData.get('name') as string
-    };
-
-    try {
-      const response = await this.httpClient.put(`/notes/${this.selectedNote.id}`, updatedNoteData);
-      const updatedNote = await response.json();
-      this.notes = this.notes.map(note => (note.id === updatedNote.id ? updatedNote : note));
-      this.closeEditModal();
-      Notificator.showNotification('Note successfully updated', 'erfolg');
-    } catch (error) {
-      console.error('Error updating note:', error);
-      Notificator.showNotification('Error updating note', 'fehler');
-    }
-  }
-
-  private async deleteNote(noteId: string): Promise<void> {
-    try {
-      await this.httpClient.delete(`/notes/${noteId}`);
-      this.notes = this.notes.filter(note => note.id !== noteId);
-      this.updateCalendarEvents();
-      Notificator.showNotification('Note successfully deleted', 'erfolg');
-    } catch (error) {
-      console.error('Error deleting note:', error);
-      Notificator.showNotification('Error deleting note', 'fehler');
-    }
   }
 }
