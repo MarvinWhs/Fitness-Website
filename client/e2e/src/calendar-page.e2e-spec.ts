@@ -83,9 +83,9 @@ describe('CalendarPageComponent', () => {
     // Edit the added note
     await page.click('.edit-button');
     await page.waitForSelector('#editNoteModal');
-    await page.fill('textarea[name="content"]', 'Updated note content.');
-    await page.fill('textarea[name="name"]', 'Updated note content.');
-    await page.click('button[name="noteEdit"]');
+    await page.fill('note.name', 'Updated Test Note');
+    await page.fill('note.content', 'This is a updated test note.');
+    await page.click('button[type="submit"]');
     await page.waitForTimeout(500); // Wait for the note to be updated
 
     // Check if the updated note exists
