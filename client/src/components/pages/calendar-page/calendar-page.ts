@@ -248,7 +248,7 @@ export class CalendarPageComponent extends LitElement {
                       required
                     />
                     <textarea name="content" placeholder="Note content" required>${this.selectedNote.content}</textarea>
-                    <button type="submit">Update Note</button>
+                    <button type="submit" name="noteEdit">Update Note</button>
                   </form>
                 `
               : nothing}

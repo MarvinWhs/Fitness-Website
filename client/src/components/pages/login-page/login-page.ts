@@ -8,6 +8,7 @@ import { HttpClient, httpClientContext } from '../../../http-client.js';
 import { Router } from '../../../router.js';
 import { routerContext } from '../../../router.js';
 import { authContext } from './auth-context.js';
+import { Notificator } from '../../widgets/notificator/notificator';
 
 @customElement('login-page')
 export class LoginPage extends LitElement {
@@ -68,6 +69,7 @@ export class LoginPage extends LitElement {
         if (response && response.ok) {
           localStorage.setItem('authToken', 'true');
           console.log('Login erfolgreich');
+          Notificator.showNotification('Login erfolgreich', 'erfolg');
           if (this.authState) {
             this.authState.isAuthenticated = true; // Ensure this.authState is defined and assignable
           }
@@ -79,10 +81,11 @@ export class LoginPage extends LitElement {
         } else {
           const result = await response.json();
           this.generalErrorMessage = result.message || 'Login fehlgeschlagen';
-          console.error('Login fehlgeschlagen');
+          Notificator.showNotification('Login erfolgreich', 'erfolg');
         }
       } catch (error) {
         this.generalErrorMessage = 'Fehler beim Anmelden';
+        Notificator.showNotification('Fehler beim Anmelden', 'fehler');
         console.error('Fehler beim Anmelden', error);
       }
     }
