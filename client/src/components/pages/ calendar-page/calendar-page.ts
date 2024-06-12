@@ -150,7 +150,7 @@ export class CalendarPageComponent extends LitElement {
     };
 
     try {
-      const response = await this.httpClient.post('https://localhost:3000/notes', noteData);
+      const response = await this.httpClient.post('/notes', noteData);
       this.notes.push(await response.json());
       this.closeModal();
       this.updateCalendarEvents();
@@ -174,10 +174,7 @@ export class CalendarPageComponent extends LitElement {
     };
 
     try {
-      const response = await this.httpClient.put(
-        `https://localhost:3000/notes/${this.selectedNote.id}`,
-        updatedNoteData
-      );
+      const response = await this.httpClient.put(`/notes/${this.selectedNote.id}`, updatedNoteData);
       const updatedNote = await response.json();
       this.notes = this.notes.map(note => (note.id === updatedNote.id ? updatedNote : note));
       this.closeEditModal();
@@ -190,7 +187,7 @@ export class CalendarPageComponent extends LitElement {
 
   private async deleteNote(noteId: string): Promise<void> {
     try {
-      await this.httpClient.delete(`https://localhost:3000/notes/${noteId}`);
+      await this.httpClient.delete(`/notes/${noteId}`);
       this.notes = this.notes.filter(note => note.id !== noteId);
       this.updateCalendarEvents();
       Notificator.showNotification('Note successfully deleted', 'erfolg');
