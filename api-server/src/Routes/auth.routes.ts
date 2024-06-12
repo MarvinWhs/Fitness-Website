@@ -11,7 +11,7 @@ import { cryptoService } from './services/crypto.service.js';
 const router = express.Router();
 
 // Register route with password confirmation and user existence check
-router.post('/register', csrfService.manageCsrf, async (req, res) => {
+router.post('/register', csrfService.validateToken, async (req, res) => {
   const { username, password, passwordCheck, email } = req.body;
 
   if (password !== passwordCheck) {
@@ -45,7 +45,7 @@ router.post('/register', csrfService.manageCsrf, async (req, res) => {
 });
 
 // Login route
-router.post('/login', csrfService.manageCsrf, async (req, res) => {
+router.post('/login', csrfService.validateToken, async (req, res) => {
   const { username, password } = req.body;
 
   const userDAO: GenericDAO<User> = req.app.locals.userDAO;
@@ -65,7 +65,7 @@ router.post('/login', csrfService.manageCsrf, async (req, res) => {
 });
 
 // Logout route
-router.delete('/logout', async (req, res) => {
+router.delete('/logout', csrfService.validateToken, async (req, res) => {
   authService.removeToken(res);
   res.status(200).send({ message: 'Erfolgreich abgemeldet' });
 });

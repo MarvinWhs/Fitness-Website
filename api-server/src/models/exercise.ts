@@ -1,3 +1,4 @@
+/* Autor: Marvin Wiechers */
 import { Entity } from './entity.js';
 
 export interface Exercise extends Entity {

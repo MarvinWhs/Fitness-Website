@@ -27,7 +27,7 @@ export class NutritionTracker extends LitElement {
   @state() imageData: string | ArrayBuffer | null = null;
 
   @query('input[type="file"]') fileInput!: HTMLInputElement;
-  @query('.feld') totalCaloriesInput!: HTMLInputElement;
+  @query('.input_calories') totalCaloriesInput!: HTMLInputElement;
   @query('pop-up') popUp!: HTMLElement & { show: (message: string) => void };
 
   constructor() {
@@ -41,7 +41,7 @@ export class NutritionTracker extends LitElement {
 
   async loadFoodCards(): Promise<void> {
     try {
-      const response = await this.httpClient.get(`https://localhost:3000/food-cards`);
+      const response = await this.httpClient.get(`/food-cards`);
       if (!response) {
         throw new Error(`Failed to fetch food cards`);
       }
@@ -54,7 +54,7 @@ export class NutritionTracker extends LitElement {
 
   async deleteFoodCard(id: string): Promise<void> {
     try {
-      await this.httpClient.delete(`https://localhost:3000/food-cards/${id}`);
+      await this.httpClient.delete(`/food-cards/${id}`);
       this.foodCards = this.foodCards.filter(foodCards => foodCards.id !== id);
       this.requestUpdate();
       Notificator.showNotification('Note successfully deleted', 'erfolg');
@@ -77,7 +77,7 @@ export class NutritionTracker extends LitElement {
     };
 
     try {
-      const response = await this.httpClient.post('https://localhost:3000/food-cards', foodCardData);
+      const response = await this.httpClient.post('/food-cards', foodCardData);
 
       if (!response.ok) {
         throw new Error('Failed to add food');
@@ -94,7 +94,7 @@ export class NutritionTracker extends LitElement {
       const foodCard = this.foodCards.find(food => food.id === id);
       if (foodCard) {
         const updatedFoodCard = { ...foodCard, quantity };
-        const response = await this.httpClient.put(`https://localhost:3000/food-cards/${id}`, updatedFoodCard);
+        const response = await this.httpClient.put(`/food-cards/${id}`, updatedFoodCard);
 
         if (!response.ok) {
           throw new Error('Failed to update food card');
@@ -111,7 +111,7 @@ export class NutritionTracker extends LitElement {
   submitTotalCalories() {
     const inputValue = this.totalCaloriesInput.value;
     const test = parseInt(inputValue, 10);
-    console.log(test);
+    Notificator.showNotification('Gesamtkalorien erfolgreich gesetzt: ' + test, 'erfolg');
 
     if (test > 0) {
       this.totalCalories = parseInt(inputValue, 10);
@@ -142,6 +142,7 @@ export class NutritionTracker extends LitElement {
 
   resetTotalCalories() {
     this.totalCalories = 0;
+    Notificator.showNotification('Gesamtkalorien erfolgreich zurückgesetzt', 'erfolg');
   }
 
   openModal() {
@@ -163,7 +164,7 @@ export class NutritionTracker extends LitElement {
                   <div class="total-calories">
                     <p>Gesamter Kalorienbedarf: ${this.totalCalories} kcal</p>
                     <p>Verbleibende Kalorien: ${this.getRemainingCalories()} kcal</p>
-                    <button @click=${this.resetTotalCalories}>Zurücksetzen</button>
+                    <button class="reset" @click=${this.resetTotalCalories}>Zurücksetzen</button>
                   </div>
                   <div class="plus-button" @click=${this.openModal}><strong>+</strong></div>
                 `
@@ -171,12 +172,12 @@ export class NutritionTracker extends LitElement {
                   <div class="row">
                     <input
                       type="number"
-                      class="feld"
+                      class="input_calories"
                       min="1"
                       placeholder="Gesamter Kalorienbedarf eingeben"
                       .value=${this.totalCalories}
                     />
-                    <button class="link-button" @click=${this.submitTotalCalories}>Eingabe</button>
+                    <button class="submitCalories" @click=${this.submitTotalCalories}><strong>Eingabe</strong></button>
                     <div class="plus-button" @click=${this.openModal}><strong>+</strong></div>
                   </div>
                 `

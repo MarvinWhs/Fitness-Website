@@ -45,7 +45,7 @@ export class CalendarPageComponent extends LitElement {
 
   private async fetchNotes(): Promise<void> {
     try {
-      const response = await this.httpClient.get('https://localhost:3000/notes');
+      const response = await this.httpClient.get('/notes');
       if (!response.ok) {
         throw new Error('Failed to fetch notes');
       }

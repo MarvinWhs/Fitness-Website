@@ -2,8 +2,7 @@
   display: block;
   font-family: 'Roboto', Arial, sans-serif; /* Updated font */
   line-height: 1.6;
-  background-color: var(--primary-color);
-  color: var(--text-color);
+  color: var(--p-textcolor);
   box-sizing: border-box;
   padding: 120px auto;
 }
@@ -13,9 +12,9 @@
   padding: 20px;
   margin: 40px auto; /* Reduced margin */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
-  background-color: var(--primary-color);
+  background-color: var(--leichtes-black);
   border-radius: 12px; /* Increased border-radius */
-  border: solid 1px var(--text-color);
+  border: solid 1px var(--p-textcolor);
   max-width: 800px;
 }
 
@@ -23,14 +22,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--white);
   border-radius: 12px; /* Increased border-radius */
   max-width: 800px;
   align-self: center;
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
   
 }
 
@@ -43,7 +40,7 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--secondary-color);
+  background-color: var(--leichtes-black);
   border-radius: 12px; /* Increased border-radius */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
   max-width: 800px;
@@ -65,9 +62,9 @@ li {
   line-height: 1.7; /* Slightly increased line-height */
   margin: 40px auto; /* Increased padding */
   width: 100%;
-  background-color: var(--primary-color);
+  background-color: var(--leichtes-black);
   border-radius: 12px; /* Increased border-radius */
-  border: solid 1px var(--text-color);
+  border: solid 1px var(--p-textcolor);
   text-align: center;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
 }
@@ -122,7 +119,7 @@ ul {
 }
 
 h1 {
-  color: var(--text-color);
+  color: var(--h-textcolor);
   background-color: var(--secondary-color);
   border-radius: 5px;
   padding: 10px; /* Increased padding */
@@ -131,4 +128,47 @@ h1 {
   text-align: center;
   border: solid 1px var(--text-color);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
+}
+
+@media (max-width: 1060px) {
+  .main-content {
+      padding: 0px;
+  }
+
+  #first-row {
+      margin-top: 0px;
+  }
+
+  .image-area {
+      display: none;
+  }
+
+  .image-area-mobile {
+      display: block;
+      text-align: center; 
+  }
+
+  .image-area-mobile img {
+      max-width: 50%;
+      height: auto;
+      border-radius: 50%;
+      clip-path: circle(50% at 50% 50%);
+      margin: 20px 0; 
+  }
+
+  .link-button {
+      display: block;
+      margin: 20px auto; 
+  }
+}
+@media(max-width:500px){
+  .main-content {
+      max-width: 95%;
+      font-size: 20px;
+  }
+}
+@media(max-width:650px){
+  .modal-content {
+      width: 75%;
+  }
 }

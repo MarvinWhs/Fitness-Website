@@ -5,6 +5,7 @@ import { Food } from '../models/food.js';
 import { authService } from './services/auth.service.js';
 import { GenericDAO } from '../models/generic.dao.js';
 import { cryptoService } from './services/crypto.service.js';
+import { csrfService } from './services/csrf.service.js';
 
 const router = express.Router();
 
@@ -31,7 +32,7 @@ router.get('/food-cards', authService.authenticationMiddleware, async (req, res)
   }
 });
 
-router.post('/food-cards', authService.authenticationMiddleware, async (req, res) => {
+router.post('/food-cards', authService.authenticationMiddleware, csrfService.validateToken, async (req, res) => {
   try {
     const foodDAO: GenericDAO<Food> = req.app.locals.foodDAO;
     const food = await foodDAO.create({
@@ -54,7 +55,7 @@ router.post('/food-cards', authService.authenticationMiddleware, async (req, res
   }
 });
 
-router.put('/food-cards/:id', authService.authenticationMiddleware, async (req, res) => {
+router.put('/food-cards/:id', authService.authenticationMiddleware, csrfService.validateToken, async (req, res) => {
   try {
     const foodDAO: MongoGenericDAO<Food> = req.app.locals.foodDAO;
     const id = req.params.id;
@@ -80,7 +81,7 @@ router.put('/food-cards/:id', authService.authenticationMiddleware, async (req, 
   }
 });
 
-router.delete('/food-cards/:id', authService.authenticationMiddleware, async (req, res) => {
+router.delete('/food-cards/:id', authService.authenticationMiddleware, csrfService.validateToken, async (req, res) => {
   try {
     const foodDAO: MongoGenericDAO<Food> = req.app.locals.foodDAO;
     const id = req.params.id;

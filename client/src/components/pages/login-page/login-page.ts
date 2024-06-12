@@ -66,10 +66,9 @@ export class LoginPage extends LitElement {
     };
     if (!hasErrors) {
       try {
-        const response = await this.httpClient.post('https://localhost:3000/login', userData);
+        const response = await this.httpClient.post('/login', userData);
         if (response.ok) {
-          const result = await response.json();
-          localStorage.setItem('authToken', result.token);
+          localStorage.setItem('authToken', 'true'); // Speichern des Tokens
           console.log('Login erfolgreich');
           this.authState.isAuthenticated = true;
           console.log('AuthState:', this.authState);

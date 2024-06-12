@@ -141,7 +141,7 @@
 
 
 .modal {
-  display: none;  /* initial hidden */
+  display: none; 
   position: fixed;
   left: 0;
   top: 0;
@@ -212,8 +212,8 @@
 
 @media (max-width: 1060px) {
   .exercises-container {
-    grid-template-columns: 1fr; /* Eine Spalte für kleinere Bildschirmgrößen */
-    gap: 20px; /* Kleinere Lücke zwischen den Elementen */
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .main-content {

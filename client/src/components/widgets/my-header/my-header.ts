@@ -49,7 +49,7 @@ class MyHeader extends LitElement {
   async logout() {
     try {
       console.log('Logout');
-      const response = await this.httpClient.delete('https://localhost:3000/logout');
+      const response = await this.httpClient.delete('/logout');
       console.log('Logout erfolgt durch server');
       if (response.ok) {
         this.dispatchEvent(new CustomEvent('logout'));

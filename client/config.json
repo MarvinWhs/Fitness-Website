@@ -1,0 +1,5 @@
+{   
+    "protocol": "https",
+    "serverAdress": "localhost",
+    "serverPort": 3000
+}
