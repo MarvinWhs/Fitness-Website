@@ -11,7 +11,6 @@ interface Food {
   calories: number;
   description: string;
   quantity: number;
-  createdAt: string;
 }
 
 @customElement('nutrition-tracker')
