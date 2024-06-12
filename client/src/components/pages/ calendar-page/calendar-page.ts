@@ -43,6 +43,67 @@ export class CalendarPageComponent extends LitElement {
     this.initializeCalendar();
   }
 
+  render() {
+    return html`
+      <main class="main-content">
+        <div class="notes-header">
+          <h1>Kalender Notizen</h1>
+          <button class="link-button" id="addNoteButton" @click="${this.openModal}">Notiz hinzufügen</button>
+        </div>
+        <div id="calendar"></div>
+        <div class="notes-list">
+          ${this.notes.map(
+            note => html`
+              <div class="note-card">
+                <div class="note-content">
+                  <p><strong>Datum:</strong> ${note.date}</p>
+                  <p><strong>Name:</strong> ${note.name}</p>
+                  <p><strong>Inhalt:</strong> ${note.content}</p>
+                </div>
+                <button class="edit-button" @click="${() => this.handleEditButtonClick(note)}">Bearbeiten</button>
+                <button class="delete-button" @click="${() => this.deleteNote(note.id)}">Löschen</button>
+              </div>
+            `
+          )}
+        </div>
+        <div id="addNoteModal" class="modal">
+          <div class="modal-content">
+            <button @click="${this.closeModal}" class="close-button" aria-label="Close modal">&times;</button>
+            <h3>Add New Note</h3>
+            <form @submit="${this.addNote}">
+              <input type="date" name="date" .value="${this.selectedDate ?? ''}" required />
+              <input type="text" name="name" placeholder="Note name" required />
+              <textarea name="content" placeholder="Note content" required></textarea>
+              <button type="submit">Add Note</button>
+            </form>
+          </div>
+        </div>
+        <div id="editNoteModal" class="modal">
+          <div class="modal-content">
+            <button @click="${this.closeEditModal}" class="close-button" aria-label="Close modal">&times;</button>
+            <h3>Edit Note</h3>
+            ${this.selectedNote
+              ? html`
+                  <form @submit="${this.editNote}">
+                    <input type="date" name="date" .value="${this.selectedNote.date}" required />
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Note name"
+                      .value="${this.selectedNote.name}"
+                      required
+                    />
+                    <textarea name="content" placeholder="Note content" required>${this.selectedNote.content}</textarea>
+                    <button type="submit">Update Note</button>
+                  </form>
+                `
+              : nothing}
+          </div>
+        </div>
+      </main>
+    `;
+  }
+
   private async fetchNotes(): Promise<void> {
     try {
       const response = await this.httpClient.get('/notes');
@@ -89,7 +150,7 @@ export class CalendarPageComponent extends LitElement {
 
   private handleDateClick(arg: DateClickArg) {
     this.selectedDate = arg.dateStr;
-    this.updateCalendarEvents(); // Update calendar events
+    this.updateCalendarEvents();
   }
 
   private handleEventClick(arg: { event: EventApi }) {
@@ -150,7 +211,7 @@ export class CalendarPageComponent extends LitElement {
     };
 
     try {
-      const response = await this.httpClient.post('https://localhost:3000/notes', noteData);
+      const response = await this.httpClient.post('/notes', noteData);
       this.notes.push(await response.json());
       this.closeModal();
       this.updateCalendarEvents();
@@ -160,7 +221,6 @@ export class CalendarPageComponent extends LitElement {
       Notificator.showNotification('Error adding note', 'fehler');
     }
   }
-
   private async editNote(event: Event): Promise<void> {
     event.preventDefault();
     if (!this.selectedNote) return;
@@ -174,10 +234,7 @@ export class CalendarPageComponent extends LitElement {
     };
 
     try {
-      const response = await this.httpClient.put(
-        `https://localhost:3000/notes/${this.selectedNote.id}`,
-        updatedNoteData
-      );
+      const response = await this.httpClient.put(`/notes/${this.selectedNote.id}`, updatedNoteData);
       const updatedNote = await response.json();
       this.notes = this.notes.map(note => (note.id === updatedNote.id ? updatedNote : note));
       this.closeEditModal();
@@ -190,7 +247,7 @@ export class CalendarPageComponent extends LitElement {
 
   private async deleteNote(noteId: string): Promise<void> {
     try {
-      await this.httpClient.delete(`https://localhost:3000/notes/${noteId}`);
+      await this.httpClient.delete(`/notes/${noteId}`);
       this.notes = this.notes.filter(note => note.id !== noteId);
       this.updateCalendarEvents();
       Notificator.showNotification('Note successfully deleted', 'erfolg');
@@ -198,67 +255,5 @@ export class CalendarPageComponent extends LitElement {
       console.error('Error deleting note:', error);
       Notificator.showNotification('Error deleting note', 'fehler');
     }
-  }
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  render() {
-    return html`
-      <main class="main-content">
-        <div class="notes-header">
-          <h1>Kalender Notizen</h1>
-          <button class="link-button" id="addNoteButton" @click="${this.openModal}">Notiz hinzufügen</button>
-        </div>
-        <div id="calendar"></div>
-        <div class="notes-list">
-          ${this.notes.map(
-            note => html`
-              <div class="note-card">
-                <div class="note-content">
-                  <p><strong>Datum:</strong> ${note.date}</p>
-                  <p><strong>Name:</strong> ${note.name}</p>
-                  <p><strong>Inhalt:</strong> ${note.content}</p>
-                </div>
-                <button class="edit-button" @click="${() => this.handleEditButtonClick(note)}">Bearbeiten</button>
-                <button class="delete-button" @click="${() => this.deleteNote(note.id)}">Löschen</button>
-              </div>
-            `
-          )}
-        </div>
-        <div id="addNoteModal" class="modal">
-          <div class="modal-content">
-            <button @click="${this.closeModal}" class="close-button" aria-label="Close modal">&times;</button>
-            <h3>Add New Note</h3>
-            <form @submit="${this.addNote}">
-              <input type="date" name="date" .value="${this.selectedDate ?? ''}" required />
-              <input type="text" name="name" placeholder="Note name" required />
-              <textarea name="content" placeholder="Note content" required></textarea>
-              <button type="submit">Add Note</button>
-            </form>
-          </div>
-        </div>
-        <div id="editNoteModal" class="modal">
-          <div class="modal-content">
-            <button @click="${this.closeEditModal}" class="close-button" aria-label="Close modal">&times;</button>
-            <h3>Edit Note</h3>
-            ${this.selectedNote
-              ? html`
-                  <form @submit="${this.editNote}">
-                    <input type="date" name="date" .value="${this.selectedNote.date}" required />
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Note name"
-                      .value="${this.selectedNote.name}"
-                      required
-                    />
-                    <textarea name="content" placeholder="Note content" required>${this.selectedNote.content}</textarea>
-                    <button type="submit">Update Note</button>
-                  </form>
-                `
-              : nothing}
-          </div>
-        </div>
-      </main>
-    `;
   }
 }

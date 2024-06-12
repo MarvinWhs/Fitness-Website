@@ -1,4 +1,4 @@
-/* Autor Niklas Lobo */
+/* Autor: Niklas Lobo */
 
 import { html, LitElement } from 'lit';
 import componentStyle from './register-page.css?inline';
@@ -27,7 +27,6 @@ export class RegisterPage extends LitElement {
   confirmPassword: string;
   email: string;
 
-  // Validierungsnachrichten
   usernameErrorMessage: string;
   emailErrorMessage: string;
   passwordErrorMessage: string;
@@ -94,7 +93,6 @@ export class RegisterPage extends LitElement {
 
   async handleSubmit(e: Event) {
     e.preventDefault();
-    // Check if there are any error messages
     const hasErrors =
       this.usernameErrorMessage ||
       this.passwordErrorMessage ||

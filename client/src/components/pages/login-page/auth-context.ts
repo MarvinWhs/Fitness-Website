@@ -1,4 +1,5 @@
-// auth-context.ts
+/* Autor: Niklas Lobo */
+
 import { createContext } from '@lit/context';
 
 export interface AuthState {
