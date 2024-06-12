@@ -1,3 +1,5 @@
+/* Autor: Niklas Lobo */
+
 import { html } from 'lit';
 
 export const stopwatchIcon = html`
