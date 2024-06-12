@@ -6,6 +6,7 @@ import { Notificator } from '../notificator/notificator.js';
 import { HttpClient, httpClientContext } from './../../../http-client.js';
 import { consume } from '@lit/context';
 import config from '../../../../config.json';
+import '../trainings-timer/countdown-widget.js';
 
 interface Exercise {
   id: string;
