@@ -59,7 +59,6 @@ export class AppComponent extends LitElement {
         <body>
           <my-header></my-header>
           <notification-widget></notification-widget>
-          <trainings-timer></trainings-timer>
           <main>${this.router.outlet()}</main>
           <my-footer></my-footer>
         </body>
