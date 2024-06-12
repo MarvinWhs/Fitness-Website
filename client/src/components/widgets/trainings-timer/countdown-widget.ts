@@ -73,7 +73,7 @@ export class CountdownWidget extends LitElement {
       ${this.open
         ? html`
             <div class="popup">
-              <div>
+              <div class="icon-container">
                 <input
                   class="minutes-input"
                   type="number"
@@ -91,17 +91,17 @@ export class CountdownWidget extends LitElement {
                   @input=${(e: InputEvent) => (this.seconds = parseInt((e.target as HTMLInputElement).value))}
                 />
                 <button @click=${this.startTimer}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="green" viewBox="0 0 24 24">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="green">
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 </button>
                 <button @click=${this.pauseTimer}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="yellow" viewBox="0 0 24 24">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="blue">
                     <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
                   </svg>
                 </button>
                 <button @click=${this.stopTimer}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="red" viewBox="0 0 24 24">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="red">
                     <path d="M6 6h12v12H6z" />
                   </svg>
                 </button>
