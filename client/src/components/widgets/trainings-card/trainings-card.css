@@ -243,11 +243,3 @@
     width: 75%;
   }
 }
-
-.exercise-buttons countdown-widget {
-  display: none;
-}
-
-.exercise-container-container:hover .exercise-buttons countdown-widget {
-  display: block;
-}
