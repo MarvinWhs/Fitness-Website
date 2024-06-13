@@ -1,30 +1,30 @@
 /* Autor: Marvin Wiechers */
+
 import { expect } from 'chai';
 import { html, fixture, fixtureCleanup } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
 import './trainings-sessions';
 import { TrainingsComponent } from './trainings-sessions';
-import { HttpClient } from '../../../http-client'; // Import des neuen HTTP-Clients
+import { HttpClient } from '../../../http-client';
 
 describe('TrainingsComponent', () => {
   let element: TrainingsComponent;
-  let httpClient: HttpClient; // Verwendung des neuen HTTP-Clients
+  let httpClient: HttpClient;
   let httpClientStub: sinon.SinonStub;
 
   beforeEach(async () => {
     element = await fixture<TrainingsComponent>(html`<trainings-sessions></trainings-sessions>`);
-    httpClient = new HttpClient(); // Initialisierung des neuen HTTP-Clients
-    httpClient.init('https://localhost:3000'); // Setzen der Basis-URL für den HTTP-Client
+    httpClient = new HttpClient();
+    httpClient.init('https://localhost:3000');
 
-    // Stub für die HTTP-Post-Methode
     httpClientStub = sinon.stub(httpClient, 'post').resolves(new Response(null, { status: 200 }));
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (element as any).httpClient = httpClient; // Zuweisung des HTTP-Clients zur Komponente
+    (element as any).httpClient = httpClient;
   });
 
   afterEach(() => {
     fixtureCleanup();
-    httpClientStub.restore(); // Wiederherstellung des ursprünglichen HTTP-Clients
+    httpClientStub.restore();
   });
 
   it('should render correctly', () => {
@@ -84,7 +84,7 @@ describe('TrainingsComponent', () => {
 
   it('should add exercise', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const spyCloseModal = sinon.spy(element as any, 'closeModal'); // Verwendung der richtigen Methode
+    const spyCloseModal = sinon.spy(element as any, 'closeModal');
 
     element.imageData = 'data:image/png;base64,dummycontent';
     const button = element.shadowRoot!.querySelector('.link-button') as HTMLButtonElement;

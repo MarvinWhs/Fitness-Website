@@ -1,3 +1,5 @@
+/* Autor: Lucas Berlage */
+
 import { expect } from 'chai';
 import { html, fixture, fixtureCleanup } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
@@ -18,7 +20,7 @@ describe('NutritionTracker', () => {
     httpClient.init('https://localhost:3000');
     httpClientStub = sinon.stub(httpClient, 'post').resolves(new Response(null, { status: 200 }));
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (element as any).httpClient = httpClient; // Zuweisung des HTTP-Clients zur Komponente
+    (element as any).httpClient = httpClient;
   });
 
   afterEach(() => {
@@ -30,12 +32,10 @@ describe('NutritionTracker', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const spyCloseModal = sinon.spy(element as any, 'closeModal');
 
-    // Simulate button click and form submission
     const button = element.shadowRoot!.querySelector('.plus-button') as HTMLButtonElement;
     button.click();
     await element.updateComplete;
 
-    // Simulate form input
     const form = element.shadowRoot!.querySelector('form') as HTMLFormElement;
     const nameInput = form.querySelector('input[name="name"]') as HTMLInputElement;
     const descriptionInput = form.querySelector('textarea[name="description"]') as HTMLTextAreaElement;
@@ -56,7 +56,6 @@ describe('NutritionTracker', () => {
   it('should load food cards successfully', async () => {
     const foodCards = [{ id: '1', name: 'Apple', calories: 95, description: 'A red apple', quantity: 1 }];
 
-    // Mock HttpClient get method
     const getStub = sinon.stub(httpClient, 'get').resolves(new Response(JSON.stringify(foodCards)));
 
     await element.loadFoodCards();
@@ -64,7 +63,7 @@ describe('NutritionTracker', () => {
     expect(element.foodCards).to.have.lengthOf(1);
     expect(element.foodCards[0].name).to.equal('Apple');
 
-    sinon.assert.calledOnce(getStub); // Überprüft, ob die get-Methode genau einmal aufgerufen wurde
+    sinon.assert.calledOnce(getStub);
   });
 
   it('should delete a food card', async () => {
@@ -78,42 +77,38 @@ describe('NutritionTracker', () => {
 
     expect(element.foodCards).to.be.empty;
 
-    sinon.assert.calledOnce(deleteStub); // Überprüft, ob die delete-Methode genau einmal aufgerufen wurde
+    sinon.assert.calledOnce(deleteStub);
   });
 
   it('should check calories', () => {
     element.totalCalories = 500;
     element.foodCards = [{ id: '1', name: 'Apple', calories: 95, description: 'A red apple', quantity: 1 }];
 
-    // Mock Notificator showNotification method
     const showNotificationStub = sinon.stub(Notificator, 'showNotification');
 
     element.checkCalories();
 
-    sinon.assert.calledOnce(showNotificationStub); // Überprüft, ob die showNotification-Methode genau einmal aufgerufen wurde
+    sinon.assert.calledOnce(showNotificationStub);
   });
 
   it('should not add food card with empty inputs', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const spyCloseModal = sinon.spy(element as any, 'closeModal');
-    // Simulate button click and form submission
     const button = element.shadowRoot!.querySelector('.plus-button') as HTMLButtonElement;
     button.click();
     await element.updateComplete;
 
-    // Simulate form input
     const form = element.shadowRoot!.querySelector('form') as HTMLFormElement;
 
     form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
     await element.updateComplete;
 
-    expect(spyCloseModal.called).to.be.false; // Überprüft, dass closeModal nicht aufgerufen wurde
+    expect(spyCloseModal.called).to.be.false;
   });
 
   it('should set total calories', () => {
     const inputValue = '200';
 
-    // Mock Notificator showNotification method
     const showNotificationStub = sinon.stub(Notificator, 'showNotification');
 
     const inputElement = element.totalCaloriesInput;
@@ -122,19 +117,18 @@ describe('NutritionTracker', () => {
     element.submitTotalCalories();
 
     expect(element.totalCalories).to.equal(parseInt(inputValue));
-    sinon.assert.calledOnce(showNotificationStub); // Überprüft, ob die showNotification-Methode genau einmal aufgerufen wurde
+    sinon.assert.calledOnce(showNotificationStub);
   });
 
   it('should reset total calories', () => {
     element.totalCalories = 200;
 
-    // Mock Notificator showNotification method
     const showNotificationStub = sinon.stub(Notificator, 'showNotification');
 
     element.resetTotalCalories();
 
     expect(element.totalCalories).to.equal(0);
-    sinon.assert.calledOnce(showNotificationStub); // Überprüft, ob die showNotification-Methode genau einmal aufgerufen wurde
+    sinon.assert.calledOnce(showNotificationStub);
   });
 
   it('should open the modal', () => {
@@ -155,12 +149,10 @@ describe('NutritionTracker', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const spyCloseModal = sinon.spy(element as any, 'closeModal');
 
-    // Simulate button click and form submission
     const button = element.shadowRoot!.querySelector('.plus-button') as HTMLButtonElement;
     button.click();
     await element.updateComplete;
 
-    // Simulate form input
     const form = element.shadowRoot!.querySelector('form') as HTMLFormElement;
     const nameInput = form.querySelector('input[name="name"]') as HTMLInputElement;
     const descriptionInput = form.querySelector('textarea[name="description"]') as HTMLTextAreaElement;
@@ -183,12 +175,11 @@ describe('NutritionTracker', () => {
   it('should reset total calories and show notification', () => {
     element.totalCalories = 200;
 
-    // Mock Notificator showNotification method
     const showNotificationStub = sinon.stub(Notificator, 'showNotification');
 
     element.resetTotalCalories();
 
     expect(element.totalCalories).to.equal(0);
-    sinon.assert.calledOnce(showNotificationStub); // Überprüft, ob die showNotification-Methode genau einmal aufgerufen wurde
+    sinon.assert.calledOnce(showNotificationStub);
   });
 });

@@ -33,19 +33,17 @@ export default async function startDB(app: Express) {
 async function startInMemoryDB(app: Express) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const client = await connectToPsql();
-  // TODO: DAOs erstellen und in app.locals ablegen
   app.locals.exerciseDAO = new InMemoryGenericDAO<Exercise>();
-  app.locals.userDAO = new InMemoryGenericDAO<User>(); // Initialisiere UserDAO
-  app.locals.foodDAO = new InMemoryGenericDAO<Food>(); // Initialisiere FoodDAO
+  app.locals.userDAO = new InMemoryGenericDAO<User>();
+  app.locals.foodDAO = new InMemoryGenericDAO<Food>();
   app.locals.noteDAO = new InMemoryGenericDAO<Notes>();
 }
 
 async function startMongoDB(app: Express) {
   const db = (await connectToMongoDB()).db(config.db.connect.database);
-  // TODO: DAOs erstellen und in app.locals ablegen
   app.locals.exerciseDAO = new MongoGenericDAO<Exercise>(db, 'exercises');
-  app.locals.userDAO = new MongoGenericDAO<User>(db, 'users'); // Initialisiere MongoGenericDAO für Benutzer
-  app.locals.foodDAO = new MongoGenericDAO<Food>(db, 'food-cards'); // Initialisiere MongoGenericDAO für Lebensmittel
+  app.locals.userDAO = new MongoGenericDAO<User>(db, 'users');
+  app.locals.foodDAO = new MongoGenericDAO<Food>(db, 'food-cards');
   app.locals.noteDAO = new MongoGenericDAO<Notes>(db, 'notes');
 }
 
@@ -66,10 +64,9 @@ async function connectToMongoDB() {
 
 async function startPsql(app: Express) {
   const client = await connectToPsql();
-  // TODO: DAOs erstellen und in app.locals ablegen
   app.locals.exerciseDAO = new PsqlGenericDAO<Exercise>(client!, 'exercises');
-  app.locals.userDAO = new PsqlGenericDAO<User>(client!, 'users'); // Initialisiere UserDAO
-  app.locals.foodDAO = new PsqlGenericDAO<Food>(client!, 'food-cards'); // Initialisiere FoodDAO
+  app.locals.userDAO = new PsqlGenericDAO<User>(client!, 'users');
+  app.locals.foodDAO = new PsqlGenericDAO<Food>(client!, 'food-cards');
   app.locals.noteDAO = new PsqlGenericDAO<Notes>(client!, 'notes');
 }
 

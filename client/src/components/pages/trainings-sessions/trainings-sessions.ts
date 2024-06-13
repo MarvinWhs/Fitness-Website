@@ -1,4 +1,5 @@
 /* Autor: Marvin Wiechers */
+
 import { LitElement, html, nothing } from 'lit';
 import { customElement, query, state } from 'lit/decorators.js';
 import { consume } from '@lit/context';
@@ -107,7 +108,6 @@ export class TrainingsComponent extends LitElement {
             return;
           }
 
-          // Berechnen des Skalierungsfaktors
           const scaleFactor = Math.sqrt((1024 * 1024) / file.size);
           canvas.width = img.width * scaleFactor;
           canvas.height = img.height * scaleFactor;
@@ -147,7 +147,6 @@ export class TrainingsComponent extends LitElement {
 
     const file = input.files[0];
 
-    // Überprüfung des MIME-Typs
     const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/html'];
     if (!validImageTypes.includes(file.type)) {
       console.error('Invalid file type');
@@ -155,8 +154,7 @@ export class TrainingsComponent extends LitElement {
       return;
     }
 
-    // Überprüfung der Dateigröße
-    const maxSizeInBytes = 5 * 1024 * 1024; // 5 MB
+    const maxSizeInBytes = 5 * 1024 * 1024;
     if (file.size > maxSizeInBytes) {
       console.error('File size exceeds limit');
       Notificator.showNotification('Dateigröße überschreitet das Limit von 5 MB.', 'fehler');
@@ -188,7 +186,7 @@ export class TrainingsComponent extends LitElement {
   private removeImage(event: Event) {
     event.stopPropagation();
     this.imageData = null;
-    this.fileInput.value = ''; // Optional: Setzen Sie das Datei-Input-Feld zurück
+    this.fileInput.value = '';
   }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -211,7 +209,6 @@ export class TrainingsComponent extends LitElement {
                       Jetzt Übungen hinzufügen
               </button>
               </div>
-              <!-- Modal für das Hinzufügen einer Übung -->
               <div id="addExerciseModal" class="modal">
       <div class="modal-content">
         <button @click="${this.closeModal}" class="close-button" aria-label="Close modal">&times;</button>

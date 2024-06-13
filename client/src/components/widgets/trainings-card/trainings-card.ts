@@ -1,4 +1,5 @@
 /* Autor: Marvin Wiechers */
+
 import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import componentStyle from './trainings-card.css?inline';
@@ -71,7 +72,7 @@ export class TrainingsCard extends LitElement {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.exercises = responseData.map((exercise: any) => ({
         ...exercise,
-        id: exercise.id.toString() // Konvertiere die ID zu einem String
+        id: exercise.id.toString()
       }));
     } catch (error) {
       console.error(error);
