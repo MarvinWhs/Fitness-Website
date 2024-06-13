@@ -8,6 +8,7 @@ import { HttpClient, httpClientContext } from '../../../http-client.js';
 import { Router } from '../../../router.js';
 import { routerContext } from '../../../router.js';
 import { authContext, AuthState } from '../login-page/auth-context.js';
+import { Notificator } from '../../widgets/notificator/notificator';
 
 @customElement('register-page')
 export class RegisterPage extends LitElement {
@@ -118,9 +119,11 @@ export class RegisterPage extends LitElement {
           this.requestUpdate();
         });
         this.router.goto('/fitness-home');
+        Notificator.showNotification('Registrierung erfolgreich', 'erfolg');
         this.dispatchEvent(new CustomEvent('user-login', { bubbles: true, composed: true }));
         window.location.pathname = '/fitness-home';
       } else {
+        Notificator.showNotification('Registrierung fehlgeschlagen', 'fehler');
         console.error('Registrierung fehlgeschlagen');
       }
     }
