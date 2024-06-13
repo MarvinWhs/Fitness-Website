@@ -9,8 +9,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { Request, Response } from 'express';
 
-//assert { type: 'json' }
-import config from '../config.json';
+import config from '../config.json' assert { type: 'json' };
 import exerciseRoute from './Routes/exercise.route.js';
 import authRoutes from './Routes/auth.routes.js';
 import foodRoutes from './Routes/food.routes.js';
