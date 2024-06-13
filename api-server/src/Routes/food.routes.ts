@@ -1,4 +1,5 @@
-/*Lucas Berlage*/
+/* Autor: Lucas Berlage */
+
 import express from 'express';
 import { MongoGenericDAO } from '../models/mongo-generic.dao.js';
 import { Food } from '../models/food.js';
@@ -12,8 +13,8 @@ const router = express.Router();
 router.get('/food-cards', authService.authenticationMiddleware, async (req, res) => {
   try {
     const foodDAO: MongoGenericDAO<Food> = req.app.locals.foodDAO;
-    const userId = res.locals.user.id; // Holen Sie sich die userId aus den Abfrageparametern
-    const foods = await foodDAO.findAll(); // Filtern nach userId
+    const userId = res.locals.user.id;
+    const foods = await foodDAO.findAll();
     const filteredFoods = foods.filter(food => food.userId === userId);
     res.status(200).send(
       filteredFoods.map(food => {

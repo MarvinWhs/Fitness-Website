@@ -8,6 +8,7 @@ body {
   color: var(--text-color);
 }
 
+/* Autor: Lucas Berlage */
 :root {
   --primary-color: #f3f6f9; /* Very light blue-gray */
   --secondary-color: #e0e7ef; /* Light blue-gray */

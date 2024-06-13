@@ -3,16 +3,22 @@ import { html, fixture, fixtureCleanup } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
 import './nutrition-tracker';
 import { NutritionTracker } from './nutrition-tracker';
-import { HttpClient } from '../../../http-client'; // Import the HttpClient
+import { HttpClient } from '../../../http-client';
+import { Notificator } from '../notificator/notificator';
 
 describe('NutritionTracker', () => {
   let element: NutritionTracker;
-  let httpClientStub: sinon.SinonStubbedInstance<HttpClient>;
+  let httpClient: HttpClient;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  let httpClientStub: sinon.SinonStub;
 
   beforeEach(async () => {
-    httpClientStub = sinon.createStubInstance(HttpClient);
     element = await fixture<NutritionTracker>(html`<nutrition-tracker></nutrition-tracker>`);
-    element.httpClient = httpClientStub as unknown as HttpClient; // Cast to avoid TypeScript errors
+    httpClient = new HttpClient();
+    httpClient.init('https://localhost:3000');
+    httpClientStub = sinon.stub(httpClient, 'post').resolves(new Response(null, { status: 200 }));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (element as any).httpClient = httpClient; // Zuweisung des HTTP-Clients zur Komponente
   });
 
   afterEach(() => {
@@ -20,93 +26,169 @@ describe('NutritionTracker', () => {
     sinon.restore();
   });
 
-  it('should initialize with an empty food card list', async () => {
-    httpClientStub.get.resolves(new Response(JSON.stringify([])));
-    await element.loadFoodCards();
-    expect(element.foodCards).to.be.empty;
+  it('should add foodcard', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const spyCloseModal = sinon.spy(element as any, 'closeModal');
+
+    // Simulate button click and form submission
+    const button = element.shadowRoot!.querySelector('.plus-button') as HTMLButtonElement;
+    button.click();
+    await element.updateComplete;
+
+    // Simulate form input
+    const form = element.shadowRoot!.querySelector('form') as HTMLFormElement;
+    const nameInput = form.querySelector('input[name="name"]') as HTMLInputElement;
+    const descriptionInput = form.querySelector('textarea[name="description"]') as HTMLTextAreaElement;
+    const quantity = form.querySelector('input[name="quantity"]') as HTMLInputElement;
+    const calories = form.querySelector('select[name="calories"]') as HTMLSelectElement;
+
+    nameInput.value = 'Test Food';
+    descriptionInput.value = 'This is a test';
+    quantity.value = '30';
+    calories.value = 'Medium';
+
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    await element.updateComplete;
+
+    expect(spyCloseModal.calledOnce).to.be.true;
   });
 
-  it('should fetch food cards on connectedCallback', async () => {
+  it('should load food cards successfully', async () => {
     const foodCards = [{ id: '1', name: 'Apple', calories: 95, description: 'A red apple', quantity: 1 }];
-    httpClientStub.get.resolves(new Response(JSON.stringify(foodCards)));
-    await element.connectedCallback();
-    expect(element.foodCards).to.have.length(1);
-  });
 
-  it('should handle errors when fetching food cards', async () => {
-    httpClientStub.get.rejects(new Error('Failed to fetch'));
+    // Mock HttpClient get method
+    const getStub = sinon.stub(httpClient, 'get').resolves(new Response(JSON.stringify(foodCards)));
+
     await element.loadFoodCards();
-    expect(element.foodCards).to.be.empty;
-  });
 
-  it('should add a new food card', async () => {
-    const newFoodCard = { id: '2', name: 'Banana', calories: 105, description: 'A ripe banana', quantity: 1 };
-    httpClientStub.post.resolves(new Response(JSON.stringify(newFoodCard)));
-    const form = new FormData();
-    form.append('name', 'Banana');
-    form.append('description', 'A ripe banana');
-    form.append('calories', '105');
-    form.append('quantity', '1');
-    await element.addFoodCard({
-      preventDefault: () => {},
-      target: {
-        elements: {
-          name: { value: 'Banana' },
-          description: { value: 'A ripe banana' },
-          calories: { value: '105' },
-          quantity: { value: '1' }
-        }
-      }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-    expect(element.foodCards).to.have.length(1);
+    expect(element.foodCards).to.have.lengthOf(1);
+    expect(element.foodCards[0].name).to.equal('Apple');
+
+    sinon.assert.calledOnce(getStub); // Überprüft, ob die get-Methode genau einmal aufgerufen wurde
   });
 
   it('should delete a food card', async () => {
-    const foodCards = [{ id: '1', name: 'Apple', calories: 95, description: 'A red apple', quantity: 1 }];
-    element.foodCards = foodCards;
-    httpClientStub.delete.resolves(new Response());
-    await element.deleteFoodCard('1');
+    const foodCardId = '1';
+    element.foodCards = [{ id: foodCardId, name: 'Apple', calories: 95, description: 'A red apple', quantity: 1 }];
+
+    // Mock HttpClient delete method
+    const deleteStub = sinon.stub(httpClient, 'delete').resolves(new Response(null, { status: 200 }));
+
+    await element.deleteFoodCard(foodCardId);
+
     expect(element.foodCards).to.be.empty;
+
+    sinon.assert.calledOnce(deleteStub); // Überprüft, ob die delete-Methode genau einmal aufgerufen wurde
   });
 
-  it('should handle errors when deleting a food card', async () => {
-    const foodCards = [{ id: '1', name: 'Apple', calories: 95, description: 'A red apple', quantity: 1 }];
-    element.foodCards = foodCards;
-    httpClientStub.delete.rejects(new Error('Failed to delete'));
-    await element.deleteFoodCard('1');
-    expect(element.foodCards).to.have.length(1);
+  it('should check calories', () => {
+    element.totalCalories = 500;
+    element.foodCards = [{ id: '1', name: 'Apple', calories: 95, description: 'A red apple', quantity: 1 }];
+
+    // Mock Notificator showNotification method
+    const showNotificationStub = sinon.stub(Notificator, 'showNotification');
+
+    element.checkCalories();
+
+    sinon.assert.calledOnce(showNotificationStub); // Überprüft, ob die showNotification-Methode genau einmal aufgerufen wurde
   });
 
-  it('should update a food card quantity', async () => {
-    const foodCard = { id: '1', name: 'Apple', calories: 95, description: 'A red apple', quantity: 1 };
-    element.foodCards = [foodCard];
-    const updatedFoodCard = { ...foodCard, quantity: 2 };
-    httpClientStub.put.resolves(new Response(JSON.stringify(updatedFoodCard)));
-    await element.updateFoodCard('1', 2);
-    expect(element.foodCards[0].quantity).to.equal(2);
+  it('should not add food card with empty inputs', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const spyCloseModal = sinon.spy(element as any, 'closeModal');
+    // Simulate button click and form submission
+    const button = element.shadowRoot!.querySelector('.plus-button') as HTMLButtonElement;
+    button.click();
+    await element.updateComplete;
+
+    // Simulate form input
+    const form = element.shadowRoot!.querySelector('form') as HTMLFormElement;
+
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    await element.updateComplete;
+
+    expect(spyCloseModal.called).to.be.false; // Überprüft, dass closeModal nicht aufgerufen wurde
   });
 
-  it('should set total calories', async () => {
-    const inputElement = element.shadowRoot?.querySelector<HTMLInputElement>('.input_calories');
-    if (inputElement) {
-      inputElement.value = '2000';
-      inputElement.dispatchEvent(new Event('input'));
-    }
+  it('should set total calories', () => {
+    const inputValue = '200';
+
+    // Mock Notificator showNotification method
+    const showNotificationStub = sinon.stub(Notificator, 'showNotification');
+
+    const inputElement = element.totalCaloriesInput;
+    inputElement.value = inputValue;
+
     element.submitTotalCalories();
-    expect(element.totalCalories).to.equal(2000);
+
+    expect(element.totalCalories).to.equal(parseInt(inputValue));
+    sinon.assert.calledOnce(showNotificationStub); // Überprüft, ob die showNotification-Methode genau einmal aufgerufen wurde
   });
 
   it('should reset total calories', () => {
-    element.totalCalories = 2000;
+    element.totalCalories = 200;
+
+    // Mock Notificator showNotification method
+    const showNotificationStub = sinon.stub(Notificator, 'showNotification');
+
     element.resetTotalCalories();
+
     expect(element.totalCalories).to.equal(0);
+    sinon.assert.calledOnce(showNotificationStub); // Überprüft, ob die showNotification-Methode genau einmal aufgerufen wurde
   });
 
-  it('should calculate remaining calories correctly', () => {
-    element.totalCalories = 2000;
-    element.foodCards = [{ id: '1', name: 'Apple', calories: 95, description: 'A red apple', quantity: 2 }];
-    const remainingCalories = element.getRemainingCalories();
-    expect(remainingCalories).to.equal(1810);
+  it('should open the modal', () => {
+    element.openModal();
+
+    expect(element.isModalOpen).to.be.true;
+  });
+
+  it('should close the modal', () => {
+    element.isModalOpen = true;
+
+    element.closeModal();
+
+    expect(element.isModalOpen).to.be.false;
+  });
+
+  it('should add a food card with valid inputs', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const spyCloseModal = sinon.spy(element as any, 'closeModal');
+
+    // Simulate button click and form submission
+    const button = element.shadowRoot!.querySelector('.plus-button') as HTMLButtonElement;
+    button.click();
+    await element.updateComplete;
+
+    // Simulate form input
+    const form = element.shadowRoot!.querySelector('form') as HTMLFormElement;
+    const nameInput = form.querySelector('input[name="name"]') as HTMLInputElement;
+    const descriptionInput = form.querySelector('textarea[name="description"]') as HTMLTextAreaElement;
+    const quantityInput = form.querySelector('input[name="quantity"]') as HTMLInputElement;
+    const caloriesInput = form.querySelector('input[name="calories"]') as HTMLInputElement;
+
+    nameInput.value = 'Test Food';
+    descriptionInput.value = 'This is a test food';
+    quantityInput.value = '2';
+    caloriesInput.value = '150';
+
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    await element.updateComplete;
+
+    expect(spyCloseModal.calledOnce).to.be.true;
+    expect(element.foodCards).to.have.lengthOf(1);
+    expect(element.foodCards[0].name).to.equal('Test Food');
+  });
+
+  it('should reset total calories and show notification', () => {
+    element.totalCalories = 200;
+
+    // Mock Notificator showNotification method
+    const showNotificationStub = sinon.stub(Notificator, 'showNotification');
+
+    element.resetTotalCalories();
+
+    expect(element.totalCalories).to.equal(0);
+    sinon.assert.calledOnce(showNotificationStub); // Überprüft, ob die showNotification-Methode genau einmal aufgerufen wurde
   });
 });

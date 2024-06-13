@@ -1,3 +1,5 @@
+/* Autor: Lucas Berlage */
+
 import { Entity } from './entity.js';
 
 export interface Food extends Entity {

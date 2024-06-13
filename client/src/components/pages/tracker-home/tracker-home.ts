@@ -1,3 +1,5 @@
+/* Autor: Lucas Berlage */
+
 import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import componentStyle from './tracker-home.css?inline';

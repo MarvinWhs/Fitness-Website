@@ -1,4 +1,5 @@
-/* Hauptinhalt */
+/* Autor: Lucas Berlage */
+
 .main-content {
   max-width: 100%;
   padding: 80px;
@@ -12,7 +13,6 @@
   flex-direction: column;
 }
 
-/* Hintergrund der Überschrift */
 h1 {
   background-color: var(--secondary-color);
   border-radius: 15px;
@@ -23,18 +23,16 @@ h1 {
   margin-top: 0px;
 }
 
-/* Absatz */
 p {
   color: var(--p-textcolor);
 }
 
-/* Links und Button */
 a,
 .submitCalories {
-  color: var(--black); /* Textfarbe */
-  background-color: var(--leichtes-black); /* Hintergrundfarbe */
+  color: var(--black);
+  background-color: var(--leichtes-black);
   padding: 10px 20px;
-  border-radius: 20px; /* Abgerundete Ecken */
+  border-radius: 20px;
   transition: background-color 0.3s ease;
 }
 
@@ -43,13 +41,12 @@ a:hover,
   background-color: var(--secondary-color);
 }
 
-/* Eingabefelder */ 
 .input_calories{
-  border-radius: 20px; /* Abgerundete Ecken */
+  border-radius: 20px;
   padding: 10px;
   border: 1px solid #ccc;
   margin-right: 10px;
-  flex: 1; /* Flexibles Wachstum */
+  flex: 1;
   font-size: 16px;
 }
 
@@ -59,7 +56,6 @@ a:hover,
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Suchleiste und Suche-Button */
 .row {
   display: flex;
   align-items: center;
@@ -67,7 +63,6 @@ a:hover,
   margin-bottom: 20px;
 }
 
-/* Food-Liste */
 .food-list {
   display: flex;
   flex-direction: column;
@@ -75,7 +70,6 @@ a:hover,
   margin-top: 20px;
 }
 
-/* Gesamter Kalorienbedarf */
 .total-calories {
   color: var(--p-textcolor);
   padding: 10px;
@@ -122,7 +116,6 @@ a:hover,
   background-color: #0056b3;
 }
 
-/* Plus-Button für neue Food-Card */
 .plus-button {
   cursor: pointer;
   font-size: 24px;
@@ -139,7 +132,6 @@ a:hover,
   margin-left: 10px;
 }
 
-/* Modal Overlay */
 .modal-overlay {
   display: flex;
   align-items: center;
@@ -153,7 +145,6 @@ a:hover,
   z-index: 1000;
 }
 
-/* Modal Content */
 .modal-content {
   background: var(--header-color);
   padding: 30px;
@@ -165,7 +156,6 @@ a:hover,
   text-align: center;
 }
 
-/* Close Button */
 .close-button {
   background: none;
   border: none;
@@ -177,14 +167,12 @@ a:hover,
   color: red;
 }
 
-/* Form Styles */
 .modal-content form {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Input Fields */
 .modal-content form input[type="text"],
 .modal-content form textarea,
 .modal-content form input[type="number"],
@@ -198,13 +186,11 @@ a:hover,
   font-size: 16px;
 }
 
-/* Description Field */
 .modal-content form textarea {
   height: 100px;
   resize: none;
 }
 
-/* Submit Button */
 .modal-content form button[type="submit"] {
   background-color: var(--secondary-color);
   color: var(--p-textcolor);
@@ -217,91 +203,89 @@ a:hover,
   background-color: var(--button-hover-color);
 }
 
-/* Form Labels */
 .modal-content form label {
   font-weight: bold;
   margin-bottom: 5px;
   align-self: flex-start;
 }
 
-/* Anpassungen für verschiedene Bildschirmgrößen */
 @media (max-width: 500px) {
   .main-content {
     max-width: 95%;
-    font-size: 16px; /* Kleinere Schriftgröße */
-    padding: 20px; /* Weniger Padding */
+    font-size: 16px;
+    padding: 20px;
   }
 
   .feld {
-    font-size: 14px; /* Kleinere Schriftgröße für Eingabefelder */
-    padding: 8px; /* Weniger Padding für Eingabefelder */
+    font-size: 14px;
+    padding: 8px;
   }
 
   .total-calories {
-    padding: 8px; /* Weniger Padding */
-    font-size: 14px; /* Kleinere Schriftgröße */
+    padding: 8px;
+    font-size: 14px;
   }
 
   .total-calories button {
-    padding: 8px 16px; /* Weniger Padding */
-    font-size: 14px; /* Kleinere Schriftgröße */
+    padding: 8px 16px;
+    font-size: 14px;
   }
 
   .plus-button {
-    width: 40px; /* Kleinere Größe */
-    height: 40px; /* Kleinere Größe */
+    width: 40px;
+    height: 40px;
   }
 }
 
 @media (max-width: 650px) {
   .modal-content {
-    width: 90%; /* Mehr Platz für das Modal */
+    width: 90%;
   }
 
   .feld {
-    font-size: 15px; /* Etwas kleinere Schriftgröße */
-    padding: 9px; /* Weniger Padding */
+    font-size: 15px;
+    padding: 9px;
   }
 
   .total-calories {
-    padding: 9px; /* Weniger Padding */
-    font-size: 15px; /* Etwas kleinere Schriftgröße */
+    padding: 9px;
+    font-size: 15px;
   }
 
   .total-calories button {
-    padding: 9px 18px; /* Weniger Padding */
-    font-size: 15px; /* Etwas kleinere Schriftgröße */
+    padding: 9px 18px;
+    font-size: 15px;
   }
 
   .plus-button {
-    width: 45px; /* Etwas kleinere Größe */
-    height: 45px; /* Etwas kleinere Größe */
+    width: 45px;
+    height: 45px;
   }
 }
 
 @media (max-width: 1060px) {
   .main-content {
-    padding: 40px; /* Weniger Padding */
-    font-size: 18px; /* Kleinere Schriftgröße */
+    padding: 40px;
+    font-size: 18px;
   }
 
   .feld {
-    font-size: 15px; /* Etwas kleinere Schriftgröße */
-    padding: 9px; /* Weniger Padding */
+    font-size: 15px;
+    padding: 9px;
   }
 
   .total-calories {
-    padding: 9px; /* Weniger Padding */
-    font-size: 15px; /* Etwas kleinere Schriftgröße */
+    padding: 9px;
+    font-size: 15px;
   }
 
   .total-calories button {
-    padding: 9px 18px; /* Weniger Padding */
-    font-size: 15px; /* Etwas kleinere Schriftgröße */
+    padding: 9px 18px;
+    font-size: 15px;
   }
 
   .plus-button {
-    width: 45px; /* Etwas kleinere Größe */
-    height: 45px; /* Etwas kleinere Größe */
+    width: 45px;
+    height: 45px;
   }
 }

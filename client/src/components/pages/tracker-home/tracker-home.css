@@ -1,6 +1,8 @@
+/* Autor: Lucas Berlage */
+
 :host {
   display: block;
-  font-family: 'Roboto', Arial, sans-serif; /* Updated font */
+  font-family: 'Roboto', Arial, sans-serif;
   line-height: 1.6;
   color: var(--p-textcolor);
   box-sizing: border-box;
@@ -10,10 +12,10 @@
 .StartText {
   text-align: center;
   padding: 20px;
-  margin: 40px auto; /* Reduced margin */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  margin: 40px auto;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   background-color: var(--leichtes-black);
-  border-radius: 12px; /* Increased border-radius */
+  border-radius: 12px;
   border: solid 1px var(--p-textcolor);
   max-width: 800px;
 }
@@ -22,7 +24,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 12px; /* Increased border-radius */
+  border-radius: 12px;
   max-width: 800px;
   align-self: center;
   margin-left: auto;
@@ -33,7 +35,7 @@
 
 p {
   font-size: 16px;
-  line-height: 1.7; /* Slightly increased line-height */
+  line-height: 1.7;
 }
 
 .main-content {
@@ -41,8 +43,8 @@ p {
   flex-direction: column;
   align-items: center;
   background-color: var(--leichtes-black);
-  border-radius: 12px; /* Increased border-radius */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   max-width: 800px;
   margin: 40px auto;
   padding: 10px auto;
@@ -51,7 +53,7 @@ p {
 li {
   list-style-type: none;
   font-size: 16px;
-  line-height: 1.7; /* Slightly increased line-height */
+  line-height: 1.7;
   padding: 5px;
   width: 100%;
   text-align: left;
@@ -59,14 +61,13 @@ li {
 
 .Erklärung {
   font-size: 16px;
-  line-height: 1.7; /* Slightly increased line-height */
-  margin: 40px auto; /* Increased padding */
-  width: 100%;
+  line-height: 1.7;
+  margin: 40px auto;
   background-color: var(--leichtes-black);
-  border-radius: 12px; /* Increased border-radius */
+  border-radius: 12px;
   border: solid 1px var(--p-textcolor);
   text-align: center;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
   
 
@@ -122,12 +123,12 @@ h1 {
   color: var(--h-textcolor);
   background-color: var(--secondary-color);
   border-radius: 5px;
-  padding: 10px; /* Increased padding */
+  padding: 10px;
   align-self: center;
   font-size: 30px;
   text-align: center;
   border: solid 1px var(--text-color);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 1060px) {
