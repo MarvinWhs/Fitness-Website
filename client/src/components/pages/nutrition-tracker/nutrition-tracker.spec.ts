@@ -6,7 +6,7 @@ import sinon from 'sinon';
 import './nutrition-tracker';
 import { NutritionTracker } from './nutrition-tracker';
 import { HttpClient } from '../../../http-client';
-import { Notificator } from '../notificator/notificator';
+import { Notificator } from '../../widgets/notificator/notificator';
 
 describe('NutritionTracker', () => {
   let element: NutritionTracker;

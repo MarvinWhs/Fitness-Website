@@ -5,7 +5,7 @@ import { customElement, property, state, query } from 'lit/decorators.js';
 import componentStyle from './nutrition-tracker.css?inline';
 import { HttpClient, httpClientContext } from '../../../http-client.js';
 import { consume } from '@lit/context';
-import { Notificator } from '../notificator/notificator.js';
+import { Notificator } from '../../widgets/notificator/notificator.js';
 
 interface Food {
   id: string;

@@ -86,12 +86,13 @@ describe('TrainingsComponent', () => {
 
     const exercises = await page.$$('.exercise');
     const exerciseNames = await Promise.all(exercises.map(async exercise => await exercise.textContent()));
-    expect(exerciseNames.some(name => name?.includes('Übung 1'))).to.be.true;
 
     await page.waitForTimeout(1000);
 
     await page.hover('.exercise-container-container:first-child');
     await page.getByRole('button', { name: 'Übung löschen' }).click();
+
+    expect(exerciseNames.some(name => name?.includes('Übung 1'))).to.be.true;
   });
 
   it('should prevent adding an exercise without authentication', async () => {

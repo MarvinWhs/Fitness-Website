@@ -1,5 +1,5 @@
 {   
     "protocol": "https",
-    "serverAdress": "localhost",
+    "serverAdress": "stud-vm-1876",
     "serverPort": 3000
 }

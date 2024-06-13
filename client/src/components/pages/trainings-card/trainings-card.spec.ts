@@ -1,10 +1,11 @@
 /* Autor: Marvin Wiechers */
+
 import { expect } from 'chai';
 import { html, fixture, fixtureCleanup } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
 import './trainings-card';
 import { TrainingsCard } from './trainings-card';
-import { HttpClient } from './../../../http-client.js';
+import { HttpClient } from '../../../http-client.js';
 
 describe('TrainingsCard', () => {
   let element: TrainingsCard;

@@ -3,11 +3,11 @@
 import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import componentStyle from './trainings-card.css?inline';
-import { Notificator } from '../notificator/notificator.js';
-import { HttpClient, httpClientContext } from './../../../http-client.js';
+import { Notificator } from '../../widgets/notificator/notificator.js';
+import { HttpClient, httpClientContext } from '../../../http-client.js';
 import { consume } from '@lit/context';
 import config from '../../../../config.json';
-import '../trainings-timer/countdown-widget.js';
+import '../../widgets/trainings-timer/countdown-widget.js';
 
 interface Exercise {
   id: string;
