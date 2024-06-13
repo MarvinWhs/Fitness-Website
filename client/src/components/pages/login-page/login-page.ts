@@ -71,10 +71,10 @@ export class LoginPage extends LitElement {
           console.log('Login erfolgreich');
           Notificator.showNotification('Login erfolgreich', 'erfolg');
           if (this.authState) {
-            this.authState.isAuthenticated = true; // Ensure this.authState is defined and assignable
+            this.authState.isAuthenticated = true;
           }
           if (this.router) {
-            this.router.goto('/fitness-home'); // Ensure this.router is defined before calling .goto
+            this.router.goto('/fitness-home');
           }
           this.dispatchEvent(new CustomEvent('user-login', { bubbles: true, composed: true }));
           window.location.pathname = '/fitness-home';

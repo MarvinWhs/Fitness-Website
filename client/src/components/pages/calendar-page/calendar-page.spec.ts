@@ -75,7 +75,6 @@ describe('CalendarPageComponent', () => {
     const addNoteEvent = new Event('submit', { bubbles: true });
     const addNotePromise = component.addNote(addNoteEvent as Event);
 
-    // Simulate server response
     server.respond();
 
     await addNotePromise;
@@ -102,7 +101,6 @@ describe('CalendarPageComponent', () => {
     const editNoteEvent = new Event('submit', { bubbles: true });
     const editNotePromise = component.editNote(editNoteEvent as Event);
 
-    // Simulate server response
     server.respond();
 
     await editNotePromise;
@@ -117,7 +115,6 @@ describe('CalendarPageComponent', () => {
 
     const deleteNotePromise = component.deleteNote(noteToDelete.id);
 
-    // Simulate server response
     server.respond();
 
     await deleteNotePromise;
