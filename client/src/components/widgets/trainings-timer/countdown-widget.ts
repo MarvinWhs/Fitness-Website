@@ -26,7 +26,7 @@ export class CountdownWidget extends LitElement {
 
   startTimer() {
     if (this.timerId) {
-      return; // The timer is already running, do nothing
+      return;
     }
     this.paused = false;
     this.timerId = setInterval(() => {

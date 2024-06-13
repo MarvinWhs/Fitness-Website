@@ -111,7 +111,7 @@ describe('TrainingsComponent', () => {
     await element.updateComplete;
 
     expect(httpClientStub.calledOnce).to.be.true;
-    expect(httpClientStub.firstCall.args[0]).to.equal('https://localhost:3000/exercises');
+    expect(httpClientStub.firstCall.args[0]).to.equal('/exercises');
     expect(httpClientStub.firstCall.args[1]).to.deep.include({
       name: 'Test Exercise',
       description: 'This is a test exercise',

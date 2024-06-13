@@ -9,7 +9,7 @@ import './components/pages/tracker-home/tracker-home.js';
 import './components/pages/fitness-home/fitness-home.js';
 import './components/pages/register-page/register-page.js';
 import './components/pages/login-page/login-page.js';
-import './components/pages/ calendar-page/calendar-page.js';
+import './components/pages/calendar-page/calendar-page.js';
 
 // Widgets
 import './components/widgets/trainings-card/trainings-card.js';

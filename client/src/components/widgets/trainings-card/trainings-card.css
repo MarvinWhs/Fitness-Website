@@ -244,10 +244,10 @@
   }
 }
 
-.exercise-buttons countdown-widget {
-  display: none;
-}
+  .exercise-container-container countdown-widget {
+    display: none;
+  }
 
-.exercise-container-container:hover .exercise-buttons countdown-widget {
-  display: block;
-}
+  .exercise-container-container:hover countdown-widget {
+    display: block;
+  }
