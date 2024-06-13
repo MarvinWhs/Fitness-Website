@@ -1,4 +1,4 @@
-/* Author: Niklas Lobo */
+/* Autor: Niklas Lobo */
 
 import { expect } from 'chai';
 import { fixture, html, fixtureCleanup } from '@open-wc/testing-helpers';
@@ -17,7 +17,7 @@ describe('LoginPage', () => {
     httpClient = new HttpClient();
     httpClientStub = sinon.stub(httpClient, 'post').resolves(new Response(null, { status: 200 }));
     element.httpClient = httpClient;
-    await element.updateComplete; // Ensure component is fully rendered
+    await element.updateComplete;
   });
 
   afterEach(() => {
@@ -42,14 +42,11 @@ describe('LoginPage', () => {
       const button = form.querySelector('button[type="submit"]');
       expect(button).to.exist;
 
-      // Simulate user input
       element.username = 'testuser';
       element.password = 'password';
 
-      // Trigger form submission
-      button!.dispatchEvent(new MouseEvent('click')); // Dispatch click event instead of calling click()
+      button!.dispatchEvent(new MouseEvent('click'));
 
-      // Ensure authState is updated correctly
       expect(element.authState?.isAuthenticated).to.be.true;
     }
   });
@@ -61,23 +58,19 @@ describe('LoginPage', () => {
       const button = form.querySelector('button[type="submit"]');
       expect(button).to.exist;
 
-      // Simulate successful login
       element.username = 'testuser';
       element.password = 'password';
 
-      button!.dispatchEvent(new MouseEvent('click')); // Dispatch click event instead of calling click()
+      button!.dispatchEvent(new MouseEvent('click'));
 
-      await new Promise(resolve => setTimeout(resolve, 0)); // Wait for async updates
+      await new Promise(resolve => setTimeout(resolve, 0));
 
-      // Ensure authState is updated correctly after login
       expect(element.authState?.isAuthenticated).to.be.true;
 
-      // Simulate logout
       element.dispatchEvent(new CustomEvent('logout-request', { bubbles: true, composed: true }));
 
-      await new Promise(resolve => setTimeout(resolve, 0)); // Wait for async updates
+      await new Promise(resolve => setTimeout(resolve, 0));
 
-      // Assert on expected logout behavior
       expect(element.authState?.isAuthenticated).to.be.false;
     }
   });

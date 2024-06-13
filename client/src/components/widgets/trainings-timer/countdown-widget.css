@@ -7,13 +7,13 @@
 
 :host([open]) .popup {
   display: block;
-  position: fixed; /* Change this from absolute to fixed */
-  top: 50%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Adjust position to truly center */
-  width: 80%; /* Adjust to desired width */
-  max-width: 300px; /* Don't let the popup get too wide on large screens */
-  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent overlay */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 300px;
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   display: flex;
   justify-content: center;
@@ -22,16 +22,16 @@
 
 .popup {
   display: block;
-  position: fixed; /* Position the popup relative to the viewport */
+  position: fixed;
   background-color: white;
   border: 1px solid #ccc;
   padding: 10px;
   width: 200px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1;
-  top: 0%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Adjust position to truly center */
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   border-radius: 15px;
 }
 
@@ -56,9 +56,9 @@ button {
 .icon-container {
   display: flex;
   align-items: center;
-  justify-content: center; /* if you also want to center them horizontally */
+  justify-content: center;
 }
 
 button:hover {
-  transform: scale(1.1); /* Increase size to 110% when hovered */
+  transform: scale(1.1);
 }
