@@ -4,7 +4,7 @@ import mongodb from 'mongodb';
 import pg from 'pg';
 import { Express } from 'express';
 
-import config from '../config.json' assert { type: 'json' };
+import config from '../config.json';
 import { PsqlGenericDAO } from './models/psql-generic.dao.js';
 import { Exercise } from './models/exercise';
 import { InMemoryGenericDAO } from './models/in-memory-generic.dao.js';
