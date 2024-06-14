@@ -20,6 +20,8 @@ import { csrfService } from './Routes/services/csrf.service.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+/*Autor: Marvin Wiechers*/
+
 function configureApp(app: Express) {
   app.use(express.json({ limit: '5mb' }));
   app.use(

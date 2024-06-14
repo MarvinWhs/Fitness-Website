@@ -1,22 +1,24 @@
+/* Autor: Niklas Lobo */
+
 .register-container {
     width: 90%;
     max-width: 800px;
-    margin: 100px auto; /* Erhöhung des oberen und unteren Randes auf 100px */
+    margin: 100px auto;
     height: 46.5vh;
 }
 
 .input-field {
     display: grid;
-    grid-template-columns: 1fr 3fr; /* Labels und Eingabefelder in einem Verhältnis von 1:3 */
-    gap: 20px; /* Horizontale und vertikale Abstände zwischen Label und Eingabefeld */
-    margin-bottom: 15px; /* Verringertes margin-bottom für die Eingabefelder */
-    position: relative; /* Position relativ für Fehlermeldungen */
+    grid-template-columns: 1fr 3fr; 
+    gap: 20px; 
+    margin-bottom: 15px; 
+    position: relative; 
 }
 
 label {
-    align-self: center; /* Zentriert das Label vertikal */
+    align-self: center; 
     font-weight: bold;
-    font-size: 14px; /* Kleinerer Schriftgrad für die Bezeichnungen */
+    font-size: 14px; 
 }
 
 input[type="text"],
@@ -26,20 +28,20 @@ input[type="email"] {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-bottom: 20px; /* Erhöhter Abstand zwischen den Eingabefeldern */
+    margin-bottom: 20px; 
 }
 
 .error-placeholder {
-    margin-top: 5px; /* Abstand zwischen Eingabefeld und Fehlermeldung */
+    margin-top: 5px; 
 }
 
 .error-message {
     color: red;
-    display: none; /* Standardmäßig ausgeblendet */
+    display: none; 
 }
 
 .error-message.active {
-    display: block; /* Anzeigen, wenn aktiv */
+    display: block; 
 }
 
 button[type="submit"] {

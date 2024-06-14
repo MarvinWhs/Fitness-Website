@@ -1,11 +1,13 @@
 /* Autor: Marvin Wiechers */
+
 import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import componentStyle from './trainings-card.css?inline';
-import { Notificator } from '../notificator/notificator.js';
-import { HttpClient, httpClientContext } from './../../../http-client.js';
+import { Notificator } from '../../widgets/notificator/notificator.js';
+import { HttpClient, httpClientContext } from '../../../http-client.js';
 import { consume } from '@lit/context';
 import config from '../../../../config.json';
+import '../../widgets/trainings-timer/countdown-widget.js';
 
 interface Exercise {
   id: string;
@@ -70,7 +72,7 @@ export class TrainingsCard extends LitElement {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.exercises = responseData.map((exercise: any) => ({
         ...exercise,
-        id: exercise.id.toString() // Konvertiere die ID zu einem String
+        id: exercise.id.toString()
       }));
     } catch (error) {
       console.error(error);
@@ -193,6 +195,7 @@ export class TrainingsCard extends LitElement {
             <div class="exercise-container-container">
               <div class="exercise">
                 <div class="exercise-buttons">
+                  <countdown-widget></countdown-widget>
                   <button
                     @click="${() => this.deleteExercise(exercise.id)}"
                     class="delete-exercise"

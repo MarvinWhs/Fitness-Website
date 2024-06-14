@@ -1,13 +1,14 @@
-/* Autor Niklas Lobo */
+/* Autor: Niklas Lobo */
 
 import { html, LitElement } from 'lit';
-import componentStyle from './login-page.css?inline';
 import { customElement } from 'lit/decorators.js';
 import { consume } from '@lit/context';
+import componentStyle from './login-page.css?inline';
 import { HttpClient, httpClientContext } from '../../../http-client.js';
 import { Router } from '../../../router.js';
 import { routerContext } from '../../../router.js';
-import { authContext, AuthState } from './auth-context.js';
+import { authContext } from './auth-context.js';
+import { Notificator } from '../../widgets/notificator/notificator';
 
 @customElement('login-page')
 export class LoginPage extends LitElement {
@@ -17,17 +18,16 @@ export class LoginPage extends LitElement {
   httpClient!: HttpClient;
 
   @consume({ context: routerContext, subscribe: true })
-  router!: Router;
+  router!: Router | undefined;
 
   @consume({ context: authContext, subscribe: true })
-  authState!: AuthState;
+  authState!: { isAuthenticated: boolean } | undefined;
 
-  username: string;
-  password: string;
-
-  usernameErrorMessage: string;
-  passwordErrorMessage: string;
-  generalErrorMessage: string;
+  username: string = '';
+  password: string = '';
+  usernameErrorMessage: string = '';
+  passwordErrorMessage: string = '';
+  generalErrorMessage: string = '';
 
   constructor() {
     super();
@@ -47,7 +47,6 @@ export class LoginPage extends LitElement {
       this.password = target.value;
       this.passwordErrorMessage = this.password ? '' : 'Passwort darf nicht leer sein';
     }
-
     this.updateErrorMessages();
   }
 
@@ -59,7 +58,6 @@ export class LoginPage extends LitElement {
 
   async handleSubmit(e: Event) {
     e.preventDefault();
-    // Check if there are any error messages
     const hasErrors = this.usernameErrorMessage || this.passwordErrorMessage;
     const userData = {
       username: this.username,
@@ -68,24 +66,26 @@ export class LoginPage extends LitElement {
     if (!hasErrors) {
       try {
         const response = await this.httpClient.post('/login', userData);
-        if (response.ok) {
-          localStorage.setItem('authToken', 'true'); // Speichern des Tokens
+        if (response && response.ok) {
+          localStorage.setItem('authToken', 'true');
           console.log('Login erfolgreich');
-          this.authState.isAuthenticated = true;
-          console.log('AuthState:', this.authState);
-          this.updateComplete.then(() => {
-            this.requestUpdate();
-          });
-          this.router.goto('/fitness-home');
+          Notificator.showNotification('Login erfolgreich', 'erfolg');
+          if (this.authState) {
+            this.authState.isAuthenticated = true;
+          }
+          if (this.router) {
+            this.router.goto('/fitness-home');
+          }
           this.dispatchEvent(new CustomEvent('user-login', { bubbles: true, composed: true }));
           window.location.pathname = '/fitness-home';
         } else {
           const result = await response.json();
           this.generalErrorMessage = result.message || 'Login fehlgeschlagen';
-          console.error('Login fehlgeschlagen');
+          Notificator.showNotification('Login erfolgreich', 'erfolg');
         }
       } catch (error) {
         this.generalErrorMessage = 'Fehler beim Anmelden';
+        Notificator.showNotification('Fehler beim Anmelden', 'fehler');
         console.error('Fehler beim Anmelden', error);
       }
     }

@@ -1,5 +1,3 @@
-/* Autor: Marvin Wiechers */
-
 import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
@@ -8,7 +6,7 @@ import componentStyle from './app.css?inline';
 import { HttpClient, httpClientContext } from '../../http-client.js';
 import { Router, routerContext } from '../../router.js';
 import '../widgets/my-header/my-header.js';
-import '../widgets/my-footer/my-footer.js';
+import '../pages/my-footer/my-footer.js';
 import { authContext, AuthState } from '../pages/login-page/auth-context.js';
 const APP_TITLE = 'All in One Fitness';
 

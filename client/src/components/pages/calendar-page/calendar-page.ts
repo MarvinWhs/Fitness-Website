@@ -43,7 +43,7 @@ export class CalendarPageComponent extends LitElement {
     this.initializeCalendar();
   }
 
-  private async fetchNotes(): Promise<void> {
+  async fetchNotes(): Promise<void> {
     try {
       const response = await this.httpClient.get('/notes');
       if (!response.ok) {
@@ -56,7 +56,7 @@ export class CalendarPageComponent extends LitElement {
     }
   }
 
-  private initializeCalendar() {
+  initializeCalendar() {
     const calendarEl = this.shadowRoot?.querySelector('#calendar') as HTMLElement;
     if (calendarEl) {
       this.calendar = new Calendar(calendarEl, {
@@ -74,7 +74,7 @@ export class CalendarPageComponent extends LitElement {
     }
   }
 
-  private updateCalendarEvents() {
+  updateCalendarEvents() {
     if (this.calendar) {
       this.calendar.removeAllEvents();
       this.notes.forEach(note => {
@@ -87,12 +87,12 @@ export class CalendarPageComponent extends LitElement {
     }
   }
 
-  private handleDateClick(arg: DateClickArg) {
+  handleDateClick(arg: DateClickArg) {
     this.selectedDate = arg.dateStr;
-    this.updateCalendarEvents(); // Update calendar events
+    this.updateCalendarEvents();
   }
 
-  private handleEventClick(arg: { event: EventApi }) {
+  handleEventClick(arg: { event: EventApi }) {
     const event = arg.event;
     const note = this.notes.find(note => note.id === event.id);
     if (note) {
@@ -101,7 +101,7 @@ export class CalendarPageComponent extends LitElement {
     }
   }
 
-  private openModal(): void {
+  openModal(): void {
     this.isModalOpen = true;
     const modal = this.shadowRoot!.getElementById('addNoteModal') as HTMLElement;
     if (modal) {
@@ -109,7 +109,7 @@ export class CalendarPageComponent extends LitElement {
     }
   }
 
-  private closeModal(): void {
+  closeModal(): void {
     this.isModalOpen = false;
     const modal = this.shadowRoot!.getElementById('addNoteModal') as HTMLElement;
     if (modal) {
@@ -117,7 +117,7 @@ export class CalendarPageComponent extends LitElement {
     }
   }
 
-  private openEditModal(): void {
+  openEditModal(): void {
     this.isEditModalOpen = true;
     const modal = this.shadowRoot!.getElementById('editNoteModal') as HTMLElement;
     if (modal) {
@@ -125,12 +125,12 @@ export class CalendarPageComponent extends LitElement {
     }
   }
 
-  private handleEditButtonClick(note: Note) {
+  handleEditButtonClick(note: Note) {
     this.selectedNote = note;
     this.openEditModal();
   }
 
-  private closeEditModal(): void {
+  closeEditModal(): void {
     this.isEditModalOpen = false;
     this.selectedNote = null;
     const modal = this.shadowRoot!.getElementById('editNoteModal') as HTMLElement;
@@ -139,7 +139,7 @@ export class CalendarPageComponent extends LitElement {
     }
   }
 
-  private async addNote(event: Event): Promise<void> {
+  async addNote(event: Event): Promise<void> {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
     const formData = new FormData(form);
@@ -150,7 +150,7 @@ export class CalendarPageComponent extends LitElement {
     };
 
     try {
-      const response = await this.httpClient.post('https://localhost:3000/notes', noteData);
+      const response = await this.httpClient.post('/notes', noteData);
       this.notes.push(await response.json());
       this.closeModal();
       this.updateCalendarEvents();
@@ -161,7 +161,7 @@ export class CalendarPageComponent extends LitElement {
     }
   }
 
-  private async editNote(event: Event): Promise<void> {
+  async editNote(event: Event): Promise<void> {
     event.preventDefault();
     if (!this.selectedNote) return;
     const form = event.target as HTMLFormElement;
@@ -174,10 +174,7 @@ export class CalendarPageComponent extends LitElement {
     };
 
     try {
-      const response = await this.httpClient.put(
-        `https://localhost:3000/notes/${this.selectedNote.id}`,
-        updatedNoteData
-      );
+      const response = await this.httpClient.put(`/notes/${this.selectedNote.id}`, updatedNoteData);
       const updatedNote = await response.json();
       this.notes = this.notes.map(note => (note.id === updatedNote.id ? updatedNote : note));
       this.closeEditModal();
@@ -188,9 +185,9 @@ export class CalendarPageComponent extends LitElement {
     }
   }
 
-  private async deleteNote(noteId: string): Promise<void> {
+  async deleteNote(noteId: string): Promise<void> {
     try {
-      await this.httpClient.delete(`https://localhost:3000/notes/${noteId}`);
+      await this.httpClient.delete(`/notes/${noteId}`);
       this.notes = this.notes.filter(note => note.id !== noteId);
       this.updateCalendarEvents();
       Notificator.showNotification('Note successfully deleted', 'erfolg');
@@ -200,7 +197,6 @@ export class CalendarPageComponent extends LitElement {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   render() {
     return html`
       <main class="main-content">

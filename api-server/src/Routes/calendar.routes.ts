@@ -1,4 +1,4 @@
-/* Autor Niklas Lobo */
+/* Autor: Niklas Lobo */
 
 import express from 'express';
 import { authService } from '../Routes/services/auth.service.js';
@@ -13,8 +13,8 @@ const router = express.Router();
 router.get('/notes', authService.authenticationMiddleware, async (req, res) => {
   try {
     const noteDAO: MongoGenericDAO<Notes> = req.app.locals.noteDAO;
-    const userId = res.locals.user.id; // Get the user ID from the authenticated user
-    const notes = await noteDAO.findAll({ userId }); // Filter notes by user ID
+    const userId = res.locals.user.id;
+    const notes = await noteDAO.findAll({ userId });
     res.status(200).send(
       notes.map(note => {
         return {

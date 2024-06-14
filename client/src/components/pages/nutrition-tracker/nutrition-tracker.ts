@@ -1,9 +1,11 @@
+/* Autor: Lucas Berlage */
+
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import componentStyle from './nutrition-tracker.css?inline';
 import { HttpClient, httpClientContext } from '../../../http-client.js';
 import { consume } from '@lit/context';
-import { Notificator } from '../notificator/notificator.js';
+import { Notificator } from '../../widgets/notificator/notificator.js';
 
 interface Food {
   id: string;
@@ -11,7 +13,6 @@ interface Food {
   calories: number;
   description: string;
   quantity: number;
-  createdAt: string;
 }
 
 @customElement('nutrition-tracker')
@@ -24,9 +25,6 @@ export class NutritionTracker extends LitElement {
   @state() foodCards: Food[] = [];
   @property({ type: Number }) totalCalories = 0;
   @state() isModalOpen: boolean = false;
-  @state() imageData: string | ArrayBuffer | null = null;
-
-  @query('input[type="file"]') fileInput!: HTMLInputElement;
   @query('.input_calories') totalCaloriesInput!: HTMLInputElement;
   @query('pop-up') popUp!: HTMLElement & { show: (message: string) => void };
 
@@ -205,7 +203,7 @@ export class NutritionTracker extends LitElement {
                         <textarea name="description" placeholder="Beschreibung" required></textarea>
                         <input type="number" name="calories" min="1" placeholder="Kalorien" required />
                         <input type="number" name="quantity" min="1" max="99" placeholder="Anzahl" required />
-                        <button type="submit">Hinzufügen</button>
+                        <button class="submit" type="submit">Hinzufügen</button>
                       </form>
                     </div>
                   </div>

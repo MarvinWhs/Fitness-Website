@@ -1,3 +1,5 @@
+/* Autor: Lucas Berlage */
+
 import { expect } from 'chai';
 import { chromium, Browser, BrowserContext, Page } from 'playwright';
 

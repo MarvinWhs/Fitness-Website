@@ -1,3 +1,5 @@
+/* Autor: Marvin Wiechers */
+
 import { Request, Response, NextFunction } from 'express';
 import crypto from 'crypto';
 

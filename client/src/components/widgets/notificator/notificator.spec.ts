@@ -1,4 +1,5 @@
 /* Autor: Marvin Wiechers */
+
 import { expect } from 'chai';
 import { html, fixture, fixtureCleanup } from '@open-wc/testing-helpers';
 import './notificator';

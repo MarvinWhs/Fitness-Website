@@ -1,3 +1,5 @@
+/* Autor: Lucas Berlage */
+
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import componentStyle from './dark-mode.css?inline';
@@ -13,7 +15,7 @@ export class DarkMode extends LitElement {
 
   constructor() {
     super();
-    this.theme = 'light'; // Standard-Thema ist 'light'
+    this.theme = 'light';
   }
 
   connectedCallback() {
@@ -21,13 +23,11 @@ export class DarkMode extends LitElement {
     this.updateTheme();
   }
 
-  // Methode zum Wechseln des Themas
   changeDarkMode() {
     this.theme = this.theme === 'light' ? 'dark' : 'light';
     this.updateTheme();
   }
 
-  // Methode zum Anwenden des Themas
   updateTheme() {
     if (this.theme === 'dark') {
       document.body.classList.add('dark-mode');
@@ -36,7 +36,6 @@ export class DarkMode extends LitElement {
     }
   }
 
-  // Render-Methode
   render() {
     return html`
       <button @click=${this.changeDarkMode} id="dark-mode-button">${this.theme === 'light' ? '☀️' : '🌙'}</button>

@@ -1,4 +1,4 @@
-/* Autor Niklas Lobo */
+/* Autor: Niklas Lobo */
 
 import express from 'express';
 import bcrypt from 'bcrypt';
@@ -10,7 +10,6 @@ import { cryptoService } from './services/crypto.service.js';
 
 const router = express.Router();
 
-// Register route with password confirmation and user existence check
 router.post('/register', csrfService.validateToken, async (req, res) => {
   const { username, password, passwordCheck, email } = req.body;
 
@@ -44,7 +43,6 @@ router.post('/register', csrfService.validateToken, async (req, res) => {
   }
 });
 
-// Login route
 router.post('/login', csrfService.validateToken, async (req, res) => {
   const { username, password } = req.body;
 
@@ -64,7 +62,6 @@ router.post('/login', csrfService.validateToken, async (req, res) => {
   }
 });
 
-// Logout route
 router.delete('/logout', csrfService.validateToken, async (req, res) => {
   authService.removeToken(res);
   res.status(200).send({ message: 'Erfolgreich abgemeldet' });

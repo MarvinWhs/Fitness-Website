@@ -1,10 +1,11 @@
 /* Autor: Marvin Wiechers */
+
 import { expect } from 'chai';
 import { html, fixture, fixtureCleanup } from '@open-wc/testing-helpers';
 import sinon from 'sinon';
 import './trainings-card';
 import { TrainingsCard } from './trainings-card';
-import { HttpClient } from './../../../http-client.js';
+import { HttpClient } from '../../../http-client.js';
 
 describe('TrainingsCard', () => {
   let element: TrainingsCard;
@@ -158,7 +159,7 @@ describe('TrainingsCard', () => {
     await element.updateComplete;
 
     expect(httpClientStub.put.calledOnce).to.be.true;
-    expect(httpClientStub.put.args[0][0]).to.equal(`https://localhost:3000/exercises/1`);
+    expect(httpClientStub.put.args[0][0]).to.equal(`/exercises/1`);
 
     await element.updateComplete;
 

@@ -1,4 +1,4 @@
-/* Autor Niklas Lobo */
+/* Autor: Niklas Lobo */
 
 import { html, LitElement } from 'lit';
 import componentStyle from './register-page.css?inline';
@@ -8,6 +8,7 @@ import { HttpClient, httpClientContext } from '../../../http-client.js';
 import { Router } from '../../../router.js';
 import { routerContext } from '../../../router.js';
 import { authContext, AuthState } from '../login-page/auth-context.js';
+import { Notificator } from '../../widgets/notificator/notificator';
 
 @customElement('register-page')
 export class RegisterPage extends LitElement {
@@ -27,7 +28,6 @@ export class RegisterPage extends LitElement {
   confirmPassword: string;
   email: string;
 
-  // Validierungsnachrichten
   usernameErrorMessage: string;
   emailErrorMessage: string;
   passwordErrorMessage: string;
@@ -94,7 +94,6 @@ export class RegisterPage extends LitElement {
 
   async handleSubmit(e: Event) {
     e.preventDefault();
-    // Check if there are any error messages
     const hasErrors =
       this.usernameErrorMessage ||
       this.passwordErrorMessage ||
@@ -120,9 +119,11 @@ export class RegisterPage extends LitElement {
           this.requestUpdate();
         });
         this.router.goto('/fitness-home');
+        Notificator.showNotification('Registrierung erfolgreich', 'erfolg');
         this.dispatchEvent(new CustomEvent('user-login', { bubbles: true, composed: true }));
         window.location.pathname = '/fitness-home';
       } else {
+        Notificator.showNotification('Registrierung fehlgeschlagen', 'fehler');
         console.error('Registrierung fehlgeschlagen');
       }
     }
